@@ -1,11 +1,11 @@
 package org.pra.nse;
 
 import org.pra.nse.bean.FoBean;
-import org.pra.nse.bean.MatBean;
 import org.pra.nse.bean.PraBean;
+import org.pra.nse.csv.merge.CmMerge;
 import org.pra.nse.csv.merge.FoMerge;
+import org.pra.nse.csv.merge.MatMerge;
 import org.pra.nse.csv.reader.FoCsvReader;
-import org.pra.nse.csv.reader.MatCsvReader;
 import org.pra.nse.csv.CsvWriter;
 import org.pra.nse.file.FileUtils;
 import org.pra.nse.csv.download.CmDownloader;
@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Processor2 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Processor2.class);
+public class Processor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class);
 
     public void process() {
         FoDownloader downloadNseFnoEod = new FoDownloader();
@@ -55,33 +55,11 @@ public class Processor2 {
         LOGGER.info("{}",praBeans.size());
 
         // MAT
-        String fromFile;
-        MatCsvReader matCsvReader = new MatCsvReader();
-        fromFile = fileUtils.getLatestFileNameForMat(1);
-        Map<String, MatBean> matLatestBeanMap = matCsvReader.read(fromFile);
-        fromFile = fileUtils.getLatestFileNameForMat(2);
-        Map<String, MatBean> matPreviousBeanMap = matCsvReader.read(fromFile);
-        praBeans.forEach(praBean -> {
-            if(matLatestBeanMap.containsKey(praBean.getSymbol()) && matPreviousBeanMap.containsKey(praBean.getSymbol())) {
-                praBean.setTodayDelivery(matLatestBeanMap.get(praBean.getSymbol()).getDeliverableQty());
-                praBean.setPreviousDelivery(matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty());
-                try{
-                    if(matLatestBeanMap.get(praBean.getSymbol()).getDeliverableQty() != 0
-                            && matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty() != 0) {
-                        double pct = matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty()/100;
-                        double diff = matLatestBeanMap.get(praBean.getSymbol()).getDeliverableQty() - matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty();
-                        double pctChange = Math.round(diff / pct);
-                        praBean.setPrcntChgInDelivery(pctChange);
-                    }
-                } catch (ArithmeticException ae) {
-                    ae.printStackTrace();
-                }
-            } else {
-                if(!praBean.getSymbol().contains("NIFTY")) {
-                    LOGGER.warn("symbol not found in delivery map: {}", praBean.getSymbol());
-                }
-            }
-        });
+        MatMerge matMerge = new MatMerge();
+        matMerge.merge(praBeans);
+        // CM
+        CmMerge cmMerge = new CmMerge();
+        cmMerge.merge(praBeans);
         //
         String outputPathAndFileName = System.getProperty("user.home") + File.separator + "pra-nse-computed-data" + File.separator + "praData.csv";
         CsvWriter csvWriter = new CsvWriter();

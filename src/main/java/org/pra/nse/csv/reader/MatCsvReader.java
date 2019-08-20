@@ -1,5 +1,6 @@
 package org.pra.nse.csv.reader;
 
+import org.pra.nse.AppConstants;
 import org.pra.nse.bean.MatBean;
 import org.pra.nse.file.FileUtils;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class MatCsvReader {
         //String fromFile = fileUtils.getLatestFileNameForMat(1);
         int firstIndex = fromFile.lastIndexOf("_");
         String matCsvFileName = fromFile.substring(firstIndex-3, firstIndex+9) + ".csv";
-        String toFile = System.getProperty("user.home") + File.separator + "pra-nse-mat" + File.separator + matCsvFileName;
+        String toFile = System.getProperty("user.home") + File.separator + AppConstants.MAT_DIR_NAME + File.separator + matCsvFileName;
         if(fileUtils.isFileExist(toFile)) {
             LOGGER.info("Mat file created with csv format: Successfully [{}]", toFile);
         } else {

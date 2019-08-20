@@ -15,14 +15,8 @@ public class NseApplication {
 		SpringApplication.run(NseApplication.class, args);
 		LOGGER.info(greetingInScala.greet());
 
-//		Processor1 processor1 = new Processor1();
-//		processor1.process();
-
-//		Processor2 processor2 = new Processor2();
-//		processor2.process();
-
-		Processor3 processor3 = new Processor3();
-		processor3.process();
+		Processor processor = new Processor();
+		processor.process();
 	}
 
 }

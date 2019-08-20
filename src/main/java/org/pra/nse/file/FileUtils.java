@@ -1,5 +1,6 @@
 package org.pra.nse.file;
 
+import org.pra.nse.AppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,14 +13,14 @@ import java.util.zip.ZipInputStream;
 public class FileUtils {
     private static Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
-    private DateTimeFormatter cmFormatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
-    private String cmDir = System.getProperty("user.home") + File.separator + "pra-nse-cm";
+    private DateTimeFormatter cmFormatter = DateTimeFormatter.ofPattern(AppConstants.CM_FILE_NAME_DATE_FORMAT);
+    private String cmDir = System.getProperty("user.home") + File.separator + AppConstants.CM_DIR_NAME;
 
-    private DateTimeFormatter foFormatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
-    private String foDir = System.getProperty("user.home") + File.separator + "pra-nse-fno";
+    private DateTimeFormatter foFormatter = DateTimeFormatter.ofPattern(AppConstants.FO_FILE_NAME_DATE_FORMAT);
+    private String foDir = System.getProperty("user.home") + File.separator + AppConstants.FO_DIR_NAME;
 
-    private DateTimeFormatter matFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-    private String matDir = System.getProperty("user.home") + File.separator + "pra-nse-mat";
+    private DateTimeFormatter matFormatter = DateTimeFormatter.ofPattern(AppConstants.MAT_FILE_NAME_DATE_FORMAT);
+    private String matDir = System.getProperty("user.home") + File.separator + AppConstants.MAT_DIR_NAME;
 
 
     public String getLatestFileNameForCm(int occurrence) {

@@ -1,5 +1,6 @@
 package org.pra.nse.csv;
 
+import org.pra.nse.AppConstants;
 import org.pra.nse.bean.PraBean;
 import org.pra.nse.file.FileUtils;
 import org.slf4j.Logger;
@@ -79,7 +80,7 @@ public class CsvWriter {
         final CellProcessor[] processors = new CellProcessor[] {
                 new NotNull(), // instrument
                 new NotNull(), // symbol
-                new FmtDate("dd-MMM-yyyy"), // expiryDate
+                new FmtDate(AppConstants.DATA_DATE_FORMAT), // expiryDate
                 //new DMinMax(DMinMax.MIN_DOUBLE, DMinMax.MAX_DOUBLE), // strikePrice
                 new NotNull(),
                 new NotNull(), // optionType
@@ -99,13 +100,13 @@ public class CsvWriter {
                 new LMinMax(0L, LMinMax.MAX_LONG), // todayDelivery
                 new NotNull(), // prcntChgInDelivery
 
-                new FmtDate("dd-MMM-yyyy"), // TodayTradeDate
+                new FmtDate(AppConstants.DATA_DATE_FORMAT), // TodayTradeDate
 
                 new DMinMax(0D, DMinMax.MAX_DOUBLE), // PreviousClose
                 new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // PreviousOpenInterest
                 new LMinMax(0L, LMinMax.MAX_LONG), // previousDelivery
                 new NotNull(),
-                new FmtDate("dd-MMM-yyyy") // PreviousTradeDate
+                new FmtDate(AppConstants.DATA_DATE_FORMAT) // PreviousTradeDate
         };
         return processors;
     }

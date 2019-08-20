@@ -1,5 +1,6 @@
 package org.pra.nse.csv.download;
 
+import org.pra.nse.AppConstants;
 import org.pra.nse.file.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ public class MatDownloader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatDownloader.class);
 
     public void download() {
-        String dataDir = System.getProperty("user.home") + File.separator + "pra-nse-mat";
+        String dataDir = System.getProperty("user.home") + File.separator + AppConstants.MAT_DIR_NAME;
         List<String> filesToBeDownloaded = constructFileNames();
         List<String> filesDownloadUrl = constructFileDownloadUrl(filesToBeDownloaded);
 
@@ -63,7 +64,7 @@ public class MatDownloader {
         //LOGGER.info(localDate);
         //localDate.getMonth().name().substring(0,3);
         //LOGGER.info(localDate.getMonth().name().substring(0,3));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(AppConstants.MAT_FILE_NAME_DATE_FORMAT);
         //formatter.format(localDate)
         //LOGGER.info(formatter.format(localDate));
 
@@ -79,7 +80,7 @@ public class MatDownloader {
                 LOGGER.info("It is weekend: {}", localDate.getDayOfWeek());
             } else {
                 LOGGER.info("It is weekday: {}", localDate.getDayOfWeek());
-                String newFileName = "MTO_" + formatter.format(localDate) + ".DAT";
+                String newFileName =AppConstants.MAT_FILE_PREFIX + formatter.format(localDate) + AppConstants.MAT_FILE_SUFFIX;
                 //LOGGER.info(newFileName);
                 fileNamesToBeDownloaded.add(newFileName);
             }
@@ -100,7 +101,7 @@ public class MatDownloader {
     }
 
     private List<String> fetchExistingFileNames() {
-        String dataDir = System.getProperty("user.home") + File.separator + "pra-nse-mat";
+        String dataDir = System.getProperty("user.home") + File.separator + AppConstants.MAT_DIR_NAME;
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();
 
@@ -124,8 +125,9 @@ public class MatDownloader {
     }
 
     private void transformToCsv(String downloadedDirAndFileName) {
-        String matCsvFileName = downloadedDirAndFileName.substring(downloadedDirAndFileName.lastIndexOf("_")-3, 42) + ".csv";
-        String toFile = System.getProperty("user.home") + File.separator + "pra-nse-mat" + File.separator + matCsvFileName;
+        int firstIndex = downloadedDirAndFileName.lastIndexOf("_");
+        String matCsvFileName = downloadedDirAndFileName.substring(firstIndex-3,firstIndex+9) + ".csv";
+        String toFile = System.getProperty("user.home") + File.separator + AppConstants.MAT_DIR_NAME + File.separator + matCsvFileName;
         Map.Entry<String, Integer> entry = new AbstractMap.SimpleEntry<>("key", 0);
         File csvOutputFile = new File(toFile);
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {

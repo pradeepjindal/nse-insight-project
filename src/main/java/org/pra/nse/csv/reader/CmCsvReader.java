@@ -1,5 +1,6 @@
 package org.pra.nse.csv.reader;
 
+import org.pra.nse.AppConstants;
 import org.pra.nse.bean.CmBean;
 import org.pra.nse.file.FileUtils;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class CmCsvReader {
     public Map<String, CmBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();
         //String fromFile = fileUtils.getLatestFileNameForMat(1);
-        int firstIndex = fromFile.lastIndexOf("cm");
+        int firstIndex = fromFile.lastIndexOf(AppConstants.CM_FILE_PREFIX);
         String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+11) + "bhav.csv";
         String toFile = System.getProperty("user.home") + File.separator + "pra-nse-cm" + File.separator + cmCsvFileName;
 
@@ -81,7 +82,7 @@ public class CmCsvReader {
 
                 new LMinMax(0L, LMinMax.MAX_LONG), // tot trd qty
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // tot trd val
-                new ParseDate("dd-MMM-yyyy"), // timestamp
+                new ParseDate(AppConstants.DATA_DATE_FORMAT), // timestamp
                 new LMinMax(0L, LMinMax.MAX_LONG), // totalTrades
                 new NotNull(), // isin
                 null

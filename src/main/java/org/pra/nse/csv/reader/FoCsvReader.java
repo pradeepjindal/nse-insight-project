@@ -1,5 +1,6 @@
 package org.pra.nse.csv.reader;
 
+import org.pra.nse.AppConstants;
 import org.pra.nse.bean.FoBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +96,7 @@ public class FoCsvReader {
         final CellProcessor[] processors = new CellProcessor[] {
                 new NotNull(), // instrument
                 new NotNull(), // symbol
-                new ParseDate("dd-MMM-yyyy"), // ExpiryDate
+                new ParseDate(AppConstants.DATA_DATE_FORMAT), // ExpiryDate
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // strike
                 new NotNull(), // option type
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // open
@@ -107,7 +108,7 @@ public class FoCsvReader {
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // val_inlakh
                 new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // oi
                 new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // change in oi
-                new ParseDate("dd-MMM-yyyy"), // timestamp
+                new ParseDate(AppConstants.DATA_DATE_FORMAT), // timestamp
                 null
         };
         return processors;

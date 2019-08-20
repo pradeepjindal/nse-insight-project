@@ -1,5 +1,6 @@
 package org.pra.nse.csv.download;
 
+import org.pra.nse.AppConstants;
 import org.pra.nse.file.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class FoDownloader {
     private FileUtils fileUtils = new FileUtils();
 
     public void download() {
-        String dataDir = System.getProperty("user.home") + File.separator + "pra-nse-fno";
+        String dataDir = System.getProperty("user.home") + File.separator + AppConstants.FO_DIR_NAME;
         List<String> filesToBeDownloaded = constructFileNames();
         List<String> filesDownloadUrl = constructFileDownloadUrl(filesToBeDownloaded);
 
@@ -61,7 +62,7 @@ public class FoDownloader {
         //LOGGER.info(localDate);
         //localDate.getMonth().name().substring(0,3);
         //LOGGER.info(localDate.getMonth().name().substring(0,3));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(AppConstants.FO_FILE_NAME_DATE_FORMAT);
         //formatter.format(localDate)
         //LOGGER.info(formatter.format(localDate));
 
@@ -77,7 +78,7 @@ public class FoDownloader {
                 //LOGGER.info(localDate.getDayOfWeek());
             } else {
                 //LOGGER.info(localDate.getDayOfWeek());
-                String newFileName = "fo" + formatter.format(localDate).toUpperCase() + "bhav.csv.zip";
+                String newFileName = AppConstants.FO_FILE_PREFIX + formatter.format(localDate).toUpperCase() + AppConstants.FO_FILE_SUFFIX;
                 //LOGGER.info(newFileName);
                 fileNamesToBeDownloaded.add(newFileName);
             }
@@ -98,7 +99,7 @@ public class FoDownloader {
     }
 
     private List<String> fetchExistingFileNames() {
-        String dataDir = System.getProperty("user.home") + File.separator + "pra-nse-fno";
+        String dataDir = System.getProperty("user.home") + File.separator + AppConstants.FO_DIR_NAME;
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();
 
