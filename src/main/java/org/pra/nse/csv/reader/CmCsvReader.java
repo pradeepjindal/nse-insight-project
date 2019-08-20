@@ -23,7 +23,8 @@ public class CmCsvReader {
     public Map<String, CmBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();
         //String fromFile = fileUtils.getLatestFileNameForMat(1);
-        String cmCsvFileName = fromFile.substring(fromFile.lastIndexOf("cm"), 40) + "bhav.csv";
+        int firstIndex = fromFile.lastIndexOf("cm");
+        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+11) + "bhav.csv";
         String toFile = System.getProperty("user.home") + File.separator + "pra-nse-cm" + File.separator + cmCsvFileName;
 
         if(fileUtils.isFileExist(toFile)) {

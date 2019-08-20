@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.pra</groupId>
 	<artifactId>nse</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>nse-insight</name>
 	<description>A Spring Boot and Scala based Project</description>
 

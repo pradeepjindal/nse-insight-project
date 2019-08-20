@@ -21,7 +21,8 @@ public class MatCsvReader {
     public Map<String, MatBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();
         //String fromFile = fileUtils.getLatestFileNameForMat(1);
-        String matCsvFileName = fromFile.substring(fromFile.lastIndexOf("_")-3, 42) + ".csv";
+        int firstIndex = fromFile.lastIndexOf("_");
+        String matCsvFileName = fromFile.substring(firstIndex-3, firstIndex+9) + ".csv";
         String toFile = System.getProperty("user.home") + File.separator + "pra-nse-mat" + File.separator + matCsvFileName;
         if(fileUtils.isFileExist(toFile)) {
             LOGGER.info("Mat file created with csv format: Successfully [{}]", toFile);

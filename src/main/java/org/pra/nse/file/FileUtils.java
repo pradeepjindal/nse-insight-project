@@ -29,12 +29,12 @@ public class FileUtils {
         LocalDate date = localDate;
         File file;
         String filePathWithFileName = null;
-
         for(int i=0; i<occurrence; i++) {
             do {
                 String fileName = "cm" + cmFormatter.format(date).toUpperCase() + "bhav.csv";
-                //System.out.println("Latest File Name: " + fileName);
+                LOGGER.info("getLatestFileNameForCm | fileName: {}", fileName);
                 filePathWithFileName = cmDir + File.separator + fileName;
+                LOGGER.info("getLatestFileNameForCm | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
             } while(!file.exists());
@@ -49,12 +49,12 @@ public class FileUtils {
         LocalDate date = localDate;
         File file;
         String filePathWithFileName = null;
-
         for(int i=0; i<occurrence; i++) {
             do {
                 String fileName = "fo" + foFormatter.format(date).toUpperCase() + "bhav.csv";
-                //System.out.println("Latest File Name: " + fileName);
+                LOGGER.info("getLatestFileNameForFo | fileName: {}", fileName);
                 filePathWithFileName = foDir + File.separator + fileName;
+                LOGGER.info("getLatestFileNameForFo | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
             } while(!file.exists());
@@ -69,12 +69,12 @@ public class FileUtils {
         LocalDate date = localDate;
         File file;
         String filePathWithFileName = null;
-
         for(int i=0; i<occurrence; i++) {
             do {
                 String fileName = "MTO_" + matFormatter.format(date) + ".DAT";
-                //System.out.println("Latest File Name: " + fileName);
+                LOGGER.info("getLatestFileNameForMat | fileName: {}", fileName);
                 filePathWithFileName = matDir + File.separator + fileName;
+                LOGGER.info("getLatestFileNameForMat | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
             } while(!file.exists());
@@ -95,7 +95,6 @@ public class FileUtils {
     public void createDataDir(String dataDir) {
         File newFolder = new File(dataDir);
         boolean created =  newFolder.mkdir();
-
         System.out.println("creating folder: " + dataDir);
         if(created)
             System.out.println("Folder was created!");
