@@ -4,16 +4,18 @@ import org.pra.nse.file.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MatDownloader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatDownloader.class);
@@ -35,6 +37,7 @@ public class MatDownloader {
                 while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
                     fileOS.write(data, 0, byteContent);
                 }
+                transformToCsv(outputDirAndFileName);
             } catch (IOException e) {
                 LOGGER.info(e.getMessage());
             }
@@ -120,4 +123,33 @@ public class MatDownloader {
         return existingFiles;
     }
 
+    private void transformToCsv(String downloadedDirAndFileName) {
+        String matCsvFileName = downloadedDirAndFileName.substring(downloadedDirAndFileName.lastIndexOf("_")-3, 42) + ".csv";
+        String toFile = System.getProperty("user.home") + File.separator + "pra-nse-mat" + File.separator + matCsvFileName;
+        Map.Entry<String, Integer> entry = new AbstractMap.SimpleEntry<>("key", 0);
+        File csvOutputFile = new File(toFile);
+        try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
+            try (Stream<String> stream = Files.lines(Paths.get(downloadedDirAndFileName))) {
+                stream.filter(line->{
+                    if(entry.getValue() < 3) {
+                        entry.setValue(entry.getValue()+1);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }).map(row -> {
+                    if(entry.getValue() == 3) {
+                        entry.setValue(entry.getValue()+1);
+                        return "RecType,SrNo,Symbol,SecurityType,TradedQty,DeliverableQty,DeliveryToTradeRatio";
+                    } else {
+                        return row;
+                    }
+                }).forEach(tuple -> pw.println(tuple));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

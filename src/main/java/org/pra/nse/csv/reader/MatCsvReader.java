@@ -13,10 +13,7 @@ import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class MatCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatCsvReader.class);
@@ -26,7 +23,6 @@ public class MatCsvReader {
         //String fromFile = fileUtils.getLatestFileNameForMat(1);
         String matCsvFileName = fromFile.substring(fromFile.lastIndexOf("_")-3, 42) + ".csv";
         String toFile = System.getProperty("user.home") + File.separator + "pra-nse-mat" + File.separator + matCsvFileName;
-        transformToCsv(fromFile, toFile);
         if(fileUtils.isFileExist(toFile)) {
             LOGGER.info("Mat file created with csv format: Successfully [{}]", toFile);
         } else {
@@ -36,34 +32,6 @@ public class MatCsvReader {
         Map<String, MatBean> beanMap = readCsv(toFile);
         LOGGER.info("Total Mat Beans in Map: {}", beanMap.size());
         return beanMap;
-    }
-
-    private void transformToCsv(String fromFile, String toFile) {
-        Map.Entry<String, Integer> entry = new AbstractMap.SimpleEntry<>("key", 0);
-        File csvOutputFile = new File(toFile);
-        try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
-            try (Stream<String> stream = Files.lines(Paths.get(fromFile))) {
-                stream.filter(line->{
-                    if(entry.getValue() < 3) {
-                        entry.setValue(entry.getValue()+1);
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }).map(row -> {
-                    if(entry.getValue() == 3) {
-                        entry.setValue(entry.getValue()+1);
-                        return "RecType,SrNo,Symbol,SecurityType,TradedQty,DeliverableQty,DeliveryToTradeRatio";
-                    } else {
-                        return row;
-                    }
-                }).forEach(tuple -> pw.println(tuple));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private Map<String, MatBean> readCsv(String fileName) {
