@@ -8,7 +8,7 @@ public class CmBean {
     private String symbol;
     private String series;
     private double open;
-    private double High;
+    private double high;
     private double Low;
     private double close;
     private double last;
@@ -40,7 +40,7 @@ public class CmBean {
                 "symbol='" + symbol + '\'' +
                 ", series='" + series + '\'' +
                 ", open=" + open +
-                ", High=" + High +
+                ", high=" + high +
                 ", Low=" + Low +
                 ", close=" + close +
                 ", last=" + last +
@@ -79,11 +79,11 @@ public class CmBean {
     }
 
     public double getHigh() {
-        return High;
+        return high;
     }
 
     public void setHigh(double high) {
-        High = high;
+        high = high;
     }
 
     public double getLow() {

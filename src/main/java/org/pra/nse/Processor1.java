@@ -6,9 +6,9 @@ import org.pra.nse.csv.merge.FoMerge;
 import org.pra.nse.csv.reader.FoCsvReader;
 import org.pra.nse.csv.CsvWriter;
 import org.pra.nse.file.FileUtils;
-import org.pra.nse.download.CmDownloader;
-import org.pra.nse.download.FoDownloader;
-import org.pra.nse.download.MatDownloader;
+import org.pra.nse.csv.download.CmDownloader;
+import org.pra.nse.csv.download.FoDownloader;
+import org.pra.nse.csv.download.MatDownloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

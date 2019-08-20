@@ -1,4 +1,4 @@
-package org.pra.nse.download;
+package org.pra.nse.csv.download;
 
 import org.pra.nse.file.FileUtils;
 import org.slf4j.Logger;
