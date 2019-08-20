@@ -13,19 +13,19 @@ public class PraBean {
     private long contracts;
     //
     private double cmTodayClose;
-    private double todayClose;
+    private double foTodayClose;
     private long todayOI;
     private long todayDelivery;
     private Date todayDate;
     //
     private double cmPreviousClose;
-    private double previousClose;
+    private double foPreviousClose;
     private long previousOI;
     private long previousDelivery;
     private Date previousDate;
     //
     private double cmPrcntChgInClose;
-    private double prcntChgInClose;
+    private double foPrcntChgInClose;
     private double prcntChgInOI;
     private double prcntChgInDelivery;
 
@@ -57,17 +57,17 @@ public class PraBean {
                 ", optionType='" + optionType + '\'' +
                 ", contracts=" + contracts +
                 ", cmTodayClose=" + cmTodayClose +
-                ", todayClose=" + todayClose +
+                ", foTodayClose=" + foTodayClose +
                 ", todayOI=" + todayOI +
                 ", todayDelivery=" + todayDelivery +
                 ", todayDate=" + todayDate +
                 ", cmPreviousClose=" + cmPreviousClose +
-                ", previousClose=" + previousClose +
+                ", foPreviousClose=" + foPreviousClose +
                 ", previousOI=" + previousOI +
                 ", previousDelivery=" + previousDelivery +
                 ", previousDate=" + previousDate +
                 ", cmPrcntChgInClose=" + cmPrcntChgInClose +
-                ", prcntChgInClose=" + prcntChgInClose +
+                ", foPrcntChgInClose=" + foPrcntChgInClose +
                 ", prcntChgInOI=" + prcntChgInOI +
                 ", prcntChgInDelivery=" + prcntChgInDelivery +
                 '}';
@@ -90,6 +90,7 @@ public class PraBean {
                 + "," + String.valueOf(strikePrice)
                 + "," + optionType;
     }
+
 
     public String getInstrument() {
         return instrument;
@@ -147,12 +148,12 @@ public class PraBean {
         this.cmTodayClose = cmTodayClose;
     }
 
-    public double getTodayClose() {
-        return todayClose;
+    public double getFoTodayClose() {
+        return foTodayClose;
     }
 
-    public void setTodayClose(double todayClose) {
-        this.todayClose = todayClose;
+    public void setFoTodayClose(double foTodayClose) {
+        this.foTodayClose = foTodayClose;
     }
 
     public long getTodayOI() {
@@ -187,12 +188,12 @@ public class PraBean {
         this.cmPreviousClose = cmPreviousClose;
     }
 
-    public double getPreviousClose() {
-        return previousClose;
+    public double getFoPreviousClose() {
+        return foPreviousClose;
     }
 
-    public void setPreviousClose(double previousClose) {
-        this.previousClose = previousClose;
+    public void setFoPreviousClose(double foPreviousClose) {
+        this.foPreviousClose = foPreviousClose;
     }
 
     public long getPreviousOI() {
@@ -227,12 +228,12 @@ public class PraBean {
         this.cmPrcntChgInClose = cmPrcntChgInClose;
     }
 
-    public double getPrcntChgInClose() {
-        return prcntChgInClose;
+    public double getFoPrcntChgInClose() {
+        return foPrcntChgInClose;
     }
 
-    public void setPrcntChgInClose(double prcntChgInClose) {
-        this.prcntChgInClose = prcntChgInClose;
+    public void setFoPrcntChgInClose(double foPrcntChgInClose) {
+        this.foPrcntChgInClose = foPrcntChgInClose;
     }
 
     public double getPrcntChgInOI() {

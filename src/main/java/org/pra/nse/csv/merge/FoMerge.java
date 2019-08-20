@@ -5,7 +5,6 @@ import org.pra.nse.bean.PraBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,14 +26,14 @@ public class FoMerge {
             praBean.setStrikePrice(todayBean.getStrike_Pr());
             praBean.setOptionType(todayBean.getOption_Typ());
             //
-            praBean.setTodayClose(todayBean.getClose());
+            praBean.setFoTodayClose(todayBean.getClose());
             praBean.setTodayOI(todayBean.getOpen_Int());
             //
             //praBean.setTodayTradeDate(todayBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             praBean.setTodayDate(todayBean.getTimestamp());
 
             //
-            praBean.setPreviousClose(previousBean.getClose());
+            praBean.setFoPreviousClose(previousBean.getClose());
             praBean.setPreviousOI(previousBean.getOpen_Int());
             //praBean.setPreviousTradeDate(previousBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             praBean.setPreviousDate(previousBean.getTimestamp());
@@ -45,7 +44,7 @@ public class FoMerge {
                     double pct = previousBean.getClose()/100;
                     double diff = todayBean.getClose() - previousBean.getClose();
                     double pctChange = Math.round(diff / pct);
-                    praBean.setPrcntChgInClose(pctChange);
+                    praBean.setFoPrcntChgInClose(pctChange);
                 }
             } catch (ArithmeticException ae) {
                 ae.printStackTrace();

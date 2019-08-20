@@ -15,6 +15,7 @@ import org.supercsv.prefs.CsvPreference;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class CsvWriter {
@@ -24,36 +25,53 @@ public class CsvWriter {
         FileUtils fileUtils = new FileUtils();
         fileUtils.createFolder(outputPathAndFileName);
 
-        ICsvBeanWriter beanWriter = null;
-        try {
-            beanWriter = new CsvBeanWriter(new FileWriter(outputPathAndFileName), CsvPreference.STANDARD_PREFERENCE);
+        //final ICsvBeanWriter beanWriter;
+        try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputPathAndFileName), CsvPreference.STANDARD_PREFERENCE)) {
+
             // the header elements are used to map the bean values to each column (names must match)
             final String[] header = new String[] { "instrument", "symbol", "expiryDate", "strikePrice", "optionType"
                     , "Contracts"
                     , "cmTodayClose", "cmPrcntChgInClose"
-                    , "todayClose", "prcntChgInClose"
+                    , "foTodayClose", "foPrcntChgInClose"
                     , "todayOI", "prcntChgInOI"
                     , "todayDelivery","prcntChgInDelivery"
                     , "todayDate"
-                    , "previousClose", "previousOI", "previousDelivery", "cmPreviousClose", "previousDate"
+                    , "foPreviousClose", "previousOI", "previousDelivery", "cmPreviousClose", "previousDate"
             };
             final CellProcessor[] processors = getProcessors();
             // write the header
             beanWriter.writeHeader(header);
             // write the beans
-            for( final PraBean praBean : praBeans ) {
-                beanWriter.write(praBean, header, processors);
-            }
+//            for( final PraBean praBean : praBeans ) {
+//                beanWriter.write(praBean, header, processors);
+//            }
+            praBeans.stream()
+                    .filter(bean -> {
+                        if("FUTSTK".equals(bean.getInstrument()) && bean.getExpiryDate().getMonth() == new Date().getMonth()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    })
+                    .map(praBean -> {
+                        try {
+                            beanWriter.write(praBean, header, processors);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return praBean;
+                    })
+                    .count();
         }catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if( beanWriter != null ) {
-                try {
-                    beanWriter.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+//            if( beanWriter != null ) {
+//                try {
+//                    beanWriter.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
     }
 
