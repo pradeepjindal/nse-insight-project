@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.util.*;
 
 public class FoCsvReader {
-    private static Logger LOGGER = LoggerFactory.getLogger(FoCsvReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FoCsvReader.class);
 
     public Map<FoBean, FoBean> read(Map<FoBean, FoBean> foBeanMap, String fileName) {
         ICsvBeanReader beanReader = null;
 
-        Map<FoBean, FoBean> localFoBeanMap = new HashMap();
+        Map<FoBean, FoBean> localFoBeanMap = new HashMap<>();
         LOGGER.info("-----CSV Reader");
         try {
             beanReader = new CsvBeanReader(new FileReader(fileName), CsvPreference.STANDARD_PREFERENCE);
@@ -32,7 +32,7 @@ public class FoCsvReader {
 
             FoBean foBean;
             //int missing = 0;
-            Map.Entry<String, Integer> missingEntry = new AbstractMap.SimpleEntry("missing", 0);
+            Map.Entry<String, Integer> missingEntry = new AbstractMap.SimpleEntry<>("missing", 0);
             //
             long startWatch = System.currentTimeMillis();
             LOGGER.info("Beginning CSV Read: " + startWatch);

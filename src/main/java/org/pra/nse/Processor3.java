@@ -20,7 +20,7 @@ import java.util.Map;
 
 
 public class Processor3 {
-    private static Logger LOGGER = LoggerFactory.getLogger(Processor3.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Processor3.class);
 
     public void process() {
         FoDownloader downloadNseFnoEod = new FoDownloader();
@@ -33,7 +33,7 @@ public class Processor3 {
         downloadNseCmEod.download();
 
         //---------------------------------------------------------
-        Map<FoBean, FoBean> foBeanMap = null;
+        Map<FoBean, FoBean> foBeanMap;
         FileUtils fileUtils = new FileUtils();
         String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
         LOGGER.info("latestFileName FO: " + foLatestFileName);

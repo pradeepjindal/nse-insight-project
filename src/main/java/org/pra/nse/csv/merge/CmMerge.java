@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 public class CmMerge {
-    private static Logger LOGGER = LoggerFactory.getLogger(CmMerge.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CmMerge.class);
 
     private FileUtils fileUtils = new FileUtils();
 
     public List<PraBean> merge(List<PraBean> praBeans) {
-        String fromFile = null;
+        String fromFile;
         CmCsvReader matCsvReader = new CmCsvReader();
         fromFile = fileUtils.getLatestFileNameForCm(1);
         Map<String, CmBean> latestBeanMap = matCsvReader.read(fromFile);

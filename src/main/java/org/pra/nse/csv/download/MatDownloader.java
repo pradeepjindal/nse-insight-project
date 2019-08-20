@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MatDownloader {
-    private static Logger LOGGER = LoggerFactory.getLogger(MatDownloader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatDownloader.class);
 
     public void download() {
         String dataDir = System.getProperty("user.home") + File.separator + "pra-nse-mat";
@@ -43,7 +43,7 @@ public class MatDownloader {
 
     private List<String> constructFileDownloadUrl(List<String> filesToBeDownloaded) {
         String baseUrl = "https://www.nseindia.com/archives/equities/mto";
-        List<String> filesUrl = new ArrayList<>();
+        List<String> filesUrl;
 
         filesUrl = filesToBeDownloaded.stream().map(fileName -> {
             //LOGGER.info(fileName);
@@ -54,7 +54,7 @@ public class MatDownloader {
         return filesUrl;
     }
 
-    public List<String> constructFileNames() {
+    private List<String> constructFileNames() {
         List<String> fileNamesToBeDownloaded = new ArrayList<>();
         LocalDate localDate = LocalDate.of(2019,8,1);
         //LOGGER.info(localDate);
@@ -75,7 +75,7 @@ public class MatDownloader {
             if("SATURDAY".equals(localDate.getDayOfWeek().name()) || "SUNDAY".equals(localDate.getDayOfWeek().name())) {
                 LOGGER.info("It is weekend: {}", localDate.getDayOfWeek());
             } else {
-                LOGGER.info("It is weekday: ", localDate.getDayOfWeek());
+                LOGGER.info("It is weekday: {}", localDate.getDayOfWeek());
                 String newFileName = "MTO_" + formatter.format(localDate) + ".DAT";
                 //LOGGER.info(newFileName);
                 fileNamesToBeDownloaded.add(newFileName);
@@ -96,7 +96,7 @@ public class MatDownloader {
         return fileNamesToBeDownloaded;
     }
 
-    public List<String> fetchExistingFileNames() {
+    private List<String> fetchExistingFileNames() {
         String dataDir = System.getProperty("user.home") + File.separator + "pra-nse-mat";
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();

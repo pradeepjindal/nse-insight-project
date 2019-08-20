@@ -83,7 +83,7 @@ public class CmBean {
     }
 
     public void setHigh(double high) {
-        high = high;
+        this.high = high;
     }
 
     public double getLow() {

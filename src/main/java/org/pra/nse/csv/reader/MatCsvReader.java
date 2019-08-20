@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class MatCsvReader {
-    private static Logger LOGGER = LoggerFactory.getLogger(MatCsvReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatCsvReader.class);
 
     public Map<String, MatBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();
@@ -76,7 +76,7 @@ public class MatCsvReader {
         final CellProcessor[] processors = getProcessors();
 
         MatBean matBean;
-        String[] header = null;
+        String[] header;
         Map<String, MatBean> matBeanMap = new HashMap<>();
         try {
             header = beanReader.getHeader(true);
@@ -84,7 +84,7 @@ public class MatCsvReader {
                 //LOGGER.info(String.format("lineNo=%s, rowNo=%s, customer=%s", beanReader.getLineNumber(), beanReader.getRowNumber(), matBean));
                 if("EQ".equals(matBean.getSecurityType())) {
                     if(matBeanMap.containsKey(matBean.getSymbol())) {
-                        LOGGER.warn("Symbol already present in map: old value = [], new value = []",
+                        LOGGER.warn("Symbol already present in map: old value = [{}], new value = [{}]",
                                 matBeanMap.get(matBean.getSymbol()), matBean);
                     }
                     matBeanMap.put(matBean.getSymbol(), matBean);

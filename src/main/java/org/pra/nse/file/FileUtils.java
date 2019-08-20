@@ -25,9 +25,9 @@ public class FileUtils {
     public String getLatestFileNameForCm(int occurrence) {
         return getLatestFileNameForCm(LocalDate.now(), occurrence);
     }
-    public String getLatestFileNameForCm(LocalDate localDate, int occurrence) {
+    private String getLatestFileNameForCm(LocalDate localDate, int occurrence) {
         LocalDate date = localDate;
-        File file = null;
+        File file;
         String filePathWithFileName = null;
 
         for(int i=0; i<occurrence; i++) {
@@ -45,9 +45,9 @@ public class FileUtils {
     public String getLatestFileNameForFo(int occurrence) {
         return getLatestFileNameForFo(LocalDate.now(), occurrence);
     }
-    public String getLatestFileNameForFo(LocalDate localDate, int occurrence) {
+    private String getLatestFileNameForFo(LocalDate localDate, int occurrence) {
         LocalDate date = localDate;
-        File file = null;
+        File file;
         String filePathWithFileName = null;
 
         for(int i=0; i<occurrence; i++) {
@@ -65,9 +65,9 @@ public class FileUtils {
     public String getLatestFileNameForMat(int occurrence) {
         return getLatestFileNameForMat(LocalDate.now(), occurrence);
     }
-    public String getLatestFileNameForMat(LocalDate localDate, int occurrence) {
+    private String getLatestFileNameForMat(LocalDate localDate, int occurrence) {
         LocalDate date = localDate;
-        File file = null;
+        File file;
         String filePathWithFileName = null;
 
         for(int i=0; i<occurrence; i++) {
@@ -89,7 +89,6 @@ public class FileUtils {
 
         if(null == folder.listFiles()) {
             createDataDir(dataDir);
-            listOfFiles = folder.listFiles();
         }
     }
 
@@ -119,10 +118,10 @@ public class FileUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        ZipEntry zipEntry = null;
+        ZipEntry zipEntry;
         zipEntry = zis.getNextEntry();
         while (zipEntry != null) {
-            File newFile = null;
+            File newFile;
             newFile = newFile(destDir, zipEntry);
             FileOutputStream fos = null;
             try {

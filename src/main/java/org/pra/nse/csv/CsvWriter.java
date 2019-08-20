@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class CsvWriter {
-    private static Logger LOGGER = LoggerFactory.getLogger(CsvWriter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CsvWriter.class);
 
     public void write(List<PraBean> praBeans, String outputPathAndFileName) {
         FileUtils fileUtils = new FileUtils();

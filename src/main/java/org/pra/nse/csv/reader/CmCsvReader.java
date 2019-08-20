@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CmCsvReader {
-    private static Logger LOGGER = LoggerFactory.getLogger(CmCsvReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CmCsvReader.class);
 
     public Map<String, CmBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();
@@ -47,7 +47,7 @@ public class CmCsvReader {
         final CellProcessor[] processors = getProcessors();
 
         CmBean cmBean;
-        String[] header = null;
+        String[] header;
         Map<String, CmBean> cmBeanMap = new HashMap<>();
         try {
             header = beanReader.getHeader(true);
@@ -55,7 +55,7 @@ public class CmCsvReader {
                 //LOGGER.info(String.format("lineNo=%s, rowNo=%s, customer=%s", beanReader.getLineNumber(), beanReader.getRowNumber(), matBean));
                 if("EQ".equals(cmBean.getSeries())) {
                     if(cmBeanMap.containsKey(cmBean.getSymbol())) {
-                        LOGGER.warn("Symbol already present in map: old value = [], new value = []",
+                        LOGGER.warn("Symbol already present in map: old value = [{}], new value = [{}]",
                                 cmBeanMap.get(cmBean.getSymbol()), cmBean);
                     }
                     cmBeanMap.put(cmBean.getSymbol(), cmBean);

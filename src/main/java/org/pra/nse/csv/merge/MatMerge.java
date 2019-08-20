@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 public class MatMerge {
-    private static Logger LOGGER = LoggerFactory.getLogger(MatMerge.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatMerge.class);
 
     private FileUtils fileUtils = new FileUtils();
 
     public List<PraBean> merge(List<PraBean> praBeans) {
-        String fromFile = null;
+        String fromFile;
         MatCsvReader matCsvReader = new MatCsvReader();
         fromFile = fileUtils.getLatestFileNameForMat(1);
         Map<String, MatBean> matLatestBeanMap = matCsvReader.read(fromFile);

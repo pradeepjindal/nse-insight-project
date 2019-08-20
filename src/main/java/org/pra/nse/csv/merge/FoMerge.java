@@ -11,10 +11,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FoMerge {
-    private static Logger LOGGER = LoggerFactory.getLogger(FoMerge.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FoMerge.class);
 
     public List<PraBean> merge(Map<FoBean, FoBean> foBeanMap) {
-        List<PraBean> praBeans = new ArrayList<>();
+        List<PraBean> praBeans;
         praBeans = foBeanMap.entrySet().stream().map( entry -> {
             FoBean todayBean = entry.getKey();
             FoBean previousBean = entry.getValue();

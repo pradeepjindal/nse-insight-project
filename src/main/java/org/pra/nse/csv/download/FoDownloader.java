@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FoDownloader {
-    private static Logger LOGGER = LoggerFactory.getLogger(FoDownloader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FoDownloader.class);
 
     private FileUtils fileUtils = new FileUtils();
 
@@ -43,7 +43,7 @@ public class FoDownloader {
 
     private List<String> constructFileDownloadUrl(List<String> filesToBeDownloaded) {
         String baseUrl = "https://www.nseindia.com/content/historical/DERIVATIVES/2019";
-        List<String> filesUrl = new ArrayList<>();
+        List<String> filesUrl;
 
         filesUrl = filesToBeDownloaded.stream().map(fileName -> {
             //LOGGER.info(fileName);
@@ -53,7 +53,7 @@ public class FoDownloader {
         return filesUrl;
     }
 
-    public List<String> constructFileNames() {
+    private List<String> constructFileNames() {
         List<String> fileNamesToBeDownloaded = new ArrayList<>();
         //String foBhavCopy = "https://www.nseindia.com/content/historical/DERIVATIVES/2019/AUG/fo14AUG2019bhav.csv.zip";
 
@@ -97,7 +97,7 @@ public class FoDownloader {
         return fileNamesToBeDownloaded;
     }
 
-    public List<String> fetchExistingFileNames() {
+    private List<String> fetchExistingFileNames() {
         String dataDir = System.getProperty("user.home") + File.separator + "pra-nse-fno";
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();

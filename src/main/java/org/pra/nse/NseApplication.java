@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class NseApplication {
-	private static Logger LOGGER = LoggerFactory.getLogger(NseApplication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(NseApplication.class);
 
 	public static void main(String[] args) {
 		GreetingInScala greetingInScala = new GreetingInScala();

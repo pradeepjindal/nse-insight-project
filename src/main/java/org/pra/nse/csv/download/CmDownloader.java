@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CmDownloader {
-    private static Logger LOGGER = LoggerFactory.getLogger(CmDownloader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CmDownloader.class);
 
     private FileUtils fileUtils = new FileUtils();
 
@@ -48,7 +48,7 @@ public class CmDownloader {
         //String baseUrl = "https://www.nseindia.com/content/historical/DERIVATIVES/2019";
         //String baseUrl = "https://www.nseindia.com/content/historical/EQUITIES/2019/AUG/cm16AUG2019bhav.csv.zip";
         String baseUrl = "https://www.nseindia.com/content/historical/EQUITIES/2019";
-        List<String> filesUrl = new ArrayList<>();
+        List<String> filesUrl;
 
         filesUrl = filesToBeDownloaded.stream().map(fileName -> {
             //LOGGER.info(fileName);
@@ -59,7 +59,7 @@ public class CmDownloader {
         return filesUrl;
     }
 
-    public List<String> constructFileNames() {
+    private List<String> constructFileNames() {
         List<String> fileNamesToBeDownloaded = new ArrayList<>();
         String foBhavCopy = "https://www.nseindia.com/content/historical/DERIVATIVES/2019/AUG/fo14AUG2019bhav.csv.zip";
         LocalDate localDate = LocalDate.of(2019,8,1);
