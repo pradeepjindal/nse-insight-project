@@ -1,5 +1,6 @@
 package org.pra.nse.bean;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -7,6 +8,7 @@ public class PraBean {
     private String instrument;
     private String symbol;
     private Date expiryDate;
+    private LocalDate expiryLocalDate;
     private double strikePrice;
     private String optionType;
     //
@@ -17,12 +19,14 @@ public class PraBean {
     private long tdyOI;
     private long tdyDelivery;
     private Date tdyDate;
+    private LocalDate tdyLocalDate;
     //
     private double cmPrevsClose;
     private double foPrevsClose;
     private long prevsOI;
     private long prevsDelivery;
     private Date prevsDate;
+    private LocalDate prevsLocalDate;
     //
     private double cmPrcntChgInClose;
     private double foPrcntChgInClose;
@@ -250,5 +254,29 @@ public class PraBean {
 
     public void setPrcntChgInDelivery(double prcntChgInDelivery) {
         this.prcntChgInDelivery = prcntChgInDelivery;
+    }
+
+    public LocalDate getExpiryLocalDate() {
+        return expiryLocalDate;
+    }
+
+    public void setExpiryLocalDate(LocalDate expiryLocalDate) {
+        this.expiryLocalDate = expiryLocalDate;
+    }
+
+    public LocalDate getTdyLocalDate() {
+        return tdyLocalDate;
+    }
+
+    public void setTdyLocalDate(LocalDate tdyLocalDate) {
+        this.tdyLocalDate = tdyLocalDate;
+    }
+
+    public LocalDate getPrevsLocalDate() {
+        return prevsLocalDate;
+    }
+
+    public void setPrevsLocalDate(LocalDate prevsLocalDate) {
+        this.prevsLocalDate = prevsLocalDate;
     }
 }

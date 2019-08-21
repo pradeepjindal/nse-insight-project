@@ -6,11 +6,11 @@ import org.pra.nse.csv.merge.CmMerge;
 import org.pra.nse.csv.merge.FoMerge;
 import org.pra.nse.csv.merge.MatMerge;
 import org.pra.nse.csv.reader.FoCsvReader;
-import org.pra.nse.csv.CsvWriter;
-import org.pra.nse.file.FileUtils;
-import org.pra.nse.csv.download.CmDownloader;
-import org.pra.nse.csv.download.FoDownloader;
-import org.pra.nse.csv.download.MatDownloader;
+import org.pra.nse.csv.writer.ManishCsvWriter;
+import org.pra.nse.util.FileUtils;
+import org.pra.nse.csv.downloader.CmDownloader;
+import org.pra.nse.csv.downloader.FoDownloader;
+import org.pra.nse.csv.downloader.MatDownloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,11 +61,11 @@ public class ManishProcessor {
         CmMerge cmMerge = new CmMerge();
         cmMerge.merge(praBeans);
         //
-        String outputPathAndFileName = System.getProperty("user.home")
-                + File.separator + AppConstants.CALC_DIR_NAME
+        String outputPathAndFileName = AppConstants.BASE_DATA_DIR
+                + File.separator + AppConstants.DATA_DIR_NAME
                 + File.separator + AppConstants.MANISH_FILE_NAME;
-        CsvWriter csvWriter = new CsvWriter();
-        csvWriter.write(praBeans, outputPathAndFileName);
+        ManishCsvWriter manishCsvWriter = new ManishCsvWriter();
+        manishCsvWriter.write(praBeans, outputPathAndFileName);
 
         //
         if(fileUtils.isFileExist(outputPathAndFileName)) {

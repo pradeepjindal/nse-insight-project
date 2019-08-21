@@ -21,7 +21,6 @@ public class FoCsvReader {
 
     public Map<FoBean, FoBean> read(Map<FoBean, FoBean> foBeanMap, String fileName) {
         ICsvBeanReader beanReader = null;
-
         Map<FoBean, FoBean> localFoBeanMap = new HashMap<>();
         LOGGER.info("-----CSV Reader");
         try {

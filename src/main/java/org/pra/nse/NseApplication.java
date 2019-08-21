@@ -14,9 +14,13 @@ public class NseApplication {
 		GreetingInScala greetingInScala = new GreetingInScala();
 		SpringApplication.run(NseApplication.class, args);
 		LOGGER.info(greetingInScala.greet());
+		try {
+			ManishProcessor manishProcessor = new ManishProcessor();
+			manishProcessor.process();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 
-		ManishProcessor manishProcessor = new ManishProcessor();
-		manishProcessor.process();
 	}
 
 }

@@ -3,7 +3,7 @@ package org.pra.nse.csv.merge;
 import org.pra.nse.bean.MatBean;
 import org.pra.nse.bean.PraBean;
 import org.pra.nse.csv.reader.MatCsvReader;
-import org.pra.nse.file.FileUtils;
+import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class MatMerge {
 
     private FileUtils fileUtils = new FileUtils();
 
-    public List<PraBean> merge(List<PraBean> praBeans) {
+    public void merge(List<PraBean> praBeans) {
         String fromFile;
         MatCsvReader matCsvReader = new MatCsvReader();
         fromFile = fileUtils.getLatestFileNameForMat(1);
@@ -43,6 +43,6 @@ public class MatMerge {
                 }
             }
         });
-        return praBeans;
+        return;
     }
 }

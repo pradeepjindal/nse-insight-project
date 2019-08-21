@@ -1,8 +1,8 @@
-package org.pra.nse.csv;
+package org.pra.nse.csv.writer;
 
 import org.pra.nse.AppConstants;
 import org.pra.nse.bean.PraBean;
-import org.pra.nse.file.FileUtils;
+import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.supercsv.cellprocessor.FmtDate;
@@ -16,19 +16,18 @@ import org.supercsv.prefs.CsvPreference;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-public class CsvWriter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CsvWriter.class);
+public class ManishCsvWriter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManishCsvWriter.class);
 
-    public void write(List<PraBean> praBeans, String outputPathAndFileName) {
+    public void write(List<PraBean> praBeans, String outputFilePathAndName) {
         FileUtils fileUtils = new FileUtils();
-        fileUtils.createFolder(outputPathAndFileName);
+        fileUtils.createFolder(outputFilePathAndName);
 
         //final ICsvBeanWriter beanWriter;
-        try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputPathAndFileName), CsvPreference.STANDARD_PREFERENCE)) {
-
+        try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputFilePathAndName), CsvPreference.STANDARD_PREFERENCE)) {
             // the header elements are used to map the bean values to each column (names must match)
             final String[] header = new String[] { "instrument", "symbol", "expiryDate", "strikePrice", "optionType"
                     , "contracts"
@@ -37,7 +36,7 @@ public class CsvWriter {
                     , "tdyOI", "prcntChgInOI"
                     , "tdyDelivery","prcntChgInDelivery"
                     , "tdyDate"
-                    //, "foPrevsClose", "prevsOI", "prevsDelivery", "cmPrevsClose"
+                    , "cmPrevsClose", "foPrevsClose", "prevsOI", "prevsDelivery"
                     , "prevsDate"
             };
             final CellProcessor[] processors = getProcessors();
@@ -49,7 +48,8 @@ public class CsvWriter {
 //            }
             praBeans.stream()
                     .filter(bean -> {
-                        if("FUTSTK".equals(bean.getInstrument()) && bean.getExpiryDate().getMonth() == new Date().getMonth()) {
+                        //if("FUTSTK".equals(bean.getInstrument()) && bean.getExpiryDate().getMonth() == new Date().getMonth()) {
+                        if("FUTSTK".equals(bean.getInstrument()) && bean.getExpiryLocalDate().getMonth() == LocalDate.now().getMonth()) {
                             return true;
                         } else {
                             return false;
@@ -103,10 +103,10 @@ public class CsvWriter {
 
                 new FmtDate(AppConstants.DATA_DATE_FORMAT), // TodayTradeDate
 
-//                new DMinMax(0D, DMinMax.MAX_DOUBLE), // PreviousClose
-//                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // PreviousOpenInterest
-//                new LMinMax(0L, LMinMax.MAX_LONG), // previousDelivery
-//                new NotNull(),
+                new NotNull(),
+                new DMinMax(0D, DMinMax.MAX_DOUBLE), // PreviousClose
+                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // PreviousOpenInterest
+                new LMinMax(0L, LMinMax.MAX_LONG), // previousDelivery
                 new FmtDate(AppConstants.DATA_DATE_FORMAT) // PreviousTradeDate
         };
         return processors;

@@ -5,6 +5,7 @@ import org.pra.nse.bean.PraBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,21 +22,22 @@ public class FoMerge {
             //
             praBean.setInstrument(todayBean.getInstrument());
             praBean.setSymbol(todayBean.getSymbol());
-            //praBean.setExpiryDate(todayBean.getExpiry_Dt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            praBean.setExpiryLocalDate(todayBean.getExpiry_Dt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             praBean.setExpiryDate(todayBean.getExpiry_Dt());
             praBean.setStrikePrice(todayBean.getStrike_Pr());
             praBean.setOptionType(todayBean.getOption_Typ());
             //
+            praBean.setContracts(todayBean.getContracts());
+            //
             praBean.setFoTdyClose(todayBean.getClose());
             praBean.setTdyOI(todayBean.getOpen_Int());
             //
-            //praBean.setTodayTradeDate(todayBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            praBean.setTdyLocalDate(todayBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             praBean.setTdyDate(todayBean.getTimestamp());
-
             //
             praBean.setFoPrevsClose(previousBean.getClose());
             praBean.setPrevsOI(previousBean.getOpen_Int());
-            //praBean.setPreviousTradeDate(previousBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            praBean.setPrevsLocalDate(previousBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
             praBean.setPrevsDate(previousBean.getTimestamp());
             //
             // calc fields

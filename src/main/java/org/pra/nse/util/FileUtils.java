@@ -1,4 +1,4 @@
-package org.pra.nse.file;
+package org.pra.nse.util;
 
 import org.pra.nse.AppConstants;
 import org.slf4j.Logger;
@@ -14,13 +14,13 @@ public class FileUtils {
     private static Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
     private DateTimeFormatter cmFormatter = DateTimeFormatter.ofPattern(AppConstants.CM_FILE_NAME_DATE_FORMAT);
-    private String cmDir = System.getProperty("user.home") + File.separator + AppConstants.CM_DIR_NAME;
+    private String cmDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME;
 
     private DateTimeFormatter foFormatter = DateTimeFormatter.ofPattern(AppConstants.FO_FILE_NAME_DATE_FORMAT);
-    private String foDir = System.getProperty("user.home") + File.separator + AppConstants.FO_DIR_NAME;
+    private String foDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.FO_DIR_NAME;
 
-    private DateTimeFormatter matFormatter = DateTimeFormatter.ofPattern(AppConstants.MAT_FILE_NAME_DATE_FORMAT);
-    private String matDir = System.getProperty("user.home") + File.separator + AppConstants.MAT_DIR_NAME;
+    private DateTimeFormatter matFormatter = DateTimeFormatter.ofPattern(AppConstants.MTO_FILE_NAME_DATE_FORMAT);
+    private String matDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.MTO_DIR_NAME;
 
 
     public String getLatestFileNameForCm(int occurrence) {
@@ -52,7 +52,7 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = "fo" + foFormatter.format(date).toUpperCase() + "bhav.csv";
+                String fileName = AppConstants.FO_FILE_PREFIX + foFormatter.format(date).toUpperCase() + "bhav.csv";
                 LOGGER.info("getLatestFileNameForFo | fileName: {}", fileName);
                 filePathWithFileName = foDir + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForFo | filePathWithFileName: {}", filePathWithFileName);
@@ -72,7 +72,7 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = "MTO_" + matFormatter.format(date) + ".DAT";
+                String fileName = AppConstants.MTO_FILE_PREFIX + matFormatter.format(date) + AppConstants.MTO_FILE_SUFFIX;
                 LOGGER.info("getLatestFileNameForMat | fileName: {}", fileName);
                 filePathWithFileName = matDir + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForMat | filePathWithFileName: {}", filePathWithFileName);
@@ -84,7 +84,7 @@ public class FileUtils {
     }
 
     public void createFolder(String outputPathAndFileName) {
-        String dataDir = System.getProperty("user.home") + File.separator + "pra-nse-computed-data";
+        String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.DATA_DIR_NAME;
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();
 
@@ -149,4 +149,10 @@ public class FileUtils {
         }
         return destFile;
     }
+
+    public String extractDate(String filePathAndName) {
+
+        return null;
+    }
+
 }

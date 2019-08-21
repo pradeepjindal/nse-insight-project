@@ -1,4 +1,4 @@
-package org.pra.nse.csv;
+package org.pra.nse.csv.writer;
 
 import org.pra.nse.bean.PraBean;
 

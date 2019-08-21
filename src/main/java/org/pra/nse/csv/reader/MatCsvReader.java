@@ -2,7 +2,7 @@ package org.pra.nse.csv.reader;
 
 import org.pra.nse.AppConstants;
 import org.pra.nse.bean.MatBean;
-import org.pra.nse.file.FileUtils;
+import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.supercsv.cellprocessor.constraint.DMinMax;
@@ -24,7 +24,7 @@ public class MatCsvReader {
         //String fromFile = fileUtils.getLatestFileNameForMat(1);
         int firstIndex = fromFile.lastIndexOf("_");
         String matCsvFileName = fromFile.substring(firstIndex-3, firstIndex+9) + ".csv";
-        String toFile = System.getProperty("user.home") + File.separator + AppConstants.MAT_DIR_NAME + File.separator + matCsvFileName;
+        String toFile = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.MTO_DIR_NAME + File.separator + matCsvFileName;
         if(fileUtils.isFileExist(toFile)) {
             LOGGER.info("Mat file created with csv format: Successfully [{}]", toFile);
         } else {

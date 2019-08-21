@@ -1,11 +1,14 @@
-package org.pra.nse.csv.download;
+package org.pra.nse.csv.downloader;
 
 import org.pra.nse.AppConstants;
-import org.pra.nse.file.FileUtils;
+import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,19 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FoDownloader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FoDownloader.class);
+public class CmDownloader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CmDownloader.class);
 
     private FileUtils fileUtils = new FileUtils();
 
     public void download() {
-        String dataDir = System.getProperty("user.home") + File.separator + AppConstants.FO_DIR_NAME;
+        String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME;
         List<String> filesToBeDownloaded = constructFileNames();
         List<String> filesDownloadUrl = constructFileDownloadUrl(filesToBeDownloaded);
 
-        //filesDownloadUrl.parallelStream().forEach( fileUrl -> {
-        filesDownloadUrl.forEach( fileUrl -> {
-            String outputDirAndFileName = dataDir + File.separator + fileUrl.substring(65,88);
+        filesDownloadUrl.stream().forEach( fileUrl -> {
+        //filesDownloadUrl.forEach( fileUrl -> {
+            String outputDirAndFileName = dataDir + File.separator + fileUrl.substring(62,85);
             LOGGER.info("URL: " + fileUrl);
             LOGGER.info("OUT: " + outputDirAndFileName);
             try (BufferedInputStream inputStream = new BufferedInputStream(new URL(fileUrl).openStream());
@@ -43,26 +46,28 @@ public class FoDownloader {
     }
 
     private List<String> constructFileDownloadUrl(List<String> filesToBeDownloaded) {
-        String baseUrl = "https://www.nseindia.com/content/historical/DERIVATIVES/2019";
+        //String baseUrl = "https://www.nseindia.com/content/historical/DERIVATIVES/2019";
+        //String baseUrl = "https://www.nseindia.com/content/historical/EQUITIES/2019/AUG/cm16AUG2019bhav.csv.zip";
+        String baseUrl = "https://www.nseindia.com/content/historical/EQUITIES/2019";
         List<String> filesUrl;
 
         filesUrl = filesToBeDownloaded.stream().map(fileName -> {
             //LOGGER.info(fileName);
             return baseUrl + "/" + fileName.substring(4, 7) + "/" + fileName;
         }).collect(Collectors.toList());
+        //String newUrl = baseUrl + "/" + localDate.getMonth().name().substring(0,3) + "/fo" + formatter.format(localDate).toUpperCase() + "bhav.csv.zip";
         filesUrl.forEach(url -> LOGGER.info(url));
         return filesUrl;
     }
 
     private List<String> constructFileNames() {
         List<String> fileNamesToBeDownloaded = new ArrayList<>();
-        //String foBhavCopy = "https://www.nseindia.com/content/historical/DERIVATIVES/2019/AUG/fo14AUG2019bhav.csv.zip";
-
+        String foBhavCopy = "https://www.nseindia.com/content/historical/DERIVATIVES/2019/AUG/fo14AUG2019bhav.csv.zip";
         LocalDate localDate = LocalDate.of(2019,8,1);
         //LOGGER.info(localDate);
         //localDate.getMonth().name().substring(0,3);
         //LOGGER.info(localDate.getMonth().name().substring(0,3));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(AppConstants.FO_FILE_NAME_DATE_FORMAT);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(AppConstants.CM_FILE_NAME_DATE_FORMAT);
         //formatter.format(localDate)
         //LOGGER.info(formatter.format(localDate));
 
@@ -78,7 +83,7 @@ public class FoDownloader {
                 //LOGGER.info(localDate.getDayOfWeek());
             } else {
                 //LOGGER.info(localDate.getDayOfWeek());
-                String newFileName = AppConstants.FO_FILE_PREFIX + formatter.format(localDate).toUpperCase() + AppConstants.FO_FILE_SUFFIX;
+                String newFileName = AppConstants.CM_FILE_PREFIX + formatter.format(localDate).toUpperCase() + AppConstants.CM_FILE_SUFFIX;
                 //LOGGER.info(newFileName);
                 fileNamesToBeDownloaded.add(newFileName);
             }
@@ -99,7 +104,7 @@ public class FoDownloader {
     }
 
     private List<String> fetchExistingFileNames() {
-        String dataDir = System.getProperty("user.home") + File.separator + AppConstants.FO_DIR_NAME;
+        String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME;
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();
 
@@ -120,4 +125,5 @@ public class FoDownloader {
         }
         return existingFiles;
     }
+
 }

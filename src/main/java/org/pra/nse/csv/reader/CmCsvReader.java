@@ -2,7 +2,7 @@ package org.pra.nse.csv.reader;
 
 import org.pra.nse.AppConstants;
 import org.pra.nse.bean.CmBean;
-import org.pra.nse.file.FileUtils;
+import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.supercsv.cellprocessor.ParseDate;
@@ -23,10 +23,9 @@ public class CmCsvReader {
 
     public Map<String, CmBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();
-        //String fromFile = fileUtils.getLatestFileNameForMat(1);
         int firstIndex = fromFile.lastIndexOf(AppConstants.CM_FILE_PREFIX);
         String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+11) + "bhav.csv";
-        String toFile = System.getProperty("user.home") + File.separator + "pra-nse-cm" + File.separator + cmCsvFileName;
+        String toFile = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME + File.separator + cmCsvFileName;
 
         if(fileUtils.isFileExist(toFile)) {
             LOGGER.info("Mat file created with csv format: Successfully [{}]", toFile);
