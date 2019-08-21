@@ -77,9 +77,9 @@ public class MatDownloader {
             //LOGGER.info(localDate);
             //LOGGER.info(localDate.getDayOfWeek());
             if("SATURDAY".equals(localDate.getDayOfWeek().name()) || "SUNDAY".equals(localDate.getDayOfWeek().name())) {
-                LOGGER.info("It is weekend: {}", localDate.getDayOfWeek());
+                //LOGGER.info("It is weekend: {}", localDate.getDayOfWeek());
             } else {
-                LOGGER.info("It is weekday: {}", localDate.getDayOfWeek());
+                //LOGGER.info("It is weekday: {}", localDate.getDayOfWeek());
                 String newFileName =AppConstants.MAT_FILE_PREFIX + formatter.format(localDate) + AppConstants.MAT_FILE_SUFFIX;
                 //LOGGER.info(newFileName);
                 fileNamesToBeDownloaded.add(newFileName);

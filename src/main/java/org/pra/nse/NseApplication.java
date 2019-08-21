@@ -15,8 +15,8 @@ public class NseApplication {
 		SpringApplication.run(NseApplication.class, args);
 		LOGGER.info(greetingInScala.greet());
 
-		Processor processor = new Processor();
-		processor.process();
+		ManishProcessor manishProcessor = new ManishProcessor();
+		manishProcessor.process();
 	}
 
 }

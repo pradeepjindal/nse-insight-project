@@ -25,8 +25,8 @@ public class CmMerge {
         praBeans.forEach(praBean -> {
             String symbol = praBean.getSymbol();
             if(latestBeanMap.containsKey(symbol) && previousBeanMap.containsKey(symbol)) {
-                praBean.setCmTodayClose(latestBeanMap.get(symbol).getClose());
-                praBean.setCmPreviousClose(previousBeanMap.get(symbol).getClose());
+                praBean.setCmTdyClose(latestBeanMap.get(symbol).getClose());
+                praBean.setCmPrevsClose(previousBeanMap.get(symbol).getClose());
                 try{
                     if(latestBeanMap.get(symbol).getClose() != 0 && previousBeanMap.get(symbol).getClose() != 0) {
                         double pct = previousBeanMap.get(symbol).getClose()/100;

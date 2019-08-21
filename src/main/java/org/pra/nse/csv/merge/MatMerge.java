@@ -24,8 +24,8 @@ public class MatMerge {
         Map<String, MatBean> matPreviousBeanMap = matCsvReader.read(fromFile);
         praBeans.forEach(praBean -> {
             if(matLatestBeanMap.containsKey(praBean.getSymbol()) && matPreviousBeanMap.containsKey(praBean.getSymbol())) {
-                praBean.setTodayDelivery(matLatestBeanMap.get(praBean.getSymbol()).getDeliverableQty());
-                praBean.setPreviousDelivery(matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty());
+                praBean.setTdyDelivery(matLatestBeanMap.get(praBean.getSymbol()).getDeliverableQty());
+                praBean.setPrevsDelivery(matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty());
                 try{
                     if(matLatestBeanMap.get(praBean.getSymbol()).getDeliverableQty() != 0
                             && matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty() != 0) {

@@ -31,13 +31,14 @@ public class CsvWriter {
 
             // the header elements are used to map the bean values to each column (names must match)
             final String[] header = new String[] { "instrument", "symbol", "expiryDate", "strikePrice", "optionType"
-                    , "Contracts"
-                    , "cmTodayClose", "cmPrcntChgInClose"
-                    , "foTodayClose", "foPrcntChgInClose"
-                    , "todayOI", "prcntChgInOI"
-                    , "todayDelivery","prcntChgInDelivery"
-                    , "todayDate"
-                    , "foPreviousClose", "previousOI", "previousDelivery", "cmPreviousClose", "previousDate"
+                    , "contracts"
+                    , "cmTdyClose", "cmPrcntChgInClose"
+                    , "foTdyClose", "foPrcntChgInClose"
+                    , "tdyOI", "prcntChgInOI"
+                    , "tdyDelivery","prcntChgInDelivery"
+                    , "tdyDate"
+                    //, "foPrevsClose", "prevsOI", "prevsDelivery", "cmPrevsClose"
+                    , "prevsDate"
             };
             final CellProcessor[] processors = getProcessors();
             // write the header
@@ -102,10 +103,10 @@ public class CsvWriter {
 
                 new FmtDate(AppConstants.DATA_DATE_FORMAT), // TodayTradeDate
 
-                new DMinMax(0D, DMinMax.MAX_DOUBLE), // PreviousClose
-                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // PreviousOpenInterest
-                new LMinMax(0L, LMinMax.MAX_LONG), // previousDelivery
-                new NotNull(),
+//                new DMinMax(0D, DMinMax.MAX_DOUBLE), // PreviousClose
+//                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // PreviousOpenInterest
+//                new LMinMax(0L, LMinMax.MAX_LONG), // previousDelivery
+//                new NotNull(),
                 new FmtDate(AppConstants.DATA_DATE_FORMAT) // PreviousTradeDate
         };
         return processors;

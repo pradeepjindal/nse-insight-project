@@ -26,17 +26,17 @@ public class FoMerge {
             praBean.setStrikePrice(todayBean.getStrike_Pr());
             praBean.setOptionType(todayBean.getOption_Typ());
             //
-            praBean.setFoTodayClose(todayBean.getClose());
-            praBean.setTodayOI(todayBean.getOpen_Int());
+            praBean.setFoTdyClose(todayBean.getClose());
+            praBean.setTdyOI(todayBean.getOpen_Int());
             //
             //praBean.setTodayTradeDate(todayBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            praBean.setTodayDate(todayBean.getTimestamp());
+            praBean.setTdyDate(todayBean.getTimestamp());
 
             //
-            praBean.setFoPreviousClose(previousBean.getClose());
-            praBean.setPreviousOI(previousBean.getOpen_Int());
+            praBean.setFoPrevsClose(previousBean.getClose());
+            praBean.setPrevsOI(previousBean.getOpen_Int());
             //praBean.setPreviousTradeDate(previousBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-            praBean.setPreviousDate(previousBean.getTimestamp());
+            praBean.setPrevsDate(previousBean.getTimestamp());
             //
             // calc fields
             try{

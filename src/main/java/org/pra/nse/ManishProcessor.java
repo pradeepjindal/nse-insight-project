@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Processor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class);
+public class ManishProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManishProcessor.class);
 
     public void process() {
         FoDownloader downloadNseFnoEod = new FoDownloader();
@@ -61,7 +61,9 @@ public class Processor {
         CmMerge cmMerge = new CmMerge();
         cmMerge.merge(praBeans);
         //
-        String outputPathAndFileName = System.getProperty("user.home") + File.separator + "pra-nse-computed-data" + File.separator + "praData.csv";
+        String outputPathAndFileName = System.getProperty("user.home")
+                + File.separator + AppConstants.CALC_DIR_NAME
+                + File.separator + AppConstants.MANISH_FILE_NAME;
         CsvWriter csvWriter = new CsvWriter();
         csvWriter.write(praBeans, outputPathAndFileName);
 
