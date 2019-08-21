@@ -3,6 +3,10 @@ package org.pra.nse;
 public class AppConstants {
     public static String BASE_DATA_DIR = System.getProperty("user.home");
 
+    public static String CM_BASE_URL = "https://www.nseindia.com/content/historical/EQUITIES/2019";
+    public static String FO_BASE_URL = "https://www.nseindia.com/content/historical/DERIVATIVES/2019";
+    public static String MTO_BASE_URL = "https://www.nseindia.com/archives/equities/mto";
+
     public static String CM_DIR_NAME = "pra-nse-cm";
     public static String FO_DIR_NAME = "pra-nse-fo";
     public static String MTO_DIR_NAME = "pra-nse-mto";

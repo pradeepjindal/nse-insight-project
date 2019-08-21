@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -153,6 +156,82 @@ public class FileUtils {
     public String extractDate(String filePathAndName) {
 
         return null;
+    }
+
+    public List<String> constructFileNames(LocalDate fromDate, String fileDateFormat,
+                                            String filePrefix, String fileSuffix) {
+        List<String> fileNameList = new ArrayList<>();
+        String foBhavCopy = "https://www.nseindia.com/content/historical/DERIVATIVES/2019/AUG/fo14AUG2019bhav.csv.zip";
+        LocalDate localDate = fromDate;
+        //LOGGER.info(localDate);
+        //localDate.getMonth().name().substring(0,3);
+        //LOGGER.info(localDate.getMonth().name().substring(0,3));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(fileDateFormat);
+        //formatter.format(localDate)
+        //LOGGER.info(formatter.format(localDate));
+
+        LocalDate todayDate = LocalDate.now();
+        while(localDate.compareTo(todayDate) < 1) {
+            //LOGGER.info(localDate);
+            //LOGGER.info(localDate.getDayOfWeek());
+            if("SATURDAY".equals(localDate.getDayOfWeek().name()) || "SUNDAY".equals(localDate.getDayOfWeek().name())) {
+                //LOGGER.info(localDate.getDayOfWeek());
+            } else {
+                //LOGGER.info(localDate.getDayOfWeek());
+                String newFileName = filePrefix + formatter.format(localDate).toUpperCase() + fileSuffix;
+                //LOGGER.info(newFileName);
+                fileNameList.add(newFileName);
+            }
+            localDate = localDate.plusDays(1);
+        }
+
+        //fileNamesToBeDownloaded.forEach(fileName -> LOGGER.info(fileName));
+        LOGGER.info("Total File Count: " + fileNameList.size());
+        return fileNameList;
+    }
+
+    public List<String> fetchFileNames(String dirPathAndName, String filePrefix, String fileSuffix) {
+        //dirPathAndName = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME;
+        File folder = new File(dirPathAndName);
+        File[] listOfFiles = folder.listFiles();
+        if(null == folder.listFiles()) {
+            createDataDir(dirPathAndName);
+            listOfFiles = folder.listFiles();
+        }
+        List<String> existingFiles = new ArrayList<>();
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                //LOGGER.info("File " + listOfFiles[i].getName());
+                existingFiles.add(listOfFiles[i].getName());
+            } else if (listOfFiles[i].isDirectory()) {
+                LOGGER.info("Directory " + listOfFiles[i].getName());
+            }
+        }
+        return existingFiles;
+    }
+
+    public List<String> constructFileDownloadUrlWithYearAndMonth(String baseUrl, List<String> filesToBeDownloaded) {
+        //String baseUrl = "https://www.nseindia.com/content/historical/EQUITIES/2019/AUG/cm16AUG2019bhav.csv.zip";
+        List<String> filesUrl;
+
+        filesUrl = filesToBeDownloaded.stream().map(fileName -> {
+            //LOGGER.info(fileName);
+            return baseUrl + "/" + fileName.substring(4, 7) + "/" + fileName;
+        }).collect(Collectors.toList());
+        //String newUrl = baseUrl + "/" + localDate.getMonth().name().substring(0,3) + "/fo" + formatter.format(localDate).toUpperCase() + "bhav.csv.zip";
+        filesUrl.forEach(url -> LOGGER.info(url));
+        return filesUrl;
+    }
+    public List<String> constructFileDownloadUrl(String baseUrl, List<String> filesToBeDownloaded) {
+        List<String> filesUrl;
+
+        filesUrl = filesToBeDownloaded.stream().map(fileName -> {
+            //LOGGER.info(fileName);
+            return baseUrl + "/" + fileName;
+        }).collect(Collectors.toList());
+        //String newUrl = baseUrl + "/" + localDate.getMonth().name().substring(0,3) + "/fo" + formatter.format(localDate).toUpperCase() + "bhav.csv.zip";
+        filesUrl.forEach(url -> LOGGER.info(url));
+        return filesUrl;
     }
 
 }

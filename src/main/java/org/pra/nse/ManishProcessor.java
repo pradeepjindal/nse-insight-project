@@ -60,12 +60,20 @@ public class ManishProcessor {
         // CM
         CmMerge cmMerge = new CmMerge();
         cmMerge.merge(praBeans);
-        //
-        String outputPathAndFileName = AppConstants.BASE_DATA_DIR
+
+        //-------------------------------------------------------
+        String manishOutputPathAndFileName = AppConstants.BASE_DATA_DIR
                 + File.separator + AppConstants.DATA_DIR_NAME
                 + File.separator + AppConstants.MANISH_FILE_NAME;
         ManishCsvWriter manishCsvWriter = new ManishCsvWriter();
+        manishCsvWriter.write(praBeans, manishOutputPathAndFileName);
+        //-------------------------------------------------------
+        String outputPathAndFileName = AppConstants.BASE_DATA_DIR
+                + File.separator + AppConstants.DATA_DIR_NAME
+                + File.separator + AppConstants.MANISH_FILE_NAME;
+        manishCsvWriter = new ManishCsvWriter();
         manishCsvWriter.write(praBeans, outputPathAndFileName);
+        //-------------------------------------------------------
 
         //
         if(fileUtils.isFileExist(outputPathAndFileName)) {

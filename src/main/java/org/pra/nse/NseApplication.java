@@ -14,6 +14,11 @@ public class NseApplication {
 		GreetingInScala greetingInScala = new GreetingInScala();
 		SpringApplication.run(NseApplication.class, args);
 		LOGGER.info(greetingInScala.greet());
+
+		LOGGER.info(System.getProperty("user.name"));
+		LOGGER.info(System.getProperty("user.home"));
+		LOGGER.info(System.getProperty("user.dir"));
+
 		try {
 			ManishProcessor manishProcessor = new ManishProcessor();
 			manishProcessor.process();
