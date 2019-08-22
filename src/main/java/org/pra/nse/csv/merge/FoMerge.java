@@ -53,7 +53,7 @@ public class FoMerge {
             }
             try{
                 if(todayBean.getChg_In_Oi() != 0 && previousBean.getOpen_Int() != 0) {
-                    double pct = previousBean.getOpen_Int()/100;
+                    double pct = previousBean.getOpen_Int()/100d;
                     double diff = todayBean.getOpen_Int() - previousBean.getOpen_Int();
                     double pctChange = Math.round(diff / pct);
                     praBean.setPrcntChgInOI(pctChange);

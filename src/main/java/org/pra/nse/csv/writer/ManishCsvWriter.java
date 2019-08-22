@@ -49,11 +49,7 @@ public class ManishCsvWriter {
             praBeans.stream()
                     .filter(bean -> {
                         //if("FUTSTK".equals(bean.getInstrument()) && bean.getExpiryDate().getMonth() == new Date().getMonth()) {
-                        if("FUTSTK".equals(bean.getInstrument()) && bean.getExpiryLocalDate().getMonth() == LocalDate.now().getMonth()) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return "FUTSTK".equals(bean.getInstrument()) && bean.getExpiryLocalDate().getMonth() == LocalDate.now().getMonth();
                     })
                     .map(praBean -> {
                         try {
@@ -66,14 +62,6 @@ public class ManishCsvWriter {
                     .count();
         }catch (IOException e) {
             e.printStackTrace();
-        } finally {
-//            if( beanWriter != null ) {
-//                try {
-//                    beanWriter.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
         }
     }
 

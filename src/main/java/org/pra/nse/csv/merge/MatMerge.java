@@ -29,7 +29,7 @@ public class MatMerge {
                 try{
                     if(matLatestBeanMap.get(praBean.getSymbol()).getDeliverableQty() != 0
                             && matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty() != 0) {
-                        double pct = matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty()/100;
+                        double pct = matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty()/100d;
                         double diff = matLatestBeanMap.get(praBean.getSymbol()).getDeliverableQty() - matPreviousBeanMap.get(praBean.getSymbol()).getDeliverableQty();
                         double pctChange = Math.round(diff / pct);
                         praBean.setPrcntChgInDelivery(pctChange);

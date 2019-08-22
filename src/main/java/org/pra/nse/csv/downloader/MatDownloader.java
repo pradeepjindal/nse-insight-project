@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -17,7 +16,6 @@ import java.util.stream.Stream;
 
 public class MatDownloader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatDownloader.class);
-
     private FileUtils fileUtils = new FileUtils();
 
     public void download() {
@@ -25,27 +23,17 @@ public class MatDownloader {
         List<String> filesToBeDownloaded = fileUtils.constructFileNames(
                 LocalDate.of(2019,8,1),
                 AppConstants.MTO_FILE_NAME_DATE_FORMAT,
-                AppConstants.MTO_FILE_PREFIX, AppConstants.MTO_FILE_SUFFIX);
+                AppConstants.MTO_FILE_PREFIX,
+                AppConstants.MTO_FILE_SUFFIX);
         filesToBeDownloaded.removeAll(fileUtils.fetchFileNames(dataDir, null, null));
         List<String> filesDownloadUrl = fileUtils.constructFileDownloadUrl(
                 AppConstants.MTO_BASE_URL, filesToBeDownloaded);
 
         filesDownloadUrl.stream().forEach( fileUrl -> {
-        //filesDownloadUrl.forEach( fileUrl -> {
-            String outputDirAndFileName = dataDir + File.separator + fileUrl.substring(47,63);
-            LOGGER.info("URL: " + fileUrl);
-            LOGGER.info("OUT: " + outputDirAndFileName);
-            try (BufferedInputStream inputStream = new BufferedInputStream(new URL(fileUrl).openStream());
-                 FileOutputStream fileOS = new FileOutputStream(outputDirAndFileName)) {
-                byte data[] = new byte[1024];
-                int byteContent;
-                while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-                    fileOS.write(data, 0, byteContent);
-                }
-                transformToCsv(outputDirAndFileName);
-            } catch (IOException e) {
-                LOGGER.info(e.getMessage());
-            }
+            fileUtils.downloadFile(fileUrl, dataDir,
+                    () -> (dataDir + File.separator + fileUrl.substring(47,63)),
+                    this::transformToCsv
+            );
         });
     }
 
@@ -71,7 +59,7 @@ public class MatDownloader {
                     } else {
                         return row;
                     }
-                }).forEach(tuple -> pw.println(tuple));
+                }).forEach(pw::println);
             } catch (IOException e) {
                 e.printStackTrace();
             }

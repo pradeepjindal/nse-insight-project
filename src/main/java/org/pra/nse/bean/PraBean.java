@@ -91,7 +91,7 @@ public class PraBean {
         return instrument
                 + "," + symbol
                 + "," + expiryDate.toString()
-                + "," + String.valueOf(strikePrice)
+                + "," + strikePrice
                 + "," + optionType;
     }
 

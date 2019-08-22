@@ -25,6 +25,7 @@ public class AppConstants {
     public static String CM_FILE_SUFFIX = "bhav.csv.zip";
     public static String FO_FILE_SUFFIX = "bhav.csv.zip";
     public static String MTO_FILE_SUFFIX = ".DAT";
+    public static String CSV_FILE_SUFFIX = ".csv";
 
-    public static String MANISH_FILE_NAME = "manishData.csv";
+    public static String MANISH_FILE_NAME = "manishData";
 }

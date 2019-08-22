@@ -24,13 +24,13 @@ public class CmCsvReader {
     public Map<String, CmBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();
         int firstIndex = fromFile.lastIndexOf(AppConstants.CM_FILE_PREFIX);
-        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+11) + "bhav.csv";
+        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+11) + ".csv";
         String toFile = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME + File.separator + cmCsvFileName;
 
         if(fileUtils.isFileExist(toFile)) {
-            LOGGER.info("Mat file created with csv format: Successfully [{}]", toFile);
+            LOGGER.info("CM file exists: [{}]", toFile);
         } else {
-            LOGGER.error("Mat file failed to be created in csv format: Failed [{}]", toFile);
+            LOGGER.error("CM file does not exist: [{}]", toFile);
         }
         //
         Map<String, CmBean> beanMap = readCsv(toFile);

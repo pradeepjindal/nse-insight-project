@@ -64,13 +64,16 @@ public class ManishProcessor {
         //-------------------------------------------------------
         String manishOutputPathAndFileName = AppConstants.BASE_DATA_DIR
                 + File.separator + AppConstants.DATA_DIR_NAME
-                + File.separator + AppConstants.MANISH_FILE_NAME;
+                + File.separator + AppConstants.MANISH_FILE_NAME + AppConstants.CSV_FILE_SUFFIX;
         ManishCsvWriter manishCsvWriter = new ManishCsvWriter();
         manishCsvWriter.write(praBeans, manishOutputPathAndFileName);
         //-------------------------------------------------------
+        int fromIndex = foLatestFileName.lastIndexOf(".") -9;
+        int toIndex = foLatestFileName.lastIndexOf(".");
+        String fileDate = "-" + foLatestFileName.substring(fromIndex, toIndex);
         String outputPathAndFileName = AppConstants.BASE_DATA_DIR
                 + File.separator + AppConstants.DATA_DIR_NAME
-                + File.separator + AppConstants.MANISH_FILE_NAME;
+                + File.separator + AppConstants.MANISH_FILE_NAME + fileDate  + AppConstants.CSV_FILE_SUFFIX;
         manishCsvWriter = new ManishCsvWriter();
         manishCsvWriter.write(praBeans, outputPathAndFileName);
         //-------------------------------------------------------
