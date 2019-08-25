@@ -27,12 +27,6 @@ public class NseApplication {
 		LOGGER.info(System.getProperty("user.home"));
 		LOGGER.info(System.getProperty("user.dir"));
 
-//		try {
-//			ManishProcessor manishProcessor = new ManishProcessor();
-//			manishProcessor.process();
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
 		AnsiConsole.systemUninstall();
 	}
 }

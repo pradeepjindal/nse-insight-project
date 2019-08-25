@@ -24,8 +24,13 @@ import java.util.List;
 public class ManishCsvWriter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ManishCsvWriter.class);
 
+    private final FileUtils fileUtils;
+
+    public ManishCsvWriter(FileUtils fileUtils) {
+        this.fileUtils = fileUtils;
+    }
+
     public void write(List<PraBean> praBeans, String outputFilePathAndName) {
-        FileUtils fileUtils = new FileUtils();
         fileUtils.createFolder(outputFilePathAndName);
 
         //final ICsvBeanWriter beanWriter;
