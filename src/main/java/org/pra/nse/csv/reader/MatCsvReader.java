@@ -5,6 +5,7 @@ import org.pra.nse.bean.MatBean;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.supercsv.cellprocessor.constraint.DMinMax;
 import org.supercsv.cellprocessor.constraint.LMinMax;
 import org.supercsv.cellprocessor.constraint.NotNull;
@@ -16,6 +17,7 @@ import org.supercsv.prefs.CsvPreference;
 import java.io.*;
 import java.util.*;
 
+@Component
 public class MatCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatCsvReader.class);
 
@@ -67,7 +69,7 @@ public class MatCsvReader {
     }
 
     private static CellProcessor[] getProcessors() {
-        final CellProcessor[] processors = new CellProcessor[] {
+        return new CellProcessor[] {
                 new LMinMax(0L, LMinMax.MAX_LONG), // recType
                 new LMinMax(0L, LMinMax.MAX_LONG), // srNo
                 new NotNull(), // symbol
@@ -76,7 +78,6 @@ public class MatCsvReader {
                 new LMinMax(0L, LMinMax.MAX_LONG), // deliverableQty
                 new DMinMax(0L, DMinMax.MAX_DOUBLE) // deliveryToTradeRatio
         };
-        return processors;
     }
 
 }

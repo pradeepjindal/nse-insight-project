@@ -6,14 +6,21 @@ import org.pra.nse.csv.reader.CmCsvReader;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class CmMerge {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmMerge.class);
 
-    private FileUtils fileUtils = new FileUtils();
+    private final FileUtils fileUtils;
+
+    public CmMerge(FileUtils fileUtils) {
+        this.fileUtils = fileUtils;
+    }
 
     public void merge(List<PraBean> praBeans) {
         String fromFile;
@@ -43,6 +50,5 @@ public class CmMerge {
                 }
             }
         });
-        return;
     }
 }

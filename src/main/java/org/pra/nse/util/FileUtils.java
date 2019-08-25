@@ -3,31 +3,20 @@ package org.pra.nse.util;
 import org.pra.nse.AppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+@Service
 public class FileUtils {
-    private static Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
-
-    private DateTimeFormatter cmFormatter = DateTimeFormatter.ofPattern(AppConstants.CM_FILE_NAME_DATE_FORMAT);
-    private String cmDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME;
-
-    private DateTimeFormatter foFormatter = DateTimeFormatter.ofPattern(AppConstants.FO_FILE_NAME_DATE_FORMAT);
-    private String foDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.FO_DIR_NAME;
-
-    private DateTimeFormatter matFormatter = DateTimeFormatter.ofPattern(AppConstants.MTO_FILE_NAME_DATE_FORMAT);
-    private String matDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.MTO_DIR_NAME;
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
     public String getLatestFileNameForCm(int occurrence) {
         return getLatestFileNameForCm(LocalDate.now(), occurrence);
@@ -38,9 +27,9 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = "cm" + cmFormatter.format(date).toUpperCase() + ".csv";
+                String fileName = "cm" + AppConstants.cmFormatter.format(date).toUpperCase() + AppConstants.CSV_FILE_SUFFIX;
                 LOGGER.info("getLatestFileNameForCm | fileName: {}", fileName);
-                filePathWithFileName = cmDir + File.separator + fileName;
+                filePathWithFileName = AppConstants.cmDir + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForCm | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
@@ -58,9 +47,9 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = AppConstants.FO_FILE_PREFIX + foFormatter.format(date).toUpperCase() + ".csv";
+                String fileName = AppConstants.FO_FILE_PREFIX + AppConstants.foFormatter.format(date).toUpperCase() + AppConstants.CSV_FILE_SUFFIX;
                 LOGGER.info("getLatestFileNameForFo | fileName: {}", fileName);
-                filePathWithFileName = foDir + File.separator + fileName;
+                filePathWithFileName = AppConstants.foDir + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForFo | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
@@ -78,9 +67,9 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = AppConstants.MTO_FILE_PREFIX + matFormatter.format(date) + AppConstants.MTO_FILE_SUFFIX;
+                String fileName = AppConstants.MTO_FILE_PREFIX + AppConstants.matFormatter.format(date) + AppConstants.MTO_FILE_SUFFIX;
                 LOGGER.info("getLatestFileNameForMat | fileName: {}", fileName);
-                filePathWithFileName = matDir + File.separator + fileName;
+                filePathWithFileName = AppConstants.matDir + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForMat | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
@@ -93,7 +82,6 @@ public class FileUtils {
         String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.DATA_DIR_NAME;
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();
-
         if(null == folder.listFiles()) {
             createDataDir(dataDir);
         }
@@ -102,11 +90,11 @@ public class FileUtils {
     public void createDataDir(String dataDir) {
         File newFolder = new File(dataDir);
         boolean created =  newFolder.mkdir();
-        System.out.println("creating folder: " + dataDir);
+        LOGGER.info("creating folder: " + dataDir);
         if(created)
-            System.out.println("Folder was created!");
+            LOGGER.info("Folder was created!");
         else
-            System.out.println("Unable to create folder");
+            LOGGER.info("Unable to create folder");
     }
 
     public boolean isFileExist(String filePathAndName) {
@@ -114,8 +102,6 @@ public class FileUtils {
     }
 
     public void unzip(String outputDirAndFileName) throws IOException {
-        //String fileZip = "src/main/resources/unzipTest/compressed.zip";
-        //File destDir = new File("src/main/resources/unzipTest");
         File destDir = new File(
                 outputDirAndFileName.substring(0, outputDirAndFileName.lastIndexOf("\\")).replace("bhav","")
         );
@@ -131,12 +117,7 @@ public class FileUtils {
         while (zipEntry != null) {
             File newFile;
             newFile = newFile(destDir, zipEntry);
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(newFile);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            FileOutputStream fos = new FileOutputStream(newFile);
             int len;
             while ((len = zis.read(buffer)) > 0) {
                 fos.write(buffer, 0, len);
@@ -166,7 +147,6 @@ public class FileUtils {
     public List<String> constructFileNames(LocalDate fromDate, String fileDateFormat,
                                             String filePrefix, String fileSuffix) {
         List<String> fileNameList = new ArrayList<>();
-        String foBhavCopy = "https://www.nseindia.com/content/historical/DERIVATIVES/2019/AUG/fo14AUG2019bhav.csv.zip";
         LocalDate localDate = fromDate;
         //LOGGER.info(localDate);
         //localDate.getMonth().name().substring(0,3);
@@ -195,7 +175,6 @@ public class FileUtils {
     }
 
     public List<String> fetchFileNames(String dirPathAndName, String filePrefix, String fileSuffix) {
-        //dirPathAndName = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME;
         File folder = new File(dirPathAndName);
         File[] listOfFiles = folder.listFiles();
         if(null == folder.listFiles()) {
@@ -215,7 +194,6 @@ public class FileUtils {
     }
 
     public List<String> constructFileDownloadUrlWithYearAndMonth(String baseUrl, List<String> filesToBeDownloaded) {
-        //String baseUrl = "https://www.nseindia.com/content/historical/EQUITIES/2019/AUG/cm16AUG2019bhav.csv.zip";
         List<String> filesUrl;
         filesUrl = filesToBeDownloaded.stream().map(fileName -> {
             //LOGGER.info(fileName);
@@ -234,25 +212,6 @@ public class FileUtils {
         //String newUrl = baseUrl + "/" + localDate.getMonth().name().substring(0,3) + "/fo" + formatter.format(localDate).toUpperCase() + "bhav.csv.zip";
         filesUrl.forEach(url -> LOGGER.info(url));
         return filesUrl;
-    }
-
-    public void downloadFile(String fromUrl, String toDir, Supplier<String> fileName, Consumer<String> filePathAndName) {
-        //String outputDirAndFileName = toDir + File.separator + fromUrl.substring(62,85);
-        String outputDirAndFileName = fileName.get();
-        LOGGER.info("URL: " + fromUrl);
-        LOGGER.info("OUT: " + outputDirAndFileName);
-        try (BufferedInputStream inputStream = new BufferedInputStream(new URL(fromUrl).openStream());
-             FileOutputStream fileOS = new FileOutputStream(outputDirAndFileName)) {
-            byte data[] = new byte[1024];
-            int byteContent;
-            while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
-                fileOS.write(data, 0, byteContent);
-            }
-            //unzip(outputDirAndFileName);
-            filePathAndName.accept(outputDirAndFileName);
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage());
-        }
     }
 
 }

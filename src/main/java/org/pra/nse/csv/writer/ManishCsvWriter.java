@@ -5,6 +5,7 @@ import org.pra.nse.bean.PraBean;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.supercsv.cellprocessor.FmtDate;
 import org.supercsv.cellprocessor.constraint.DMinMax;
 import org.supercsv.cellprocessor.constraint.LMinMax;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class ManishCsvWriter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ManishCsvWriter.class);
 
@@ -51,22 +53,20 @@ public class ManishCsvWriter {
                         //if("FUTSTK".equals(bean.getInstrument()) && bean.getExpiryDate().getMonth() == new Date().getMonth()) {
                         return "FUTSTK".equals(bean.getInstrument()) && bean.getExpiryLocalDate().getMonth() == LocalDate.now().getMonth();
                     })
-                    .map(praBean -> {
+                    .peek(praBean -> {
                         try {
                             beanWriter.write(praBean, header, processors);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        return praBean;
-                    })
-                    .count();
+                    });
         }catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static CellProcessor[] getProcessors() {
-        final CellProcessor[] processors = new CellProcessor[] {
+        return new CellProcessor[] {
                 new NotNull(), // instrument
                 new NotNull(), // symbol
                 new FmtDate(AppConstants.DATA_DATE_FORMAT), // expiryDate
@@ -97,6 +97,5 @@ public class ManishCsvWriter {
                 new LMinMax(0L, LMinMax.MAX_LONG), // previousDelivery
                 new FmtDate(AppConstants.DATA_DATE_FORMAT) // PreviousTradeDate
         };
-        return processors;
     }
 }

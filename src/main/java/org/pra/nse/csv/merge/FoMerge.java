@@ -4,12 +4,14 @@ import org.pra.nse.bean.FoBean;
 import org.pra.nse.bean.PraBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class FoMerge {
     private static final Logger LOGGER = LoggerFactory.getLogger(FoMerge.class);
 

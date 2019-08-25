@@ -5,6 +5,7 @@ import org.pra.nse.bean.CmBean;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.supercsv.cellprocessor.ParseDate;
 import org.supercsv.cellprocessor.constraint.DMinMax;
 import org.supercsv.cellprocessor.constraint.LMinMax;
@@ -18,6 +19,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class CmCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmCsvReader.class);
 
@@ -69,7 +71,7 @@ public class CmCsvReader {
     }
 
     private static CellProcessor[] getProcessors() {
-        final CellProcessor[] processors = new CellProcessor[] {
+        return new CellProcessor[] {
                 new NotNull(), //symbol
                 new NotNull(), //series
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // open
@@ -86,7 +88,6 @@ public class CmCsvReader {
                 new NotNull(), // isin
                 null
         };
-        return processors;
     }
 
 }

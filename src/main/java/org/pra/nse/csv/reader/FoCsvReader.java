@@ -4,6 +4,7 @@ import org.pra.nse.AppConstants;
 import org.pra.nse.bean.FoBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.supercsv.cellprocessor.ParseDate;
 import org.supercsv.cellprocessor.constraint.*;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -11,11 +12,11 @@ import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+@Component
 public class FoCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(FoCsvReader.class);
 
@@ -90,7 +91,7 @@ public class FoCsvReader {
      * @return the cell processors
      */
     private static CellProcessor[] getProcessors() {
-        final CellProcessor[] processors = new CellProcessor[] {
+        return new CellProcessor[] {
                 new NotNull(), // instrument
                 new NotNull(), // symbol
                 new ParseDate(AppConstants.DATA_DATE_FORMAT), // ExpiryDate
@@ -108,6 +109,5 @@ public class FoCsvReader {
                 new ParseDate(AppConstants.DATA_DATE_FORMAT), // timestamp
                 null
         };
-        return processors;
     }
 }

@@ -3,8 +3,10 @@ package org.pra.nse
 class ProcessCsv {
 
   def process: Unit = {
+    var greetingInJava = new GreetingInJava
+    println(greetingInJava.greet())
     println("Month, Income, Expenses, Profit")
-    val bufferedSource = io.Source.fromFile("C:/Users/prajinda/pra-nse-fno/fo16AUG2019bhav.csv")
+    val bufferedSource = scala.io.Source.fromFile("C:/Users/prajinda/pra-nse-fno/fo16AUG2019bhav.csv")
     for (line <- bufferedSource.getLines) {
       val cols = line.split(",").map(_.trim).filter(_.contains("FUTSTK"))
       // do whatever you want with the columns here

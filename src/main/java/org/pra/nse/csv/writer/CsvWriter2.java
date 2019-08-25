@@ -12,7 +12,7 @@ public class CsvWriter2 {
         File csvOutputFile = new File(outputPathAndFileName);
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
             praBeans.stream()
-                    .map(praBean -> praBean.toCsvString())
+                    .map(PraBean::toCsvString)
                     .forEach(pw::println);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
