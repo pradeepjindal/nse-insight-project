@@ -16,18 +16,19 @@ public class CmMerge {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmMerge.class);
 
     private final FileUtils fileUtils;
+    private final CmCsvReader cmCsvReader;
 
-    public CmMerge(FileUtils fileUtils) {
+    public CmMerge(FileUtils fileUtils, CmCsvReader cmCsvReader) {
         this.fileUtils = fileUtils;
+        this.cmCsvReader = cmCsvReader;
     }
 
     public void merge(List<PraBean> praBeans) {
         String fromFile;
-        CmCsvReader matCsvReader = new CmCsvReader();
         fromFile = fileUtils.getLatestFileNameForCm(1);
-        Map<String, CmBean> latestBeanMap = matCsvReader.read(fromFile);
+        Map<String, CmBean> latestBeanMap = cmCsvReader.read(fromFile);
         fromFile = fileUtils.getLatestFileNameForCm(2);
-        Map<String, CmBean> previousBeanMap = matCsvReader.read(fromFile);
+        Map<String, CmBean> previousBeanMap = cmCsvReader.read(fromFile);
         praBeans.forEach(praBean -> {
             String symbol = praBean.getSymbol();
             if(latestBeanMap.containsKey(symbol) && previousBeanMap.containsKey(symbol)) {

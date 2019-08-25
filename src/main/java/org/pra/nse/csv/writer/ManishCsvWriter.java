@@ -32,7 +32,6 @@ public class ManishCsvWriter {
 
     public void write(List<PraBean> praBeans, String outputFilePathAndName) {
         fileUtils.createFolder(outputFilePathAndName);
-
         //final ICsvBeanWriter beanWriter;
         try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputFilePathAndName), CsvPreference.STANDARD_PREFERENCE)) {
             // the header elements are used to map the bean values to each column (names must match)
@@ -53,20 +52,17 @@ public class ManishCsvWriter {
 //            for( final PraBean praBean : praBeans ) {
 //                beanWriter.write(praBean, header, processors);
 //            }
-            praBeans.stream()
-                    .filter(bean -> {
-                        //if("FUTSTK".equals(bean.getInstrument()) && bean.getExpiryDate().getMonth() == new Date().getMonth()) {
-                        return "FUTSTK".equals(bean.getInstrument()) && bean.getExpiryLocalDate().getMonth() == LocalDate.now().getMonth();
-                    })
-                    .peek(praBean -> {
-                        try {
-                            beanWriter.write(praBean, header, processors);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
+            praBeans.forEach( praBean -> {
+                if("FUTSTK".equals(praBean.getInstrument()) && praBean.getExpiryLocalDate().getMonth() == LocalDate.now().getMonth()) {
+                    try {
+                        beanWriter.write(praBean, header, processors);
+                    } catch (IOException e) {
+                        LOGGER.warn("some error: {}", e);
+                    }
+                }
+            });
         }catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("some error: {}", e);
         }
     }
 

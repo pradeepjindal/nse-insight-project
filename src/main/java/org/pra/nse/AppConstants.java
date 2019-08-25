@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class AppConstants {
-    public static final LocalDate DOWNLOAD_FROM_DATE = LocalDate.of(2019,1,1);
+    public static final LocalDate DOWNLOAD_FROM_DATE = LocalDate.of(2019,8,1);
 
     public static final String BASE_DATA_DIR = System.getProperty("user.home");
 

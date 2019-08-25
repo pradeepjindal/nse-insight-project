@@ -16,14 +16,15 @@ public class MatMerge {
     private static final Logger LOGGER = LoggerFactory.getLogger(MatMerge.class);
 
     private final FileUtils fileUtils;
+    private final MatCsvReader matCsvReader;
 
-    public MatMerge(FileUtils fileUtils) {
+    public MatMerge(FileUtils fileUtils, MatCsvReader matCsvReader) {
         this.fileUtils = fileUtils;
+        this.matCsvReader = matCsvReader;
     }
 
     public void merge(List<PraBean> praBeans) {
         String fromFile;
-        MatCsvReader matCsvReader = new MatCsvReader();
         fromFile = fileUtils.getLatestFileNameForMat(1);
         Map<String, MatBean> matLatestBeanMap = matCsvReader.read(fromFile);
         fromFile = fileUtils.getLatestFileNameForMat(2);

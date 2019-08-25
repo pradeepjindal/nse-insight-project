@@ -2,6 +2,8 @@ package org.pra.nse.csv.merge;
 
 import org.pra.nse.bean.FoBean;
 import org.pra.nse.bean.PraBean;
+import org.pra.nse.csv.reader.FoCsvReader;
+import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -9,15 +11,40 @@ import org.springframework.stereotype.Service;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class FoMerge {
     private static final Logger LOGGER = LoggerFactory.getLogger(FoMerge.class);
 
-    public List<PraBean> merge(Map<FoBean, FoBean> foBeanMap) {
-        List<PraBean> praBeans;
-        praBeans = foBeanMap.entrySet().stream().map( entry -> {
+    private final FileUtils fileUtils;
+    private final FoCsvReader foCsvReader;
+
+    public FoMerge(FileUtils fileUtils, FoCsvReader foCsvReader) {
+        this.fileUtils = fileUtils;
+        this.foCsvReader = foCsvReader;
+    }
+
+    public void merge(List<PraBean> praBeans) {
+        Map<FoBean, FoBean> foBeanMap;
+        String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
+        LOGGER.info("latestFileName FO: " + foLatestFileName);
+        String foPreviousFileName = fileUtils.getLatestFileNameForFo(2);
+        LOGGER.info("previousFileName FO: " + foPreviousFileName);
+
+        // FO
+        foBeanMap = foCsvReader.read(null, foLatestFileName);
+        LOGGER.info("{}", foBeanMap.size());
+
+        foCsvReader.read(foBeanMap, foPreviousFileName);
+        LOGGER.info("{}", foBeanMap.size());
+
+        merge(praBeans, foBeanMap);
+        //praBeans.forEach(bean -> LOGGER.info(bean));
+        LOGGER.info("{}", praBeans.size());
+    }
+
+    public void merge(List<PraBean> praBeans, Map<FoBean, FoBean> foBeanMap) {
+        foBeanMap.entrySet().forEach( entry -> {
             FoBean todayBean = entry.getKey();
             FoBean previousBean = entry.getValue();
             PraBean praBean = new PraBean();
@@ -63,8 +90,8 @@ public class FoMerge {
             } catch (ArithmeticException ae) {
                 ae.printStackTrace();
             }
-            return praBean;
-        }).collect(Collectors.toList());
-        return praBeans;
+            praBeans.add(praBean);
+        });
+        LOGGER.info("{}", praBeans.size());
     }
 }
