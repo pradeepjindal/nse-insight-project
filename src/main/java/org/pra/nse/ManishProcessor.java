@@ -1,6 +1,5 @@
 package org.pra.nse;
 
-import org.pra.nse.bean.FoBean;
 import org.pra.nse.bean.PraBean;
 import org.pra.nse.csv.merge.CmMerge;
 import org.pra.nse.csv.merge.FoMerge;
@@ -16,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ManishProcessor implements ApplicationRunner {
@@ -47,27 +44,11 @@ public class ManishProcessor implements ApplicationRunner {
     }
 
     public void process() {
-        downloadManager.download();
+        downloadManager.download(AppConstants.DOWNLOAD_FROM_DATE);
         //---------------------------------------------------------
-//        Map<FoBean, FoBean> foBeanMap;
-//        String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
-//        LOGGER.info("latestFileName FO: " + foLatestFileName);
-//        String foPreviousFileName = fileUtils.getLatestFileNameForFo(2);
-//        LOGGER.info("previousFileName FO: " + foPreviousFileName);
-//
-//        // FO
-//        foBeanMap = csvReader.read(null, foLatestFileName);
-//        LOGGER.info("{}", foBeanMap.size());
-//
-//        csvReader.read(foBeanMap, foPreviousFileName);
-//        LOGGER.info("{}", foBeanMap.size());
-//
-//        List<PraBean> praBeans = foMerge.merge(foBeanMap);
-//        //praBeans.forEach(bean -> LOGGER.info(bean));
-//        LOGGER.info("{}", praBeans.size());
         List<PraBean> praBeans = new ArrayList<>();
+        // FO
         foMerge.merge(praBeans);
-
         // MAT
         matMerge.merge(praBeans);
         // CM
@@ -75,8 +56,8 @@ public class ManishProcessor implements ApplicationRunner {
 
         //-------------------------------------------------------
         String manishOutputPathAndFileName = AppConstants.BASE_DATA_DIR
-                + File.separator + AppConstants.DATA_DIR_NAME
-                + File.separator + AppConstants.MANISH_FILE_NAME + AppConstants.CSV_FILE_SUFFIX;
+                + File.separator + AppConstants.PRA_DATA_DIR_NAME
+                + File.separator + AppConstants.MANISH_FILE_NAME + AppConstants.PRA_DATA_FILE_EXT;
         manishCsvWriter.write(praBeans, manishOutputPathAndFileName);
         //-------------------------------------------------------
         String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
@@ -84,8 +65,8 @@ public class ManishProcessor implements ApplicationRunner {
         int toIndex = foLatestFileName.lastIndexOf(".");
         String fileDate = "-" + foLatestFileName.substring(fromIndex, toIndex);
         String outputPathAndFileName = AppConstants.BASE_DATA_DIR
-                + File.separator + AppConstants.DATA_DIR_NAME
-                + File.separator + AppConstants.MANISH_FILE_NAME + fileDate  + AppConstants.CSV_FILE_SUFFIX;
+                + File.separator + AppConstants.PRA_DATA_DIR_NAME
+                + File.separator + AppConstants.MANISH_FILE_NAME + fileDate  + AppConstants.PRA_DATA_FILE_EXT;
         manishCsvWriter.write(praBeans, outputPathAndFileName);
         //-------------------------------------------------------
 

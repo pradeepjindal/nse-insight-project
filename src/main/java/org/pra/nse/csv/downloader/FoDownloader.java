@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -22,10 +23,10 @@ public class FoDownloader {
         this.downloadFile = downloadFile;
     }
 
-    public void download() {
+    public void download(LocalDate downloadFromDate) {
         String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.FO_DIR_NAME;
         List<String> filesToBeDownloaded = fileUtils.constructFileNames(
-                AppConstants.DOWNLOAD_FROM_DATE,
+                downloadFromDate,
                 AppConstants.FO_FILE_NAME_DATE_FORMAT,
                 AppConstants.FO_FILE_PREFIX,
                 AppConstants.FO_FILE_SUFFIX);
@@ -36,9 +37,10 @@ public class FoDownloader {
         filesDownloadUrl.parallelStream().forEach( fileUrl -> {
             downloadFile.downloadFile(fileUrl, dataDir,
                     () -> (dataDir + File.separator + fileUrl.substring(65, 88)),
-                    filePathAndName -> {
+                    zipFilePathAndName -> {
                         try {
-                            fileUtils.unzip(filePathAndName);
+                            fileUtils.unzip(zipFilePathAndName);
+                            fileUtils.unzipNew(zipFilePathAndName, AppConstants.FO_DATA_FILE_PREFIX);
                         } catch (IOException e) {
                             LOGGER.warn("Error while downloading file: {}", e);
                         }

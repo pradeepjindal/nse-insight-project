@@ -70,7 +70,7 @@ public class ManishCsvWriter {
         return new CellProcessor[] {
                 new NotNull(), // instrument
                 new NotNull(), // symbol
-                new FmtDate(AppConstants.DATA_DATE_FORMAT), // expiryDate
+                new FmtDate(AppConstants.PRA_DATA_DATE_FORMAT), // expiryDate
                 //new DMinMax(DMinMax.MIN_DOUBLE, DMinMax.MAX_DOUBLE), // strikePrice
                 new NotNull(),
                 new NotNull(), // optionType
@@ -90,13 +90,13 @@ public class ManishCsvWriter {
                 new LMinMax(0L, LMinMax.MAX_LONG), // todayDelivery
                 new NotNull(), // prcntChgInDelivery
 
-                new FmtDate(AppConstants.DATA_DATE_FORMAT), // TodayTradeDate
+                new FmtDate(AppConstants.PRA_DATA_DATE_FORMAT), // TodayTradeDate
 
                 new NotNull(),
                 new DMinMax(0D, DMinMax.MAX_DOUBLE), // PreviousClose
                 new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // PreviousOpenInterest
                 new LMinMax(0L, LMinMax.MAX_LONG), // previousDelivery
-                new FmtDate(AppConstants.DATA_DATE_FORMAT) // PreviousTradeDate
+                new FmtDate(AppConstants.PRA_DATA_DATE_FORMAT) // PreviousTradeDate
         };
     }
 }

@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class DownloadManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(DownloadManager.class);
@@ -15,15 +17,17 @@ public class DownloadManager {
     private final FoDownloader foDownloader;
     private final MatDownloader matDownloader;
 
-    public DownloadManager(CmDownloader cmDownloader, FoDownloader foDownloader, MatDownloader matDownloader) {
+    public DownloadManager(CmDownloader cmDownloader,
+                           FoDownloader foDownloader,
+                           MatDownloader matDownloader) {
         this.cmDownloader = cmDownloader;
         this.foDownloader = foDownloader;
         this.matDownloader = matDownloader;
     }
 
-    public void download() {
-        cmDownloader.download();
-        foDownloader.download();
-        matDownloader.download();
+    public void download(LocalDate downloadFromDate) {
+        cmDownloader.download(downloadFromDate);
+        foDownloader.download(downloadFromDate);
+        matDownloader.download(downloadFromDate);
     }
 }

@@ -15,19 +15,19 @@ import java.util.function.Supplier;
 public class DownloadUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(DownloadUtils.class);
 
-    public void downloadFile(String fromUrl, String toDir, Supplier<String> fileName, Consumer<String> filePathAndName) {
-        String outputDirAndFileName = fileName.get();
+    public void downloadFile(String fromUrl, String toDir, Supplier<String> inputFileSupplier, Consumer<String> outputFileConsumer) {
+        String outputZipDirAndFileName = inputFileSupplier.get();
         LOGGER.info("URL: " + fromUrl);
-        LOGGER.info("OUT: " + outputDirAndFileName);
+        LOGGER.info("OUT: " + outputZipDirAndFileName);
         try (BufferedInputStream inputStream = new BufferedInputStream(new URL(fromUrl).openStream());
-             FileOutputStream fileOS = new FileOutputStream(outputDirAndFileName)) {
+             FileOutputStream fileOS = new FileOutputStream(outputZipDirAndFileName)) {
             byte[] data = new byte[1024];
             int byteContent;
             while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
                 fileOS.write(data, 0, byteContent);
             }
             //unzip(outputDirAndFileName);
-            filePathAndName.accept(outputDirAndFileName);
+            outputFileConsumer.accept(outputZipDirAndFileName);
         } catch (IOException e) {
             LOGGER.info(e.getMessage());
         }

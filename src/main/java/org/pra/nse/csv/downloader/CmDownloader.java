@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -23,10 +24,10 @@ public class CmDownloader {
         this.downloadFile = downloadFile;
     }
 
-    public void download() {
+    public void download(LocalDate downloadFromDate) {
         String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME;
         List<String> filesToBeDownloaded = fileUtils.constructFileNames(
-                AppConstants.DOWNLOAD_FROM_DATE,
+                downloadFromDate,
                 AppConstants.CM_FILE_NAME_DATE_FORMAT,
                 AppConstants.CM_FILE_PREFIX,
                 AppConstants.CM_FILE_SUFFIX);
@@ -37,9 +38,10 @@ public class CmDownloader {
         filesDownloadUrl.parallelStream().forEach( fileUrl -> {
             downloadFile.downloadFile(fileUrl, dataDir,
                     () -> (dataDir + File.separator + fileUrl.substring(62, 85)),
-                    filePathAndName -> {
+                    zipFilePathAndName -> {
                         try {
-                            fileUtils.unzip(filePathAndName);
+                            fileUtils.unzip(zipFilePathAndName);
+                            fileUtils.unzipNew(zipFilePathAndName, AppConstants.CM_DATA_FILE_PREFIX);
                         } catch (IOException e) {
                             LOGGER.warn("Error while downloading file: {}", e);
                         }

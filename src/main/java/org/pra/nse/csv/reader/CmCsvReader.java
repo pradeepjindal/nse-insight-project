@@ -83,7 +83,7 @@ public class CmCsvReader {
 
                 new LMinMax(0L, LMinMax.MAX_LONG), // tot trd qty
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // tot trd val
-                new ParseDate(AppConstants.DATA_DATE_FORMAT), // timestamp
+                new ParseDate(AppConstants.PRA_DATA_DATE_FORMAT), // timestamp
                 new LMinMax(0L, LMinMax.MAX_LONG), // totalTrades
                 new NotNull(), // isin
                 null

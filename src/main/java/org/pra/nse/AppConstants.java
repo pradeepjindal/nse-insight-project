@@ -20,18 +20,23 @@ public class AppConstants {
     public static final String CM_FILE_NAME_DATE_FORMAT = "ddMMMyyyy";
     public static final String FO_FILE_NAME_DATE_FORMAT = "ddMMMyyyy";
     public static final String MTO_FILE_NAME_DATE_FORMAT = "ddMMyyyy";
+    public static final String PRA_DATA_FILE_NAME_DATE_FORMAT = "yyyy-mm-dd";
 
-    public static final String DATA_DIR_NAME = "pra-nse-computed-data";
-    public static final String DATA_DATE_FORMAT = "dd-MMM-yyyy";
+    public static final String PRA_DATA_DIR_NAME = "pra-nse-computed-data";
+    public static final String PRA_DATA_DATE_FORMAT = "dd-MMM-yyyy";
 
     public static final String CM_FILE_PREFIX = "cm";
     public static final String FO_FILE_PREFIX = "fo";
-    public static final String MTO_FILE_PREFIX = "MTO_";
+    public static final String MTO_NSE_FILE_PREFIX = "MTO_";
+
+    public static final String CM_DATA_FILE_PREFIX = "cm-";
+    public static final String FO_DATA_FILE_PREFIX = "fo-";
+    public static final String MTO_DATA_FILE_PREFIX = "mto-";
 
     public static final String CM_FILE_SUFFIX = "bhav.csv.zip";
     public static final String FO_FILE_SUFFIX = "bhav.csv.zip";
-    public static final String MTO_FILE_SUFFIX = ".DAT";
-    public static final String CSV_FILE_SUFFIX = ".csv";
+    public static final String MTO_FILE_EXT = ".DAT";
+    public static final String PRA_DATA_FILE_EXT = ".csv";
 
     public static final String MANISH_FILE_NAME = "manishData";
 
@@ -44,4 +49,7 @@ public class AppConstants {
 
     public static final DateTimeFormatter matFormatter = DateTimeFormatter.ofPattern(AppConstants.MTO_FILE_NAME_DATE_FORMAT);
     public static final String matDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.MTO_DIR_NAME;
+
+    public static final DateTimeFormatter praDataFormatter = DateTimeFormatter.ofPattern(AppConstants.PRA_DATA_FILE_NAME_DATE_FORMAT);
+    public static final String praDataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.PRA_DATA_DIR_NAME;
 }

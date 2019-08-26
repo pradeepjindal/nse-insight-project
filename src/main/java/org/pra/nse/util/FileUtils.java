@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -27,7 +31,7 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = "cm" + AppConstants.cmFormatter.format(date).toUpperCase() + AppConstants.CSV_FILE_SUFFIX;
+                String fileName = "cm" + AppConstants.cmFormatter.format(date).toUpperCase() + AppConstants.PRA_DATA_FILE_EXT;
                 LOGGER.info("getLatestFileNameForCm | fileName: {}", fileName);
                 filePathWithFileName = AppConstants.cmDir + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForCm | filePathWithFileName: {}", filePathWithFileName);
@@ -47,7 +51,7 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = AppConstants.FO_FILE_PREFIX + AppConstants.foFormatter.format(date).toUpperCase() + AppConstants.CSV_FILE_SUFFIX;
+                String fileName = AppConstants.FO_FILE_PREFIX + AppConstants.foFormatter.format(date).toUpperCase() + AppConstants.PRA_DATA_FILE_EXT;
                 LOGGER.info("getLatestFileNameForFo | fileName: {}", fileName);
                 filePathWithFileName = AppConstants.foDir + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForFo | filePathWithFileName: {}", filePathWithFileName);
@@ -67,7 +71,7 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = AppConstants.MTO_FILE_PREFIX + AppConstants.matFormatter.format(date) + AppConstants.MTO_FILE_SUFFIX;
+                String fileName = AppConstants.MTO_NSE_FILE_PREFIX + AppConstants.matFormatter.format(date) + AppConstants.MTO_FILE_EXT;
                 LOGGER.info("getLatestFileNameForMat | fileName: {}", fileName);
                 filePathWithFileName = AppConstants.matDir + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForMat | filePathWithFileName: {}", filePathWithFileName);
@@ -79,7 +83,7 @@ public class FileUtils {
     }
 
     public void createFolder(String outputPathAndFileName) {
-        String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.DATA_DIR_NAME;
+        String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.PRA_DATA_DIR_NAME;
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();
         if(null == folder.listFiles()) {
@@ -102,22 +106,40 @@ public class FileUtils {
     }
 
     public void unzip(String outputDirAndFileName) throws IOException {
-        File destDir = new File(
-                outputDirAndFileName.substring(0, outputDirAndFileName.lastIndexOf("\\")).replace("bhav","")
-        );
+        int lastIndex = outputDirAndFileName.lastIndexOf("\\");
+        File destDir = new File(outputDirAndFileName.substring(0, lastIndex));
         byte[] buffer = new byte[1024];
         ZipInputStream zis = null;
-        try {
-            zis = new ZipInputStream(new FileInputStream(outputDirAndFileName));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        zis = new ZipInputStream(new FileInputStream(outputDirAndFileName));
         ZipEntry zipEntry;
         zipEntry = zis.getNextEntry();
         while (zipEntry != null) {
             File newFile;
             newFile = newFile(destDir, zipEntry);
             FileOutputStream fos = new FileOutputStream(newFile);
+            int len;
+            while ((len = zis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+            fos.close();
+            zipEntry = zis.getNextEntry();
+        }
+        zis.closeEntry();
+        zis.close();
+    }
+    public void unzipNew(String outputDirAndFileName, String filePrefix) throws IOException {
+        int lastIndex = outputDirAndFileName.lastIndexOf("\\");
+        File destDir = new File(outputDirAndFileName.substring(0, lastIndex));
+        byte[] buffer = new byte[1024];
+        ZipInputStream zis = null;
+        zis = new ZipInputStream(new FileInputStream(outputDirAndFileName));
+        ZipEntry zipEntry;
+        zipEntry = zis.getNextEntry();
+        while (zipEntry != null) {
+            String csvFilePathAndName = destDir + File.separator + filePrefix
+                    + extractDate(zipEntry.getName()) + AppConstants.PRA_DATA_FILE_EXT;
+            File csvFile = new File(csvFilePathAndName);
+            FileOutputStream fos = new FileOutputStream(csvFile);
             int len;
             while ((len = zis.read(buffer)) > 0) {
                 fos.write(buffer, 0, len);
@@ -139,22 +161,11 @@ public class FileUtils {
         return destFile;
     }
 
-    public String extractDate(String filePathAndName) {
-
-        return null;
-    }
-
     public List<String> constructFileNames(LocalDate fromDate, String fileDateFormat,
                                             String filePrefix, String fileSuffix) {
         List<String> fileNameList = new ArrayList<>();
         LocalDate localDate = fromDate;
-        //LOGGER.info(localDate);
-        //localDate.getMonth().name().substring(0,3);
-        //LOGGER.info(localDate.getMonth().name().substring(0,3));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(fileDateFormat);
-        //formatter.format(localDate)
-        //LOGGER.info(formatter.format(localDate));
-
         LocalDate todayDate = LocalDate.now();
         while(localDate.compareTo(todayDate) < 1) {
             //LOGGER.info(localDate);
@@ -171,6 +182,10 @@ public class FileUtils {
         }
         //fileNamesToBeDownloaded.forEach(fileName -> LOGGER.info(fileName));
         LOGGER.info("Total File Count: " + fileNameList.size());
+//        fileNameList.forEach(name-> {
+//            String s = extractDate(name);
+//            System.out.println(s);
+//        });
         return fileNameList;
     }
 
@@ -210,8 +225,28 @@ public class FileUtils {
             return baseUrl + "/" + fileName;
         }).collect(Collectors.toList());
         //String newUrl = baseUrl + "/" + localDate.getMonth().name().substring(0,3) + "/fo" + formatter.format(localDate).toUpperCase() + "bhav.csv.zip";
-        filesUrl.forEach(url -> LOGGER.info(url));
+        //filesUrl.forEach(url -> LOGGER.info(url));
         return filesUrl;
     }
 
+    public String extractDate(String inputString) {
+        //String input = "John Doe at:2016-01-16 Notes:This is a test";
+        //String regex = " at:(\\d{4}-\\d{2}-\\d{2}) Notes:";
+        String regex = "\\d{2}[A-Z]{3}\\d{4}";
+        Matcher m = Pattern.compile(regex).matcher(inputString);
+        if (m.find()) {
+            DateTimeFormatter dtf = new DateTimeFormatterBuilder()
+                    // case insensitive to parse JAN and FEB
+                    .parseCaseInsensitive()
+                    // add pattern
+                    .appendPattern("ddMMMyyyy")
+                    // create formatter (use English Locale to parse month names)
+                    .toFormatter(Locale.ENGLISH);
+            return LocalDate.parse(m.group(0), dtf).toString();
+        } else {
+            // Bad input
+            LOGGER.warn("date not found in given file name");
+            return "";
+        }
+    }
 }
