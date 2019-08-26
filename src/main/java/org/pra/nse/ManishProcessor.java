@@ -3,7 +3,7 @@ package org.pra.nse;
 import org.pra.nse.bean.PraBean;
 import org.pra.nse.csv.merge.CmMerge;
 import org.pra.nse.csv.merge.FoMerge;
-import org.pra.nse.csv.merge.MatMerge;
+import org.pra.nse.csv.merge.MtoMerge;
 import org.pra.nse.csv.reader.FoCsvReader;
 import org.pra.nse.csv.writer.ManishCsvWriter;
 import org.pra.nse.util.FileUtils;
@@ -25,13 +25,13 @@ public class ManishProcessor implements ApplicationRunner {
     private final FoCsvReader csvReader;
     private final CmMerge cmMerge;
     private final FoMerge foMerge;
-    private final MatMerge matMerge;
+    private final MtoMerge matMerge;
     private final FileUtils fileUtils;
     private final ManishCsvWriter manishCsvWriter;
 
     public ManishProcessor(DownloadManager downloadManager,
                            FoCsvReader csvReader,
-                           CmMerge cmMerge, FoMerge foMerge, MatMerge matMerge,
+                           CmMerge cmMerge, FoMerge foMerge, MtoMerge matMerge,
                            ManishCsvWriter manishCsvWriter,
                            FileUtils fileUtils) {
         this.downloadManager = downloadManager;

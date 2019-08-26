@@ -17,13 +17,13 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Component
-public class MatDownloader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MatDownloader.class);
+public class MtoDownloader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MtoDownloader.class);
 
     private final FileUtils fileUtils;
     private final DownloadUtils downloadFile;
 
-    public MatDownloader(FileUtils fileUtils, DownloadUtils downloadFile) {
+    public MtoDownloader(FileUtils fileUtils, DownloadUtils downloadFile) {
         this.fileUtils = fileUtils;
         this.downloadFile = downloadFile;
     }

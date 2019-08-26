@@ -18,8 +18,8 @@ import java.io.*;
 import java.util.*;
 
 @Component
-public class MatCsvReader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MatCsvReader.class);
+public class MtoCsvReader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MtoCsvReader.class);
 
     public Map<String, MatBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();

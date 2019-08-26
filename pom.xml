@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.pra</groupId>
-	<artifactId>nse</artifactId>
-	<version>0.0.8-SNAPSHOT</version>
+	<artifactId>nse-insight</artifactId>
+	<version>0.0.9-SNAPSHOT</version>
 	<name>nse-insight</name>
 	<description>A Spring Boot and Scala based Project</description>
 

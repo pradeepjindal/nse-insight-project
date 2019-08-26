@@ -2,7 +2,7 @@ package org.pra.nse.csv.merge;
 
 import org.pra.nse.bean.MatBean;
 import org.pra.nse.bean.PraBean;
-import org.pra.nse.csv.reader.MatCsvReader;
+import org.pra.nse.csv.reader.MtoCsvReader;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MatMerge {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MatMerge.class);
+public class MtoMerge {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MtoMerge.class);
 
     private final FileUtils fileUtils;
-    private final MatCsvReader matCsvReader;
+    private final MtoCsvReader matCsvReader;
 
-    public MatMerge(FileUtils fileUtils, MatCsvReader matCsvReader) {
+    public MtoMerge(FileUtils fileUtils, MtoCsvReader matCsvReader) {
         this.fileUtils = fileUtils;
         this.matCsvReader = matCsvReader;
     }
