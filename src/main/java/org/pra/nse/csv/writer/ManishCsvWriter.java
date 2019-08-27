@@ -36,7 +36,7 @@ public class ManishCsvWriter {
         try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputFilePathAndName), CsvPreference.STANDARD_PREFERENCE)) {
             // the header elements are used to map the bean values to each column (names must match)
             final String[] header = new String[] { "instrument", "symbol", "expiryDate", "strikePrice", "optionType"
-                    , "contracts"
+                    , "contracts", "hammer"
                     , "cmTdyClose", "cmPrcntChgInClose"
                     , "foTdyClose", "foPrcntChgInClose"
                     , "tdyOI", "prcntChgInOI"
@@ -76,6 +76,7 @@ public class ManishCsvWriter {
                 new NotNull(), // optionType
 
                 new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // Contracts
+                null,
 
                 new NotNull(), // cmTodayClose
                 new NotNull(),

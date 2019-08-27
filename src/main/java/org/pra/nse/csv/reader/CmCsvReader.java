@@ -26,7 +26,7 @@ public class CmCsvReader {
     public Map<String, CmBean> read(String fromFile) {
         FileUtils fileUtils = new FileUtils();
         int firstIndex = fromFile.lastIndexOf(AppConstants.CM_FILE_PREFIX);
-        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+11) + ".csv";
+        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+11) + AppConstants.PRA_DATA_FILE_EXT;
         String toFile = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME + File.separator + cmCsvFileName;
 
         if(fileUtils.isFileExist(toFile)) {
@@ -45,7 +45,7 @@ public class CmCsvReader {
         try {
             beanReader = new CsvBeanReader(new FileReader(fileName), CsvPreference.STANDARD_PREFERENCE);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error("cm csv file not found: {} {}", fileName, e);
         }
         final CellProcessor[] processors = getProcessors();
 

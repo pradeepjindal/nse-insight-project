@@ -13,6 +13,7 @@ public class PraBean {
     private String optionType;
     //
     private long contracts;
+    private String hammer;
     //
     private double cmTdyClose;
     private double foTdyClose;
@@ -60,6 +61,7 @@ public class PraBean {
                 ", strikePrice=" + strikePrice +
                 ", optionType='" + optionType + '\'' +
                 ", contracts=" + contracts +
+                ", hammer=" + hammer +
                 ", cmTodayClose=" + cmTdyClose +
                 ", foTodayClose=" + foTdyClose +
                 ", todayOI=" + tdyOI +
@@ -278,5 +280,13 @@ public class PraBean {
 
     public void setPrevsLocalDate(LocalDate prevsLocalDate) {
         this.prevsLocalDate = prevsLocalDate;
+    }
+
+    public String getHammer() {
+        return hammer;
+    }
+
+    public void setHammer(String hammer) {
+        this.hammer = hammer;
     }
 }

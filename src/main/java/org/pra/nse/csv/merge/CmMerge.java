@@ -27,6 +27,7 @@ public class CmMerge {
         String fromFile;
         fromFile = fileUtils.getLatestFileNameForCm(1);
         Map<String, CmBean> latestBeanMap = cmCsvReader.read(fromFile);
+        fromFile = null;
         fromFile = fileUtils.getLatestFileNameForCm(2);
         Map<String, CmBean> previousBeanMap = cmCsvReader.read(fromFile);
         praBeans.forEach(praBean -> {
@@ -44,6 +45,8 @@ public class CmMerge {
                 } catch (ArithmeticException ae) {
                     ae.printStackTrace();
                 }
+                if("FUTSTK".equals(praBean.getInstrument()))
+                    calculateHammer(praBean, latestBeanMap.get(symbol), previousBeanMap.get(symbol));
             } else {
                 if(!praBean.getSymbol().contains("NIFTY")) {
                     LOGGER.warn("symbol not found in delivery map: {}", praBean.getSymbol());
@@ -51,4 +54,23 @@ public class CmMerge {
             }
         });
     }
+
+    private void calculateHammer(PraBean praBean, CmBean latestCmBean, CmBean previousCmBean) {
+        double highLow = latestCmBean.getHigh() - latestCmBean.getLow();
+        double openClose = latestCmBean.getOpen() - latestCmBean.getClose();
+        double closeLow = latestCmBean.getClose() - latestCmBean.getLow();
+        double openLow = latestCmBean.getOpen() - latestCmBean.getLow();
+        double previousOpenClose = previousCmBean.getOpen() + previousCmBean.getClose();
+        if( previousOpenClose / 2 > latestCmBean.getOpen()
+                && highLow > (3 * openClose)
+                && closeLow / (0.001 + highLow) > 0.6
+                && openLow / (0.001 + highLow) > 0.6
+        ) {
+            //LOGGER.info("Hammer Detected: {}", cmBean.getSymbol());
+            praBean.setHammer("Hammer");
+        } else {
+            //LOGGER.info("Hammer         : {}", cmBean.getSymbol());
+        }
+    }
+
 }
