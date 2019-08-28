@@ -1,8 +1,10 @@
 package org.pra.nse.csv.merge;
 
+import org.pra.nse.ApCo;
 import org.pra.nse.bean.FoBean;
 import org.pra.nse.bean.PraBean;
-import org.pra.nse.csv.reader.FoCsvReader;
+import org.pra.nse.csv.read.FoCsvReader;
+import org.pra.nse.util.FileNameUtils;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,34 +15,39 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class FoMerge {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FoMerge.class);
+public class FoMerger {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FoMerger.class);
 
     private final FileUtils fileUtils;
-    private final FoCsvReader foCsvReader;
+    private final FileNameUtils fileNameUtils;
+    private final FoCsvReader csvReader;
 
-    public FoMerge(FileUtils fileUtils, FoCsvReader foCsvReader) {
+    public FoMerger(FileUtils fileUtils, FileNameUtils fileNameUtils, FoCsvReader csvReader) {
         this.fileUtils = fileUtils;
-        this.foCsvReader = foCsvReader;
+        this.fileNameUtils = fileNameUtils;
+        this.csvReader = csvReader;
     }
 
     public void merge(List<PraBean> praBeans) {
+        LOGGER.info("FO-Merge");
         Map<FoBean, FoBean> foBeanMap;
-        String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
+        //String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
+        String foLatestFileName = fileNameUtils.getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,1);
         LOGGER.info("latestFileName FO: " + foLatestFileName);
-        String foPreviousFileName = fileUtils.getLatestFileNameForFo(2);
+        //String foPreviousFileName = fileUtils.getLatestFileNameForFo(2);
+        String foPreviousFileName = fileNameUtils.getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,2);
         LOGGER.info("previousFileName FO: " + foPreviousFileName);
 
         // FO
-        foBeanMap = foCsvReader.read(null, foLatestFileName);
-        LOGGER.info("{}", foBeanMap.size());
+        foBeanMap = csvReader.read(null, foLatestFileName);
+        //LOGGER.info("{}", foBeanMap.size());
 
-        foCsvReader.read(foBeanMap, foPreviousFileName);
-        LOGGER.info("{}", foBeanMap.size());
+        csvReader.read(foBeanMap, foPreviousFileName);
+        //LOGGER.info("{}", foBeanMap.size());
 
         merge(praBeans, foBeanMap);
         //praBeans.forEach(bean -> LOGGER.info(bean));
-        LOGGER.info("{}", praBeans.size());
+        //LOGGER.info("{}", praBeans.size());
     }
 
     public void merge(List<PraBean> praBeans, Map<FoBean, FoBean> foBeanMap) {
@@ -72,7 +79,7 @@ public class FoMerge {
             // calc fields
             try{
                 if(todayBean.getClose() != 0 && previousBean.getClose() != 0) {
-                    double pct = previousBean.getClose()/100;
+                    double pct = previousBean.getClose()/100d;
                     double diff = todayBean.getClose() - previousBean.getClose();
                     double pctChange = Math.round(diff / pct);
                     praBean.setFoPrcntChgInClose(pctChange);
@@ -92,6 +99,7 @@ public class FoMerge {
             }
             praBeans.add(praBean);
         });
-        LOGGER.info("{}", praBeans.size());
+        LOGGER.info("praBeans: {}", praBeans.size());
     }
+
 }

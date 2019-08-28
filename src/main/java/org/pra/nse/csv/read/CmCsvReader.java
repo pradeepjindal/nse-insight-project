@@ -1,7 +1,8 @@
-package org.pra.nse.csv.reader;
+package org.pra.nse.csv.read;
 
-import org.pra.nse.AppConstants;
+import org.pra.nse.ApCo;
 import org.pra.nse.bean.CmBean;
+import org.pra.nse.util.FileNameUtils;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +23,18 @@ import java.util.Map;
 @Component
 public class CmCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmCsvReader.class);
+    private final FileUtils fileUtils;
+    private final FileNameUtils fileNameUtils;
+
+    CmCsvReader(FileUtils fileUtils, FileNameUtils fileNameUtils) {
+        this.fileUtils = fileUtils;
+        this.fileNameUtils = fileNameUtils;
+    }
 
     public Map<String, CmBean> read(String fromFile) {
-        FileUtils fileUtils = new FileUtils();
-        int firstIndex = fromFile.lastIndexOf(AppConstants.CM_FILE_PREFIX);
-        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+11) + AppConstants.PRA_DATA_FILE_EXT;
-        String toFile = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME + File.separator + cmCsvFileName;
+        int firstIndex = fromFile.lastIndexOf(ApCo.CM_DATA_FILE_PREFIX);
+        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+13) + ApCo.PRA_DATA_FILE_EXT;
+        String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.CM_DIR_NAME + File.separator + cmCsvFileName;
 
         if(fileUtils.isFileExist(toFile)) {
             LOGGER.info("CM file exists: [{}]", toFile);
@@ -65,7 +72,7 @@ public class CmCsvReader {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("some error: e", e);
         }
         return cmBeanMap;
     }
@@ -83,7 +90,7 @@ public class CmCsvReader {
 
                 new LMinMax(0L, LMinMax.MAX_LONG), // tot trd qty
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // tot trd val
-                new ParseDate(AppConstants.PRA_DATA_DATE_FORMAT), // timestamp
+                new ParseDate(ApCo.PRA_DATA_DATE_FORMAT), // timestamp
                 new LMinMax(0L, LMinMax.MAX_LONG), // totalTrades
                 new NotNull(), // isin
                 null

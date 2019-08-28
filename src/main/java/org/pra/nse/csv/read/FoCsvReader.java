@@ -1,7 +1,9 @@
-package org.pra.nse.csv.reader;
+package org.pra.nse.csv.read;
 
-import org.pra.nse.AppConstants;
+import org.pra.nse.ApCo;
 import org.pra.nse.bean.FoBean;
+import org.pra.nse.util.FileNameUtils;
+import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,13 @@ import java.util.*;
 @Component
 public class FoCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(FoCsvReader.class);
+    private final FileUtils fileUtils;
+    private final FileNameUtils fileNameUtils;
+
+    FoCsvReader(FileUtils fileUtils, FileNameUtils fileNameUtils) {
+        this.fileUtils = fileUtils;
+        this.fileNameUtils = fileNameUtils;
+    }
 
     public Map<FoBean, FoBean> read(Map<FoBean, FoBean> foBeanMap, String fileName) {
         ICsvBeanReader beanReader = null;
@@ -58,17 +67,17 @@ public class FoCsvReader {
             LOGGER.info("Completed CSV Read: " + (System.currentTimeMillis() - startWatch));
             //
             LOGGER.info("missing: " + missingEntry.getValue());
-            if(foBeanMap == null) {
-                LOGGER.info("Total Beans in Map: " + localFoBeanMap.size());
-                LOGGER.info("Total Data Rows : " + (beanReader.getRowNumber()-1));
-                LOGGER.info("Total Map Rows : " + (localFoBeanMap.size()));
-                LOGGER.info("Does all rows from csv accounted for ? : " + (beanReader.getRowNumber()-1 ==  localFoBeanMap.size() ? "Yes" : "No"));
-            } else {
-                LOGGER.info("Total Beans in Map: " + foBeanMap.size());
-                LOGGER.info("Total Data Rows : " + (beanReader.getRowNumber()-1));
-                LOGGER.info("Total Map Rows : " + (foBeanMap.size()));
-                LOGGER.info("Does all rows from csv accounted for ? : " + (beanReader.getRowNumber()-1 ==  foBeanMap.size() ? "Yes" : "No"));
-            }
+//            if(foBeanMap == null) {
+//                LOGGER.info("Total Beans in Map: " + localFoBeanMap.size());
+//                LOGGER.info("Total Data Rows : " + (beanReader.getRowNumber()-1));
+//                LOGGER.info("Total Map Rows : " + (localFoBeanMap.size()));
+//                LOGGER.info("Does all rows from csv accounted for ? : " + (beanReader.getRowNumber()-1 ==  localFoBeanMap.size() ? "Yes" : "No"));
+//            } else {
+//                LOGGER.info("Total Beans in Map: " + foBeanMap.size());
+//                LOGGER.info("Total Data Rows : " + (beanReader.getRowNumber()-1));
+//                LOGGER.info("Total Map Rows : " + (foBeanMap.size()));
+//                LOGGER.info("Does all rows from csv accounted for ? : " + (beanReader.getRowNumber()-1 ==  foBeanMap.size() ? "Yes" : "No"));
+//            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,7 +86,7 @@ public class FoCsvReader {
                 try {
                     beanReader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.warn("some error: e", e);
                 }
             }
         }
@@ -94,7 +103,7 @@ public class FoCsvReader {
         return new CellProcessor[] {
                 new NotNull(), // instrument
                 new NotNull(), // symbol
-                new ParseDate(AppConstants.PRA_DATA_DATE_FORMAT), // ExpiryDate
+                new ParseDate(ApCo.PRA_DATA_DATE_FORMAT), // ExpiryDate
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // strike
                 new NotNull(), // option type
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // open
@@ -106,7 +115,7 @@ public class FoCsvReader {
                 new DMinMax(0L, DMinMax.MAX_DOUBLE), // val_inlakh
                 new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // oi
                 new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // change in oi
-                new ParseDate(AppConstants.PRA_DATA_DATE_FORMAT), // timestamp
+                new ParseDate(ApCo.PRA_DATA_DATE_FORMAT), // timestamp
                 null
         };
     }

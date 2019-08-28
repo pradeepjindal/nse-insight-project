@@ -2,7 +2,7 @@ package org.pra.nse.bean;
 
 import java.util.Objects;
 
-public class MatBean {
+public class MtBean {
     private long recType;
     private long srNo;
     private String symbol;
@@ -13,7 +13,7 @@ public class MatBean {
 
     @Override
     public String toString() {
-        return "MatBean{" +
+        return "MtBean{" +
                 "recType=" + recType +
                 ", srNo=" + srNo +
                 ", symbol='" + symbol + '\'' +
@@ -28,9 +28,9 @@ public class MatBean {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MatBean matBean = (MatBean) o;
-        return symbol.equals(matBean.symbol) &&
-                securityType.equals(matBean.securityType);
+        MtBean mtBean = (MtBean) o;
+        return symbol.equals(mtBean.symbol) &&
+                securityType.equals(mtBean.securityType);
     }
 
     @Override

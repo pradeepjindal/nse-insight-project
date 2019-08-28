@@ -1,6 +1,6 @@
-package org.pra.nse.csv.downloader;
+package org.pra.nse.csv.download;
 
-import org.pra.nse.AppConstants;
+import org.pra.nse.ApCo;
 import org.pra.nse.util.DownloadUtils;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
@@ -17,33 +17,33 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Component
-public class MtoDownloader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MtoDownloader.class);
+public class MtDownloader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MtDownloader.class);
 
     private final FileUtils fileUtils;
     private final DownloadUtils downloadFile;
 
-    public MtoDownloader(FileUtils fileUtils, DownloadUtils downloadFile) {
+    public MtDownloader(FileUtils fileUtils, DownloadUtils downloadFile) {
         this.fileUtils = fileUtils;
         this.downloadFile = downloadFile;
     }
 
     public void download(LocalDate downloadFromDate) {
-        String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.MTO_DIR_NAME;
+        String dataDir = ApCo.BASE_DATA_DIR + File.separator + ApCo.MT_DIR_NAME;
         List<String> filesToBeDownloaded = fileUtils.constructFileNames(
                 downloadFromDate,
-                AppConstants.MTO_FILE_NAME_DATE_FORMAT,
-                AppConstants.MTO_NSE_FILE_PREFIX,
-                AppConstants.MTO_FILE_EXT);
+                ApCo.MT_FILE_NAME_DATE_FORMAT,
+                ApCo.MT_NSE_FILE_PREFIX,
+                ApCo.MT_FILE_EXT);
         filesToBeDownloaded.removeAll(fileUtils.fetchFileNames(dataDir, null, null));
         List<String> filesDownloadUrl = fileUtils.constructFileDownloadUrl(
-                AppConstants.MTO_BASE_URL, filesToBeDownloaded);
+                ApCo.MT_BASE_URL, filesToBeDownloaded);
 
         filesDownloadUrl.parallelStream().forEach( fileUrl -> {
             downloadFile.downloadFile(fileUrl, dataDir,
                     () -> (dataDir + File.separator + fileUrl.substring(47,63)),
                     downloadedFilePathAndName -> {
-                        transformToCsv(downloadedFilePathAndName);
+                        //transformToCsv(downloadedFilePathAndName);
                         transformToCsvNew(downloadedFilePathAndName);
                     }
             );
@@ -52,8 +52,8 @@ public class MtoDownloader {
 
     private void transformToCsv(String downloadedDirAndFileName) {
         int firstIndex = downloadedDirAndFileName.lastIndexOf("_");
-        String matCsvFileName = downloadedDirAndFileName.substring(firstIndex-3, firstIndex+9) + AppConstants.PRA_DATA_FILE_EXT;
-        String toFile = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.MTO_DIR_NAME + File.separator + matCsvFileName;
+        String mtCsvFileName = downloadedDirAndFileName.substring(firstIndex-3, firstIndex+9) + ApCo.PRA_DATA_FILE_EXT;
+        String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.MT_DIR_NAME + File.separator + mtCsvFileName;
         Map.Entry<String, Integer> entry = new AbstractMap.SimpleEntry<>("key", 0);
         File csvOutputFile = new File(toFile);
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
@@ -77,16 +77,16 @@ public class MtoDownloader {
                 LOGGER.warn("some error in MAT entry: {}", e);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.warn("MAT file not found: {}", e);
         }
     }
     private void transformToCsvNew(String downloadedDirAndFileName) {
         int firstIndex = downloadedDirAndFileName.lastIndexOf("_");
-        String matCsvFileName = AppConstants.MTO_DATA_FILE_PREFIX
+        String matCsvFileName = ApCo.MT_DATA_FILE_PREFIX
                             + transformDate(downloadedDirAndFileName.substring(firstIndex+1, firstIndex+9))
-                            + AppConstants.PRA_DATA_FILE_EXT;
+                            + ApCo.PRA_DATA_FILE_EXT;
         ;
-        String toFile = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.MTO_DIR_NAME + File.separator + matCsvFileName;
+        String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.MT_DIR_NAME + File.separator + matCsvFileName;
         Map.Entry<String, Integer> entry = new AbstractMap.SimpleEntry<>("key", 0);
         File csvOutputFile = new File(toFile);
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
@@ -110,7 +110,7 @@ public class MtoDownloader {
                 LOGGER.warn("some error in MAT entry: {}", e);
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.warn("some error: {}", e);
         }
     }
 

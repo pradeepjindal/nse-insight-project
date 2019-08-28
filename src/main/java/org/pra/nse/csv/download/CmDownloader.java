@@ -1,6 +1,6 @@
-package org.pra.nse.csv.downloader;
+package org.pra.nse.csv.download;
 
-import org.pra.nse.AppConstants;
+import org.pra.nse.ApCo;
 import org.pra.nse.util.DownloadUtils;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
@@ -25,23 +25,23 @@ public class CmDownloader {
     }
 
     public void download(LocalDate downloadFromDate) {
-        String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.CM_DIR_NAME;
+        String dataDir = ApCo.BASE_DATA_DIR + File.separator + ApCo.CM_DIR_NAME;
         List<String> filesToBeDownloaded = fileUtils.constructFileNames(
                 downloadFromDate,
-                AppConstants.CM_FILE_NAME_DATE_FORMAT,
-                AppConstants.CM_FILE_PREFIX,
-                AppConstants.CM_FILE_SUFFIX);
+                ApCo.CM_FILE_NAME_DATE_FORMAT,
+                ApCo.CM_NSE_FILE_PREFIX,
+                ApCo.CM_FILE_SUFFIX);
         filesToBeDownloaded.removeAll(fileUtils.fetchFileNames(dataDir, null, null));
         List<String> filesDownloadUrl = fileUtils.constructFileDownloadUrlWithYearAndMonth(
-                AppConstants.CM_BASE_URL, filesToBeDownloaded);
+                ApCo.CM_BASE_URL, filesToBeDownloaded);
 
         filesDownloadUrl.parallelStream().forEach( fileUrl -> {
             downloadFile.downloadFile(fileUrl, dataDir,
                     () -> (dataDir + File.separator + fileUrl.substring(62, 85)),
                     zipFilePathAndName -> {
                         try {
-                            fileUtils.unzip(zipFilePathAndName);
-                            fileUtils.unzipNew(zipFilePathAndName, AppConstants.CM_DATA_FILE_PREFIX);
+                            //fileUtils.unzip(zipFilePathAndName);
+                            fileUtils.unzipNew(zipFilePathAndName, ApCo.CM_DATA_FILE_PREFIX);
                         } catch (IOException e) {
                             LOGGER.warn("Error while downloading file: {}", e);
                         }

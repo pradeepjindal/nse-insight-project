@@ -1,7 +1,8 @@
-package org.pra.nse.csv.reader;
+package org.pra.nse.csv.read;
 
-import org.pra.nse.AppConstants;
-import org.pra.nse.bean.MatBean;
+import org.pra.nse.ApCo;
+import org.pra.nse.bean.MtBean;
+import org.pra.nse.util.FileNameUtils;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,27 +19,34 @@ import java.io.*;
 import java.util.*;
 
 @Component
-public class MtoCsvReader {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MtoCsvReader.class);
+public class MtCsvReader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MtCsvReader.class);
 
-    public Map<String, MatBean> read(String fromFile) {
-        FileUtils fileUtils = new FileUtils();
+    private final FileUtils fileUtils;
+    private final FileNameUtils fileNameUtils;
+
+    MtCsvReader(FileUtils fileUtils, FileNameUtils fileNameUtils) {
+        this.fileUtils = fileUtils;
+        this.fileNameUtils = fileNameUtils;
+    }
+
+    public Map<String, MtBean> read(String fromFile) {
         //String fromFile = fileUtils.getLatestFileNameForMat(1);
-        int firstIndex = fromFile.lastIndexOf("_");
-        String matCsvFileName = fromFile.substring(firstIndex-3, firstIndex+9) + ".csv";
-        String toFile = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.MTO_DIR_NAME + File.separator + matCsvFileName;
+        int firstIndex = fromFile.lastIndexOf(ApCo.MT_DATA_FILE_PREFIX);
+        String mtCsvFileName = fromFile.substring(firstIndex, firstIndex+13) + ".csv";
+        String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.MT_DIR_NAME + File.separator + mtCsvFileName;
         if(fileUtils.isFileExist(toFile)) {
             LOGGER.info("Mat file created with csv format: Successfully [{}]", toFile);
         } else {
             LOGGER.error("Mat file failed to be created in csv format: Failed [{}]", toFile);
         }
         //
-        Map<String, MatBean> beanMap = readCsv(toFile);
+        Map<String, MtBean> beanMap = readCsv(toFile);
         LOGGER.info("Total Mat Beans in Map: {}", beanMap.size());
         return beanMap;
     }
 
-    private Map<String, MatBean> readCsv(String fileName) {
+    private Map<String, MtBean> readCsv(String fileName) {
         ICsvBeanReader beanReader = null;
         try {
             beanReader = new CsvBeanReader(new FileReader(fileName), CsvPreference.STANDARD_PREFERENCE);
@@ -47,12 +55,12 @@ public class MtoCsvReader {
         }
         final CellProcessor[] processors = getProcessors();
 
-        MatBean matBean;
+        MtBean matBean;
         String[] header;
-        Map<String, MatBean> matBeanMap = new HashMap<>();
+        Map<String, MtBean> matBeanMap = new HashMap<>();
         try {
             header = beanReader.getHeader(true);
-            while( (matBean = beanReader.read(MatBean.class, header, processors)) != null ) {
+            while( (matBean = beanReader.read(MtBean.class, header, processors)) != null ) {
                 //LOGGER.info(String.format("lineNo=%s, rowNo=%s, customer=%s", beanReader.getLineNumber(), beanReader.getRowNumber(), matBean));
                 if("EQ".equals(matBean.getSecurityType())) {
                     if(matBeanMap.containsKey(matBean.getSymbol())) {
@@ -63,7 +71,7 @@ public class MtoCsvReader {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("some error: e", e);
         }
         return matBeanMap;
     }

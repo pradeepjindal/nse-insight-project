@@ -1,8 +1,5 @@
-package org.pra.nse;
+package org.pra.nse.csv.download;
 
-import org.pra.nse.csv.downloader.CmDownloader;
-import org.pra.nse.csv.downloader.FoDownloader;
-import org.pra.nse.csv.downloader.MtoDownloader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,11 +12,11 @@ public class DownloadManager {
 
     private final CmDownloader cmDownloader;
     private final FoDownloader foDownloader;
-    private final MtoDownloader matDownloader;
+    private final MtDownloader matDownloader;
 
     public DownloadManager(CmDownloader cmDownloader,
                            FoDownloader foDownloader,
-                           MtoDownloader matDownloader) {
+                           MtDownloader matDownloader) {
         this.cmDownloader = cmDownloader;
         this.foDownloader = foDownloader;
         this.matDownloader = matDownloader;

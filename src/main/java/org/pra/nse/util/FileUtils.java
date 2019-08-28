@@ -1,9 +1,9 @@
 package org.pra.nse.util;
 
-import org.pra.nse.AppConstants;
+import org.pra.nse.ApCo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-@Service
+@Component
 public class FileUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
@@ -31,9 +31,9 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = "cm" + AppConstants.cmFormatter.format(date).toUpperCase() + AppConstants.PRA_DATA_FILE_EXT;
+                String fileName = "cm" + ApCo.cmFormatter.format(date).toUpperCase() + ApCo.PRA_DATA_FILE_EXT;
                 LOGGER.info("getLatestFileNameForCm | fileName: {}", fileName);
-                filePathWithFileName = AppConstants.cmDir + File.separator + fileName;
+                filePathWithFileName = ApCo.CM_FILES_PATH + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForCm | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
@@ -51,9 +51,9 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = AppConstants.FO_FILE_PREFIX + AppConstants.foFormatter.format(date).toUpperCase() + AppConstants.PRA_DATA_FILE_EXT;
+                String fileName = ApCo.FO_NSE_FILE_PREFIX + ApCo.foFormatter.format(date).toUpperCase() + ApCo.PRA_DATA_FILE_EXT;
                 LOGGER.info("getLatestFileNameForFo | fileName: {}", fileName);
-                filePathWithFileName = AppConstants.foDir + File.separator + fileName;
+                filePathWithFileName = ApCo.FO_FILES_PATH + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForFo | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
@@ -71,9 +71,9 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = AppConstants.MTO_NSE_FILE_PREFIX + AppConstants.matFormatter.format(date) + AppConstants.MTO_FILE_EXT;
+                String fileName = ApCo.MT_NSE_FILE_PREFIX + ApCo.matFormatter.format(date) + ApCo.MT_FILE_EXT;
                 LOGGER.info("getLatestFileNameForMat | fileName: {}", fileName);
-                filePathWithFileName = AppConstants.matDir + File.separator + fileName;
+                filePathWithFileName = ApCo.MT_FILES_PATH + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForMat | filePathWithFileName: {}", filePathWithFileName);
                 file = new File(filePathWithFileName);
                 date = date.minusDays(1);
@@ -83,7 +83,7 @@ public class FileUtils {
     }
 
     public void createFolder(String outputPathAndFileName) {
-        String dataDir = AppConstants.BASE_DATA_DIR + File.separator + AppConstants.PRA_DATA_DIR_NAME;
+        String dataDir = ApCo.BASE_DATA_DIR + File.separator + ApCo.PRA_DATA_DIR_NAME;
         File folder = new File(dataDir);
         File[] listOfFiles = folder.listFiles();
         if(null == folder.listFiles()) {
@@ -137,7 +137,7 @@ public class FileUtils {
         zipEntry = zis.getNextEntry();
         while (zipEntry != null) {
             String csvFilePathAndName = destDir + File.separator + filePrefix
-                    + extractDate(zipEntry.getName()) + AppConstants.PRA_DATA_FILE_EXT;
+                    + extractDate(zipEntry.getName()) + ApCo.PRA_DATA_FILE_EXT;
             File csvFile = new File(csvFilePathAndName);
             FileOutputStream fos = new FileOutputStream(csvFile);
             int len;
@@ -215,7 +215,7 @@ public class FileUtils {
             return baseUrl + "/" + fileName.substring(4, 7) + "/" + fileName;
         }).collect(Collectors.toList());
         //String newUrl = baseUrl + "/" + localDate.getMonth().name().substring(0,3) + "/fo" + formatter.format(localDate).toUpperCase() + "bhav.csv.zip";
-        filesUrl.forEach(url -> LOGGER.info(url));
+        filesUrl.forEach(LOGGER::info);
         return filesUrl;
     }
     public List<String> constructFileDownloadUrl(String baseUrl, List<String> filesToBeDownloaded) {
@@ -249,4 +249,5 @@ public class FileUtils {
             return "";
         }
     }
+
 }
