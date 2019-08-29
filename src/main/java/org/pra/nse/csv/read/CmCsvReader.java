@@ -41,7 +41,7 @@ public class CmCsvReader {
         } else {
             LOGGER.error("CM file does not exist: [{}]", toFile);
         }
-        //
+
         Map<String, CmBean> beanMap = readCsv(toFile);
         LOGGER.info("Total CM Beans in Map: {}", beanMap.size());
         return beanMap;
@@ -72,7 +72,7 @@ public class CmCsvReader {
                 }
             }
         } catch (IOException e) {
-            LOGGER.warn("some error: e", e);
+            LOGGER.warn("some error: {}", e);
         }
         return cmBeanMap;
     }

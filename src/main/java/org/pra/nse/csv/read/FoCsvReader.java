@@ -35,7 +35,6 @@ public class FoCsvReader {
         LOGGER.info("-----CSV Reader");
         try {
             beanReader = new CsvBeanReader(new FileReader(fileName), CsvPreference.STANDARD_PREFERENCE);
-
             // the header elements are used to map the values to the bean (names must match)
             final String[] header = beanReader.getHeader(true);
             final CellProcessor[] processors = getProcessors();
@@ -43,7 +42,6 @@ public class FoCsvReader {
             FoBean foBean;
             //int missing = 0;
             Map.Entry<String, Integer> missingEntry = new AbstractMap.SimpleEntry<>("missing", 0);
-            //
             long startWatch = System.currentTimeMillis();
             LOGGER.info("Beginning CSV Read: " + startWatch);
             List<FoBean> foBeanList = new ArrayList<>();
@@ -86,7 +84,7 @@ public class FoCsvReader {
                 try {
                     beanReader.close();
                 } catch (IOException e) {
-                    LOGGER.warn("some error: e", e);
+                    LOGGER.warn("some error: {}", e);
                 }
             }
         }

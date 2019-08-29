@@ -31,7 +31,7 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = "cm" + ApCo.cmFormatter.format(date).toUpperCase() + ApCo.PRA_DATA_FILE_EXT;
+                String fileName = "cm" + ApCo.CM_DTF.format(date).toUpperCase() + ApCo.PRA_DATA_FILE_EXT;
                 LOGGER.info("getLatestFileNameForCm | fileName: {}", fileName);
                 filePathWithFileName = ApCo.CM_FILES_PATH + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForCm | filePathWithFileName: {}", filePathWithFileName);
@@ -51,7 +51,7 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = ApCo.FO_NSE_FILE_PREFIX + ApCo.foFormatter.format(date).toUpperCase() + ApCo.PRA_DATA_FILE_EXT;
+                String fileName = ApCo.FO_NSE_FILE_PREFIX + ApCo.FO_DTF.format(date).toUpperCase() + ApCo.PRA_DATA_FILE_EXT;
                 LOGGER.info("getLatestFileNameForFo | fileName: {}", fileName);
                 filePathWithFileName = ApCo.FO_FILES_PATH + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForFo | filePathWithFileName: {}", filePathWithFileName);
@@ -71,7 +71,7 @@ public class FileUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                String fileName = ApCo.MT_NSE_FILE_PREFIX + ApCo.matFormatter.format(date) + ApCo.MT_FILE_EXT;
+                String fileName = ApCo.MT_NSE_FILE_PREFIX + ApCo.MT_DTF.format(date) + ApCo.MT_FILE_EXT;
                 LOGGER.info("getLatestFileNameForMat | fileName: {}", fileName);
                 filePathWithFileName = ApCo.MT_FILES_PATH + File.separator + fileName;
                 LOGGER.info("getLatestFileNameForMat | filePathWithFileName: {}", filePathWithFileName);

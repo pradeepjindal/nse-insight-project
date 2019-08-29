@@ -25,7 +25,7 @@ public class FileNameUtils {
         String filePathWithFileName = null;
         for(int i=0; i<occurrence; i++) {
             do {
-                fileName = filePrefix + ApCo.praDataFormatter.format(date) + fileExt;
+                fileName = filePrefix + ApCo.PRA_DTF.format(date) + fileExt;
                 //LOGGER.info("getLatestFileName | fileName: {}", fileName);
                 filePathWithFileName = fileDir + File.separator + fileName;
                 //LOGGER.info("getLatestFileName | filePathWithFileName: {}", filePathWithFileName);

@@ -20,7 +20,7 @@ public class ApCo {
     public static final String CM_FILE_NAME_DATE_FORMAT = "ddMMMyyyy";
     public static final String FO_FILE_NAME_DATE_FORMAT = "ddMMMyyyy";
     public static final String MT_FILE_NAME_DATE_FORMAT = "ddMMyyyy";
-    public static final String PRA_DATA_FILE_NAME_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String PRA_FILE_NAME_DATE_FORMAT = "yyyy-MM-dd";
 
     public static final String PRA_DATA_DIR_NAME = "pra-nse-computed-data";
     public static final String PRA_DATA_DATE_FORMAT = "dd-MMM-yyyy";
@@ -41,15 +41,15 @@ public class ApCo {
     public static final String MANISH_FILE_NAME = "manishData";
 
 
-    public static final DateTimeFormatter cmFormatter = DateTimeFormatter.ofPattern(ApCo.CM_FILE_NAME_DATE_FORMAT);
+    public static final DateTimeFormatter CM_DTF = DateTimeFormatter.ofPattern(ApCo.CM_FILE_NAME_DATE_FORMAT);
     public static final String CM_FILES_PATH = ApCo.BASE_DATA_DIR + File.separator + ApCo.CM_DIR_NAME;
 
-    public static final DateTimeFormatter foFormatter = DateTimeFormatter.ofPattern(ApCo.FO_FILE_NAME_DATE_FORMAT);
+    public static final DateTimeFormatter FO_DTF = DateTimeFormatter.ofPattern(ApCo.FO_FILE_NAME_DATE_FORMAT);
     public static final String FO_FILES_PATH = ApCo.BASE_DATA_DIR + File.separator + ApCo.FO_DIR_NAME;
 
-    public static final DateTimeFormatter matFormatter = DateTimeFormatter.ofPattern(ApCo.MT_FILE_NAME_DATE_FORMAT);
+    public static final DateTimeFormatter MT_DTF = DateTimeFormatter.ofPattern(ApCo.MT_FILE_NAME_DATE_FORMAT);
     public static final String MT_FILES_PATH = ApCo.BASE_DATA_DIR + File.separator + ApCo.MT_DIR_NAME;
 
-    public static final DateTimeFormatter praDataFormatter = DateTimeFormatter.ofPattern(ApCo.PRA_DATA_FILE_NAME_DATE_FORMAT);
-    public static final String praDataDir = ApCo.BASE_DATA_DIR + File.separator + ApCo.PRA_DATA_DIR_NAME;
+    public static final DateTimeFormatter PRA_DTF = DateTimeFormatter.ofPattern(ApCo.PRA_FILE_NAME_DATE_FORMAT);
+    public static final String PRA_FILES_PATH = ApCo.BASE_DATA_DIR + File.separator + ApCo.PRA_DATA_DIR_NAME;
 }

@@ -71,7 +71,7 @@ public class MtCsvReader {
                 }
             }
         } catch (IOException e) {
-            LOGGER.warn("some error: e", e);
+            LOGGER.warn("some error: {}", e);
         }
         return mtBeanMap;
     }
