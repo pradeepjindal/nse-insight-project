@@ -57,23 +57,23 @@ public class MtCsvReader {
 
         MtBean matBean;
         String[] header;
-        Map<String, MtBean> matBeanMap = new HashMap<>();
+        Map<String, MtBean> mtBeanMap = new HashMap<>();
         try {
             header = beanReader.getHeader(true);
             while( (matBean = beanReader.read(MtBean.class, header, processors)) != null ) {
                 //LOGGER.info(String.format("lineNo=%s, rowNo=%s, customer=%s", beanReader.getLineNumber(), beanReader.getRowNumber(), matBean));
                 if("EQ".equals(matBean.getSecurityType())) {
-                    if(matBeanMap.containsKey(matBean.getSymbol())) {
+                    if(mtBeanMap.containsKey(matBean.getSymbol())) {
                         LOGGER.warn("Symbol already present in map: old value = [{}], new value = [{}]",
-                                matBeanMap.get(matBean.getSymbol()), matBean);
+                                mtBeanMap.get(matBean.getSymbol()), matBean);
                     }
-                    matBeanMap.put(matBean.getSymbol(), matBean);
+                    mtBeanMap.put(matBean.getSymbol(), matBean);
                 }
             }
         } catch (IOException e) {
             LOGGER.warn("some error: e", e);
         }
-        return matBeanMap;
+        return mtBeanMap;
     }
 
     private static CellProcessor[] getProcessors() {

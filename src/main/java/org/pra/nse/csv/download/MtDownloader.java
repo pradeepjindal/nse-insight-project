@@ -85,7 +85,6 @@ public class MtDownloader {
         String matCsvFileName = ApCo.MT_DATA_FILE_PREFIX
                             + transformDate(downloadedDirAndFileName.substring(firstIndex+1, firstIndex+9))
                             + ApCo.PRA_DATA_FILE_EXT;
-        ;
         String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.MT_DIR_NAME + File.separator + matCsvFileName;
         Map.Entry<String, Integer> entry = new AbstractMap.SimpleEntry<>("key", 0);
         File csvOutputFile = new File(toFile);
