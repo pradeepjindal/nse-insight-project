@@ -1,11 +1,15 @@
 package org.pra.nse.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.Objects;
 
 public class FoBean {
     private String instrument;
     private String symbol;
+    @JsonFormat(pattern="dd-MMM-yyyy")
+    //@JsonDeserialize(using = CustomerDateAndTimeDeserialize.class)
     private Date expiry_Dt;
     private double strike_Pr;
     private String option_Typ;
@@ -18,6 +22,7 @@ public class FoBean {
     private double val_InLakh;
     private long open_Int;
     private long chg_In_Oi;
+    @JsonFormat(pattern="dd-MMM-yyyy")
     private Date timestamp;
 
 

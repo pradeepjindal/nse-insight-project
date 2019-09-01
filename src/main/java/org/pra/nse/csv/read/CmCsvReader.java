@@ -52,7 +52,7 @@ public class CmCsvReader {
         try {
             beanReader = new CsvBeanReader(new FileReader(fileName), CsvPreference.STANDARD_PREFERENCE);
         } catch (FileNotFoundException e) {
-            LOGGER.error("cm csv file not found: {} {}", fileName, e);
+            LOGGER.error("cm csv file not found: {}", e);
         }
         final CellProcessor[] processors = getProcessors();
 

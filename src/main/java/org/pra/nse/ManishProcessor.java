@@ -13,15 +13,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 
-@Service
+@Component
 public class ManishProcessor implements ApplicationRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(ManishProcessor.class);
 
@@ -29,14 +31,14 @@ public class ManishProcessor implements ApplicationRunner {
     private final FoCsvReader csvReader;
     private final CmMerger cmMerger;
     private final FoMerger foMerger;
-    private final MtMerger mtoMerger;
+    private final MtMerger mtMerger;
     private final FileUtils fileUtils;
     private final FileNameUtils fileNameUtils;
     private final ManishCsvWriter manishCsvWriter;
 
     public ManishProcessor(DownloadManager downloadManager,
                            FoCsvReader csvReader,
-                           CmMerger cmMerger, FoMerger foMerger, MtMerger mtoMerger,
+                           CmMerger cmMerger, FoMerger foMerger, MtMerger mtMerger,
                            ManishCsvWriter manishCsvWriter,
                            FileUtils fileUtils,
                            FileNameUtils fileNameUtils) {
@@ -44,21 +46,21 @@ public class ManishProcessor implements ApplicationRunner {
         this.csvReader = csvReader;
         this.cmMerger = cmMerger;
         this.foMerger = foMerger;
-        this.mtoMerger = mtoMerger;
+        this.mtMerger = mtMerger;
         this.manishCsvWriter = manishCsvWriter;
         this.fileUtils = fileUtils;
         this.fileNameUtils = fileNameUtils;
     }
 
-    public void process(LocalDate downloadFromDate, LocalDate processForDate) {
+    public void process(LocalDate downloadFromDate, LocalDate processForDate) throws IOException {
         downloadManager.download(downloadFromDate);
         fileNameUtils.validate();
         //---------------------------------------------------------
         List<PraBean> praBeans = new ArrayList<>();
         // FO
-        foMerger.merge(praBeans);
+        TreeSet<LocalDate> foMonthlyExpiryDates = foMerger.merge(praBeans);
         // MAT
-        mtoMerger.merge(praBeans);
+        mtMerger.merge(praBeans);
         // CM
         cmMerger.merge(praBeans);
 
@@ -67,7 +69,7 @@ public class ManishProcessor implements ApplicationRunner {
                 ApCo.BASE_DATA_DIR
                 + File.separator + ApCo.PRA_DATA_DIR_NAME
                 + File.separator + ApCo.MANISH_FILE_NAME + ApCo.PRA_DATA_FILE_EXT;
-        manishCsvWriter.write(praBeans, manishOutputPathAndFileName);
+        manishCsvWriter.write(praBeans, manishOutputPathAndFileName, foMonthlyExpiryDates);
         //-------------------------------------------------------
         //String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
         String foLatestFileName = fileNameUtils.getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1);
@@ -77,7 +79,7 @@ public class ManishProcessor implements ApplicationRunner {
         String outputPathAndFileName = ApCo.BASE_DATA_DIR
                 + File.separator + ApCo.PRA_DATA_DIR_NAME
                 + File.separator + ApCo.MANISH_FILE_NAME + fileDate  + ApCo.PRA_DATA_FILE_EXT;
-        manishCsvWriter.write(praBeans, outputPathAndFileName);
+        manishCsvWriter.write(praBeans, outputPathAndFileName, foMonthlyExpiryDates);
         //-------------------------------------------------------
 
         if(fileUtils.isFileExist(outputPathAndFileName)) {
@@ -97,6 +99,6 @@ public class ManishProcessor implements ApplicationRunner {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-        LOGGER.info("Manish Processor | ============================== | Completed");
+        LOGGER.info("Manish Processor | ============================== | Finished");
     }
 }

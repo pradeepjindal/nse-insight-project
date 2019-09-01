@@ -4,17 +4,19 @@ import org.pra.nse.ApCo;
 import org.pra.nse.bean.FoBean;
 import org.pra.nse.bean.PraBean;
 import org.pra.nse.csv.read.FoCsvReader;
+import org.pra.nse.util.DateUtils;
 import org.pra.nse.util.FileNameUtils;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-@Service
+@Component
 public class FoMerger {
     private static final Logger LOGGER = LoggerFactory.getLogger(FoMerger.class);
 
@@ -28,7 +30,7 @@ public class FoMerger {
         this.csvReader = csvReader;
     }
 
-    public void merge(List<PraBean> praBeans) {
+    public TreeSet<LocalDate> merge(List<PraBean> praBeans) throws FileNotFoundException {
         LOGGER.info("FO-Merge");
         Map<FoBean, FoBean> foBeanMap;
         //String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
@@ -45,20 +47,26 @@ public class FoMerger {
         csvReader.read(foBeanMap, foPreviousFileName);
         //LOGGER.info("{}", foBeanMap.size());
 
-        merge(praBeans, foBeanMap);
+        return merge(praBeans, foBeanMap);
         //praBeans.forEach(bean -> LOGGER.info(bean));
         //LOGGER.info("{}", praBeans.size());
     }
 
-    public void merge(List<PraBean> praBeans, Map<FoBean, FoBean> foBeanMap) {
+    public TreeSet<LocalDate> merge(List<PraBean> praBeans, Map<FoBean, FoBean> foBeanMap) {
+        TreeSet<LocalDate> foMonthlyExpiryDates = new TreeSet<>();
         foBeanMap.entrySet().forEach( entry -> {
+
             FoBean todayBean = entry.getKey();
             FoBean previousBean = entry.getValue();
             PraBean praBean = new PraBean();
             //
+            if("FUTSTK".equals(todayBean.getInstrument())) {
+                foMonthlyExpiryDates.add(DateUtils.toLocalDate(todayBean.getExpiry_Dt()));
+            }
+
             praBean.setInstrument(todayBean.getInstrument());
             praBean.setSymbol(todayBean.getSymbol());
-            praBean.setExpiryLocalDate(todayBean.getExpiry_Dt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            praBean.setExpiryLocalDate(DateUtils.toLocalDate(todayBean.getExpiry_Dt()));
             praBean.setExpiryDate(todayBean.getExpiry_Dt());
             praBean.setStrikePrice(todayBean.getStrike_Pr());
             praBean.setOptionType(todayBean.getOption_Typ());
@@ -68,7 +76,7 @@ public class FoMerger {
             praBean.setFoTdyClose(todayBean.getClose());
             praBean.setTdyOI(todayBean.getOpen_Int());
             //
-            praBean.setTdyLocalDate(todayBean.getTimestamp().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            praBean.setTdyLocalDate(DateUtils.toLocalDate(todayBean.getTimestamp()));
             praBean.setTdyDate(todayBean.getTimestamp());
             //
             praBean.setFoPrevsClose(previousBean.getClose());
@@ -100,6 +108,7 @@ public class FoMerger {
             praBeans.add(praBean);
         });
         LOGGER.info("praBeans: {}", praBeans.size());
+        return foMonthlyExpiryDates;
     }
 
 }

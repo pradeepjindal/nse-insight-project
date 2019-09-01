@@ -5,7 +5,7 @@ import org.pra.nse.bean.PraBean;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.supercsv.cellprocessor.FmtDate;
 import org.supercsv.cellprocessor.constraint.DMinMax;
 import org.supercsv.cellprocessor.constraint.LMinMax;
@@ -19,8 +19,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.TreeSet;
 
-@Service
+@Component
 public class ManishCsvWriter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ManishCsvWriter.class);
 
@@ -30,7 +31,7 @@ public class ManishCsvWriter {
         this.fileUtils = fileUtils;
     }
 
-    public void write(List<PraBean> praBeans, String outputFilePathAndName) {
+    public void write(List<PraBean> praBeans, String outputFilePathAndName, TreeSet<LocalDate> foExpiryDates) throws IOException {
         fileUtils.createFolder(outputFilePathAndName);
         //final ICsvBeanWriter beanWriter;
         try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputFilePathAndName), CsvPreference.STANDARD_PREFERENCE)) {
@@ -53,16 +54,15 @@ public class ManishCsvWriter {
 //                beanWriter.write(praBean, header, processors);
 //            }
             praBeans.forEach( praBean -> {
-                if("FUTSTK".equals(praBean.getInstrument()) && praBean.getExpiryLocalDate().getMonth() == LocalDate.now().getMonth()) {
+                // pra TODO
+                if("FUTSTK".equals(praBean.getInstrument()) && praBean.getExpiryLocalDate().equals(foExpiryDates.first())) {
                     try {
                         beanWriter.write(praBean, header, processors);
                     } catch (IOException e) {
-                        LOGGER.warn("some error: {}", e);
+                        LOGGER.warn("some error: {}", e.getMessage());
                     }
                 }
             });
-        }catch (IOException e) {
-            LOGGER.warn("some error: {}", e);
         }
     }
 
