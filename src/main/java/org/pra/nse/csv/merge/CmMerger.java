@@ -42,6 +42,7 @@ public class CmMerger {
             if(latestBeanMap.containsKey(symbol) && previousBeanMap.containsKey(symbol)) {
                 praBean.setCmTdyClose(latestBeanMap.get(symbol).getClose());
                 praBean.setCmPrevsClose(previousBeanMap.get(symbol).getClose());
+                praBean.setCmTdyTraded(latestBeanMap.get(symbol).getTotTrdQty());
                 try{
                     if(latestBeanMap.get(symbol).getClose() != 0 && previousBeanMap.get(symbol).getClose() != 0) {
                         double pct = previousBeanMap.get(symbol).getClose()/100d;

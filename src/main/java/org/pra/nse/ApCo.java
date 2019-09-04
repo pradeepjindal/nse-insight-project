@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class ApCo {
-    public static final LocalDate DOWNLOAD_FROM_DATE = LocalDate.of(2019,8,1);
+    public static final LocalDate DOWNLOAD_FROM_DATE = LocalDate.of(2019,9,1);
 
     public static final String BASE_DATA_DIR = System.getProperty("user.home");
 
@@ -39,6 +39,7 @@ public class ApCo {
     public static final String PRA_DATA_FILE_EXT = ".csv";
 
     public static final String MANISH_FILE_NAME = "manishData";
+    public static final String PRADEEP_FILE_NAME = "pradeepData";
 
 
     public static final DateTimeFormatter CM_DTF = DateTimeFormatter.ofPattern(ApCo.CM_FILE_NAME_DATE_FORMAT);

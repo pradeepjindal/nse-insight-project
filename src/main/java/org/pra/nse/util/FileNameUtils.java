@@ -52,14 +52,13 @@ public class FileNameUtils {
     }
 
     public void validate() {
-
         String cmDate = getLatestFileNameFor(ApCo.CM_FILES_PATH, ApCo.CM_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1).substring(32);
         String foDate = getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1).substring(32);
         String mtDate = getLatestFileNameFor(ApCo.MT_FILES_PATH, ApCo.MT_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1).substring(32);
         if(cmDate.equals(foDate) && cmDate.equals(mtDate)) {
             LOGGER.info("All Files are Accounted for: PROCESSING");
         } else {
-            LOGGER.warn("All files are not accounted for: fo=[fo-{}], cm=[cm-{}], mt=[mt-{}]", foDate, cmDate, mtDate);
+            LOGGER.warn("Not All files are available: fo=[fo-{}], cm=[cm-{}], mt=[mt-{}]", foDate, cmDate, mtDate);
             LOGGER.info("fo=[fo-{}]", foDate);
             LOGGER.info("cm=[cm-{}]", cmDate);
             LOGGER.info("mt=[mt-{}]", mtDate);

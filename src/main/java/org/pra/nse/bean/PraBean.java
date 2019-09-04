@@ -33,6 +33,8 @@ public class PraBean {
     private double foPrcntChgInClose;
     private double prcntChgInOI;
     private double prcntChgInDelivery;
+    //
+    private long cmTdyTraded;
 
 
     @Override
@@ -58,24 +60,28 @@ public class PraBean {
                 "instrument='" + instrument + '\'' +
                 ", symbol='" + symbol + '\'' +
                 ", expiryDate=" + expiryDate +
+                ", expiryLocalDate=" + expiryLocalDate +
                 ", strikePrice=" + strikePrice +
                 ", optionType='" + optionType + '\'' +
                 ", contracts=" + contracts +
-                ", hammer=" + hammer +
-                ", cmTodayClose=" + cmTdyClose +
-                ", foTodayClose=" + foTdyClose +
-                ", todayOI=" + tdyOI +
-                ", todayDelivery=" + tdyDelivery +
-                ", todayDate=" + tdyDate +
-                ", cmPreviousClose=" + cmPrevsClose +
-                ", foPreviousClose=" + foPrevsClose +
-                ", previousOI=" + prevsOI +
-                ", previousDelivery=" + prevsDelivery +
-                ", previousDate=" + prevsDate +
+                ", hammer='" + hammer + '\'' +
+                ", cmTdyClose=" + cmTdyClose +
+                ", foTdyClose=" + foTdyClose +
+                ", tdyOI=" + tdyOI +
+                ", tdyDelivery=" + tdyDelivery +
+                ", tdyDate=" + tdyDate +
+                ", tdyLocalDate=" + tdyLocalDate +
+                ", cmPrevsClose=" + cmPrevsClose +
+                ", foPrevsClose=" + foPrevsClose +
+                ", prevsOI=" + prevsOI +
+                ", prevsDelivery=" + prevsDelivery +
+                ", prevsDate=" + prevsDate +
+                ", prevsLocalDate=" + prevsLocalDate +
                 ", cmPrcntChgInClose=" + cmPrcntChgInClose +
                 ", foPrcntChgInClose=" + foPrcntChgInClose +
                 ", prcntChgInOI=" + prcntChgInOI +
                 ", prcntChgInDelivery=" + prcntChgInDelivery +
+                ", cmTdyTraded=" + cmTdyTraded +
                 '}';
     }
 
@@ -289,4 +295,13 @@ public class PraBean {
     public void setHammer(String hammer) {
         this.hammer = hammer;
     }
+
+    public long getCmTdyTraded() {
+        return cmTdyTraded;
+    }
+
+    public void setCmTdyTraded(long cmTdyTraded) {
+        this.cmTdyTraded = cmTdyTraded;
+    }
+
 }

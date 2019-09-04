@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.supercsv.cellprocessor.FmtDate;
+import org.supercsv.cellprocessor.constraint.DMinMax;
 import org.supercsv.cellprocessor.constraint.LMinMax;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -21,12 +22,12 @@ import java.util.List;
 import java.util.TreeSet;
 
 @Component
-public class ManishCsvWriter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ManishCsvWriter.class);
+public class PradeepCsvWriter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PradeepCsvWriter.class);
 
     private final FileUtils fileUtils;
 
-    public ManishCsvWriter(FileUtils fileUtils) {
+    public PradeepCsvWriter(FileUtils fileUtils) {
         this.fileUtils = fileUtils;
     }
 
@@ -35,15 +36,23 @@ public class ManishCsvWriter {
         //final ICsvBeanWriter beanWriter;
         try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputFilePathAndName), CsvPreference.STANDARD_PREFERENCE)) {
             // the header elements are used to map the bean values to each column (names must match)
-            final String[] header = new String[] {
-                    "symbol", "expiryDate"
-                    , "cmTdyClose", "cmTdyTraded"
+            final String[] header = new String[] { "instrument", "symbol", "expiryDate", "strikePrice", "optionType"
+                    , "contracts", "hammer"
+                    , "cmTdyClose", "cmPrcntChgInClose"
+                    , "foTdyClose", "foPrcntChgInClose"
+                    , "tdyOI", "prcntChgInOI"
                     , "tdyDelivery","prcntChgInDelivery"
-                    , "tdyOI"
+                    , "tdyDate"
+                    , "cmPrevsClose", "foPrevsClose", "prevsOI", "prevsDelivery"
+                    , "prevsDate"
             };
             final CellProcessor[] processors = getProcessors();
             // write the header
             beanWriter.writeHeader(header);
+            // write the beans
+//            for( final PraBean praBean : praBeans ) {
+//                beanWriter.write(praBean, header, processors);
+//            }
             praBeans.forEach( praBean -> {
                 // pra TODO
                 if("FUTSTK".equals(praBean.getInstrument()) && praBean.getExpiryLocalDate().equals(foExpiryDates.first())) {
@@ -59,13 +68,36 @@ public class ManishCsvWriter {
 
     private static CellProcessor[] getProcessors() {
         return new CellProcessor[] {
+                new NotNull(), // instrument
                 new NotNull(), // symbol
                 new FmtDate(ApCo.PRA_DATA_DATE_FORMAT), // expiryDate
+                //new DMinMax(DMinMax.MIN_DOUBLE, DMinMax.MAX_DOUBLE), // strikePrice
+                new NotNull(),
+                new NotNull(), // optionType
+
+                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // Contracts
+                null,
+
                 new NotNull(), // cmTodayClose
-                new LMinMax(0L, LMinMax.MAX_LONG), // volume
+                new NotNull(),
+
+                new DMinMax(DMinMax.MIN_DOUBLE, DMinMax.MAX_DOUBLE), // TodayClose
+                //new DMinMax(DMinMax.MIN_DOUBLE, DMinMax.MAX_DOUBLE), // percentChangeInOpenInterest
+                new NotNull(),
+                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // TodayOpenInterest
+                //new DMinMax(DMinMax.MIN_DOUBLE, DMinMax.MAX_DOUBLE), // percentChangeInClose
+                new NotNull(),
+
                 new LMinMax(0L, LMinMax.MAX_LONG), // todayDelivery
                 new NotNull(), // prcntChgInDelivery
-                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG) // todayOpenInterest
+
+                new FmtDate(ApCo.PRA_DATA_DATE_FORMAT), // TodayTradeDate
+
+                new NotNull(),
+                new DMinMax(0D, DMinMax.MAX_DOUBLE), // PreviousClose
+                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG), // PreviousOpenInterest
+                new LMinMax(0L, LMinMax.MAX_LONG), // previousDelivery
+                new FmtDate(ApCo.PRA_DATA_DATE_FORMAT) // PreviousTradeDate
         };
     }
 }

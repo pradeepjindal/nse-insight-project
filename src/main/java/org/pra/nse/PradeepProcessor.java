@@ -6,7 +6,7 @@ import org.pra.nse.csv.merge.CmMerger;
 import org.pra.nse.csv.merge.FoMerger;
 import org.pra.nse.csv.merge.MtMerger;
 import org.pra.nse.csv.read.FoCsvReader;
-import org.pra.nse.csv.writer.ManishCsvWriter;
+import org.pra.nse.csv.writer.PradeepCsvWriter;
 import org.pra.nse.util.FileNameUtils;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
@@ -24,8 +24,8 @@ import java.util.TreeSet;
 
 
 @Component
-public class ManishProcessor implements ApplicationRunner {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ManishProcessor.class);
+public class PradeepProcessor implements ApplicationRunner {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PradeepProcessor.class);
 
     private final DownloadManager downloadManager;
     private final FoCsvReader csvReader;
@@ -34,14 +34,14 @@ public class ManishProcessor implements ApplicationRunner {
     private final MtMerger mtMerger;
     private final FileUtils fileUtils;
     private final FileNameUtils fileNameUtils;
-    private final ManishCsvWriter csvWriter;
+    private final PradeepCsvWriter csvWriter;
 
-    public ManishProcessor(DownloadManager downloadManager,
-                           FoCsvReader csvReader,
-                           CmMerger cmMerger, FoMerger foMerger, MtMerger mtMerger,
-                           ManishCsvWriter csvWriter,
-                           FileUtils fileUtils,
-                           FileNameUtils fileNameUtils) {
+    public PradeepProcessor(DownloadManager downloadManager,
+                            FoCsvReader csvReader,
+                            CmMerger cmMerger, FoMerger foMerger, MtMerger mtMerger,
+                            PradeepCsvWriter csvWriter,
+                            FileUtils fileUtils,
+                            FileNameUtils fileNameUtils) {
         this.downloadManager = downloadManager;
         this.csvReader = csvReader;
         this.cmMerger = cmMerger;
@@ -68,7 +68,7 @@ public class ManishProcessor implements ApplicationRunner {
         String manishOutputPathAndFileName =
                 ApCo.BASE_DATA_DIR
                 + File.separator + ApCo.PRA_DATA_DIR_NAME
-                + File.separator + ApCo.MANISH_FILE_NAME + ApCo.PRA_DATA_FILE_EXT;
+                + File.separator + ApCo.PRADEEP_FILE_NAME + ApCo.PRA_DATA_FILE_EXT;
         csvWriter.write(praBeans, manishOutputPathAndFileName, foMonthlyExpiryDates);
         //-------------------------------------------------------
         //String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
@@ -78,7 +78,7 @@ public class ManishProcessor implements ApplicationRunner {
         String fileDate = "-" + foLatestFileName.substring(fromIndex, toIndex);
         String outputPathAndFileName = ApCo.BASE_DATA_DIR
                 + File.separator + ApCo.PRA_DATA_DIR_NAME
-                + File.separator + ApCo.MANISH_FILE_NAME + fileDate  + ApCo.PRA_DATA_FILE_EXT;
+                + File.separator + ApCo.PRADEEP_FILE_NAME + fileDate  + ApCo.PRA_DATA_FILE_EXT;
         csvWriter.write(praBeans, outputPathAndFileName, foMonthlyExpiryDates);
         //-------------------------------------------------------
 
@@ -93,12 +93,12 @@ public class ManishProcessor implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        LOGGER.info("Manish Processor | ============================== | Kicking");
+        LOGGER.info("Pradeep Processor | ============================== | Kicking");
 		try {
             process(ApCo.DOWNLOAD_FROM_DATE, LocalDate.now());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-        LOGGER.info("Manish Processor | ============================== | Finished");
+        LOGGER.info("Pradeep Processor | ============================== | Finished");
     }
 }
