@@ -8,14 +8,12 @@ public class ManishBean {
     private Date expiryDate;
     private LocalDate expiryLocalDate;
     //
-    private Date tdyDate;
-    private LocalDate tdyLocalDate;
-    private double cmTdyClose;
-    private long tdyVolume;
-    private long tdyDelivery;
-    private double prcntChgInDelivery;
-    private long tdyOI;
 
+    private double tdyClose;
+    private long tdyTraded;
+    private long tdyDelivery;
+    private double deliveryToTradeRatio;
+    private long tdyOI;
 
     public String getSymbol() {
         return symbol;
@@ -41,36 +39,20 @@ public class ManishBean {
         this.expiryLocalDate = expiryLocalDate;
     }
 
-    public Date getTdyDate() {
-        return tdyDate;
+    public double getTdyClose() {
+        return tdyClose;
     }
 
-    public void setTdyDate(Date tdyDate) {
-        this.tdyDate = tdyDate;
+    public void setTdyClose(double tdyClose) {
+        this.tdyClose = tdyClose;
     }
 
-    public LocalDate getTdyLocalDate() {
-        return tdyLocalDate;
+    public long getTdyTraded() {
+        return tdyTraded;
     }
 
-    public void setTdyLocalDate(LocalDate tdyLocalDate) {
-        this.tdyLocalDate = tdyLocalDate;
-    }
-
-    public double getCmTdyClose() {
-        return cmTdyClose;
-    }
-
-    public void setCmTdyClose(double cmTdyClose) {
-        this.cmTdyClose = cmTdyClose;
-    }
-
-    public long getTdyVolume() {
-        return tdyVolume;
-    }
-
-    public void setTdyVolume(long tdyVolume) {
-        this.tdyVolume = tdyVolume;
+    public void setTdyTraded(long tdyTraded) {
+        this.tdyTraded = tdyTraded;
     }
 
     public long getTdyDelivery() {
@@ -81,12 +63,12 @@ public class ManishBean {
         this.tdyDelivery = tdyDelivery;
     }
 
-    public double getPrcntChgInDelivery() {
-        return prcntChgInDelivery;
+    public double getDeliveryToTradeRatio() {
+        return deliveryToTradeRatio;
     }
 
-    public void setPrcntChgInDelivery(double prcntChgInDelivery) {
-        this.prcntChgInDelivery = prcntChgInDelivery;
+    public void setDeliveryToTradeRatio(double deliveryToTradeRatio) {
+        this.deliveryToTradeRatio = deliveryToTradeRatio;
     }
 
     public long getTdyOI() {

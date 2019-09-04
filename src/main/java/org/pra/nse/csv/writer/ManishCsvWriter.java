@@ -1,6 +1,7 @@
 package org.pra.nse.csv.writer;
 
 import org.pra.nse.ApCo;
+import org.pra.nse.bean.ManishBean;
 import org.pra.nse.bean.PraBean;
 import org.pra.nse.util.FileUtils;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.supercsv.prefs.CsvPreference;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -31,27 +33,26 @@ public class ManishCsvWriter {
     }
 
     public void write(List<PraBean> praBeans, String outputFilePathAndName, TreeSet<LocalDate> foExpiryDates) throws IOException {
+        List<ManishBean> manishBeans = convert(praBeans, foExpiryDates);
+
         fileUtils.createFolder(outputFilePathAndName);
         //final ICsvBeanWriter beanWriter;
         try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputFilePathAndName), CsvPreference.STANDARD_PREFERENCE)) {
             // the header elements are used to map the bean values to each column (names must match)
             final String[] header = new String[] {
                     "symbol", "expiryDate"
-                    , "cmTdyClose", "cmTdyTraded"
-                    , "tdyDelivery","prcntChgInDelivery"
+                    , "tdyClose", "tdyTraded"
+                    , "tdyDelivery","deliveryToTradeRatio"
                     , "tdyOI"
             };
             final CellProcessor[] processors = getProcessors();
             // write the header
             beanWriter.writeHeader(header);
-            praBeans.forEach( praBean -> {
-                // pra TODO
-                if("FUTSTK".equals(praBean.getInstrument()) && praBean.getExpiryLocalDate().equals(foExpiryDates.first())) {
-                    try {
-                        beanWriter.write(praBean, header, processors);
-                    } catch (IOException e) {
-                        LOGGER.warn("some error: {}", e.getMessage());
-                    }
+            manishBeans.forEach( praBean -> {
+                try {
+                    beanWriter.write(praBean, header, processors);
+                } catch (IOException e) {
+                    LOGGER.warn("some error: {}", e.getMessage());
                 }
             });
         }
@@ -62,10 +63,30 @@ public class ManishCsvWriter {
                 new NotNull(), // symbol
                 new FmtDate(ApCo.PRA_DATA_DATE_FORMAT), // expiryDate
                 new NotNull(), // cmTodayClose
-                new LMinMax(0L, LMinMax.MAX_LONG), // volume
+                new LMinMax(0L, LMinMax.MAX_LONG), // tdyTraded
                 new LMinMax(0L, LMinMax.MAX_LONG), // todayDelivery
-                new NotNull(), // prcntChgInDelivery
+                new NotNull(), // deliveryToTradeRatio
                 new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG) // todayOpenInterest
         };
+    }
+
+    private List<ManishBean> convert(List<PraBean> praBeans, TreeSet<LocalDate> foExpiryDates) {
+        List<ManishBean> manishBeans = new ArrayList<>();
+        praBeans.forEach( praBean -> {
+            if("FUTSTK".equals(praBean.getInstrument()) && praBean.getExpiryLocalDate().equals(foExpiryDates.first())) {
+                //System.out.println(praBean.getSymbol() + " | " + praBean.getExpiryLocalDate());
+                ManishBean manishBean = new ManishBean();
+                    manishBean.setSymbol(praBean.getSymbol());
+                    manishBean.setExpiryDate(praBean.getExpiryDate());
+                    manishBean.setTdyClose(praBean.getCmTdyClose());
+                    manishBean.setTdyTraded(praBean.getCmTdyTraded());
+                    manishBean.setTdyDelivery(praBean.getTdyDelivery());
+                double deliveryToTradeRatio = praBean.getTdyDelivery() / (praBean.getCmTdyTraded()/100);
+                    manishBean.setDeliveryToTradeRatio(deliveryToTradeRatio);
+                    manishBean.setTdyOI(praBean.getTdyOI());
+                manishBeans.add(manishBean);
+            }
+        });
+        return manishBeans;
     }
 }
