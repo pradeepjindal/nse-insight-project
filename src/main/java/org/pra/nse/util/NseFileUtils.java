@@ -205,6 +205,10 @@ public class NseFileUtils {
                 LOGGER.info("Directory " + listOfFile.getName());
             }
         }
+//        existingFiles.forEach(name-> {
+//            String s = extractDate(name);
+//            System.out.println(s);
+//        });
         return existingFiles;
     }
 

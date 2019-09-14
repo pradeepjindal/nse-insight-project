@@ -13,18 +13,22 @@ public class DownloadManager {
     private final CmDownloader cmDownloader;
     private final FoDownloader foDownloader;
     private final MtDownloader mtDownloader;
+    private final BpDownloader bpDownloader;
 
     public DownloadManager(CmDownloader cmDownloader,
                            FoDownloader foDownloader,
-                           MtDownloader mtDownloader) {
+                           MtDownloader mtDownloader,
+                           BpDownloader bpDownloader) {
         this.cmDownloader = cmDownloader;
         this.foDownloader = foDownloader;
         this.mtDownloader = mtDownloader;
+        this.bpDownloader = bpDownloader;
     }
 
     public void download(LocalDate downloadFromDate) {
         cmDownloader.download(downloadFromDate);
         foDownloader.download(downloadFromDate);
         mtDownloader.download(downloadFromDate);
+        bpDownloader.download(downloadFromDate);
     }
 }

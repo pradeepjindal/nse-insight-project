@@ -16,18 +16,18 @@ public class DownloadUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(DownloadUtils.class);
 
     public void downloadFile(String fromUrl, String toDir, Supplier<String> inputFileSupplier, Consumer<String> outputFileConsumer) {
-        String outputZipDirAndFileName = inputFileSupplier.get();
+        String outputDirAndFileName = inputFileSupplier.get();
         LOGGER.info("URL: " + fromUrl);
-        LOGGER.info("OUT: " + outputZipDirAndFileName);
+        LOGGER.info("OUT: " + outputDirAndFileName);
         try (BufferedInputStream inputStream = new BufferedInputStream(new URL(fromUrl).openStream());
-             FileOutputStream fileOS = new FileOutputStream(outputZipDirAndFileName)) {
+             FileOutputStream fileOS = new FileOutputStream(outputDirAndFileName)) {
             byte[] data = new byte[1024];
             int byteContent;
             while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
                 fileOS.write(data, 0, byteContent);
             }
             //unzip(outputDirAndFileName);
-            outputFileConsumer.accept(outputZipDirAndFileName);
+            outputFileConsumer.accept(outputDirAndFileName);
         } catch (IOException e) {
             LOGGER.info(e.getMessage());
         }

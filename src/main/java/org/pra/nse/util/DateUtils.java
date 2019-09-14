@@ -24,4 +24,10 @@ public class DateUtils {
                 .atZone(ZoneId.systemDefault())
                 .toInstant());
     }
+
+    public static String transformDate(String oldFormat) {
+        return oldFormat.substring(4,8)
+                + "-" + oldFormat.substring(2,4)
+                + "-" + oldFormat.substring(0, 2);
+    }
 }
