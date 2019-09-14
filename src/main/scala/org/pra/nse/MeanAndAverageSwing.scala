@@ -1,8 +1,8 @@
 package org.pra.nse
 
-import org.apache.spark.sql.{SQLContext, SparkSession}
-import org.apache.spark.sql.types.StructType
-import org.apache.spark.sql.types._
+//import org.apache.spark.sql.{SQLContext, SparkSession}
+//import org.apache.spark.sql.types.StructType
+//import org.apache.spark.sql.types._
 // For implicit conversions like converting RDDs to DataFrames
 //import spark.implicits._
 
@@ -29,19 +29,19 @@ class MeanAndAverageSwing {
   }
 
   def compute2(): Unit = {
-    val spark = SparkSession
-      .builder()
-      .appName("Pradeep NSE Compute Using Scala")
-      //.config("spark.some.config.option", "some-value")
-      .getOrCreate()
-//    val usersDF = spark.read.load("examples/src/main/resources/users.parquet")
-//    usersDF.select("name", "favorite_color").write.save("namesAndFavColors.parquet")
-    val usersDF = spark.read
-    .format("csv")
-    .option("sep", ",")
-    .option("inferSchema", "true")
-    .option("header", "true")
-    .load("C:\\Users\\prajinda\\pra-nse-fo\\fo-2019-09-05.csv")
-    usersDF.show(10)
+//    val spark = SparkSession
+//      .builder()
+//      .appName("Pradeep NSE Compute Using Scala")
+//      //.config("spark.some.config.option", "some-value")
+//      .getOrCreate()
+////    val usersDF = spark.read.load("examples/src/main/resources/users.parquet")
+////    usersDF.select("name", "favorite_color").write.save("namesAndFavColors.parquet")
+//    val usersDF = spark.read
+//    .format("csv")
+//    .option("sep", ",")
+//    .option("inferSchema", "true")
+//    .option("header", "true")
+//    .load("C:\\Users\\prajinda\\pra-nse-fo\\fo-2019-09-05.csv")
+//    usersDF.show(10)
   }
 }
