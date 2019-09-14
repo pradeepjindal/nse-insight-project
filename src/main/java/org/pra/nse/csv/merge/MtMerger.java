@@ -1,11 +1,11 @@
 package org.pra.nse.csv.merge;
 
 import org.pra.nse.ApCo;
-import org.pra.nse.bean.MtBean;
-import org.pra.nse.bean.PraBean;
+import org.pra.nse.bean.in.MtBean;
+import org.pra.nse.bean.out.PraBean;
 import org.pra.nse.csv.read.MtCsvReader;
-import org.pra.nse.util.FileNameUtils;
-import org.pra.nse.util.FileUtils;
+import org.pra.nse.util.PraNameUtils;
+import org.pra.nse.util.NseFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -17,13 +17,13 @@ import java.util.Map;
 public class MtMerger {
     private static final Logger LOGGER = LoggerFactory.getLogger(MtMerger.class);
 
-    private final FileUtils fileUtils;
-    private final FileNameUtils fileNameUtils;
+    private final NseFileUtils nseFileUtils;
+    private final PraNameUtils praNameUtils;
     private final MtCsvReader csvReader;
 
-    public MtMerger(FileUtils fileUtils, FileNameUtils fileNameUtils, MtCsvReader csvReader) {
-        this.fileUtils = fileUtils;
-        this.fileNameUtils = fileNameUtils;
+    public MtMerger(NseFileUtils nseFileUtils, PraNameUtils praNameUtils, MtCsvReader csvReader) {
+        this.nseFileUtils = nseFileUtils;
+        this.praNameUtils = praNameUtils;
         this.csvReader = csvReader;
     }
 
@@ -31,10 +31,10 @@ public class MtMerger {
         LOGGER.info("MT-Merge");
         String fromFile;
         //fromFile = fileUtils.getLatestFileNameForMat(1);
-        fromFile = fileNameUtils.getLatestFileNameFor(ApCo.MT_FILES_PATH, ApCo.MT_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,1);
+        fromFile = praNameUtils.getLatestFileNameFor(ApCo.MT_FILES_PATH, ApCo.MT_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,1);
         Map<String, MtBean> mtLatestBeanMap = csvReader.read(fromFile);
         //fromFile = fileUtils.getLatestFileNameForMat(2);
-        fromFile = fileNameUtils.getLatestFileNameFor(ApCo.MT_FILES_PATH, ApCo.MT_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,2);
+        fromFile = praNameUtils.getLatestFileNameFor(ApCo.MT_FILES_PATH, ApCo.MT_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,2);
         Map<String, MtBean> matPreviousBeanMap = csvReader.read(fromFile);
         praBeans.forEach(praBean -> {
             if(mtLatestBeanMap.containsKey(praBean.getSymbol()) && matPreviousBeanMap.containsKey(praBean.getSymbol())) {

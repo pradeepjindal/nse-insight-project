@@ -1,4 +1,4 @@
-package org.pra.nse.bean;
+package org.pra.nse.bean.out;
 
 import java.time.LocalDate;
 import java.util.Date;

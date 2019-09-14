@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import org.pra.nse.bean.FoBean;
-import org.pra.nse.util.FileNameUtils;
-import org.pra.nse.util.FileUtils;
+import org.pra.nse.bean.in.FoBean;
+import org.pra.nse.util.PraNameUtils;
+import org.pra.nse.util.NseFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,17 +22,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class FoCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(FoCsvReader.class);
-    private final FileUtils fileUtils;
-    private final FileNameUtils fileNameUtils;
+    private final NseFileUtils nseFileUtils;
+    private final PraNameUtils praNameUtils;
 
-    FoCsvReader(FileUtils fileUtils, FileNameUtils fileNameUtils) {
-        this.fileUtils = fileUtils;
-        this.fileNameUtils = fileNameUtils;
+    FoCsvReader(NseFileUtils nseFileUtils, PraNameUtils praNameUtils) {
+        this.nseFileUtils = nseFileUtils;
+        this.praNameUtils = praNameUtils;
     }
 
     public Map<FoBean, FoBean> read(Map<FoBean, FoBean> foBeanMap, String fileName) throws FileNotFoundException {
         Map<FoBean, FoBean> localFoBeanMap = new HashMap<>();
-        LOGGER.info("-----CSV Reader [{}]", fileName);
+        LOGGER.info("FO file exists: [{}]", fileName);
 
         FoBean foBean;
         //int missing = 0;

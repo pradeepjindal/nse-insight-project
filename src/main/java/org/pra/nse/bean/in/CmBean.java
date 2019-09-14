@@ -1,4 +1,4 @@
-package org.pra.nse.bean;
+package org.pra.nse.bean.in;
 
 import java.util.Date;
 import java.util.Objects;

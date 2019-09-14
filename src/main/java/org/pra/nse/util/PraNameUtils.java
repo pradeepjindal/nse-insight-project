@@ -10,11 +10,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
-import java.util.TreeMap;
 
 @Component
-public class FileNameUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileNameUtils.class);
+public class PraNameUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PraNameUtils.class);
 
     public String getLatestFileNameFor(String fileDir, String filePrefix, String fileExt, int occurrence) {
         return getLatestFileName(fileDir, filePrefix, fileExt, occurrence, LocalDate.now());

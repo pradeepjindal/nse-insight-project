@@ -19,8 +19,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @Component
-public class FileUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
+public class NseFileUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NseFileUtils.class);
 
     public String getLatestFileNameForCm(int occurrence) {
         return getLatestFileNameForCm(LocalDate.now(), occurrence);
@@ -128,7 +128,7 @@ public class FileUtils {
         zis.close();
     }
     public void unzipNew(String outputDirAndFileName, String filePrefix) throws IOException {
-        int lastIndex = outputDirAndFileName.lastIndexOf("\\");
+        int lastIndex = outputDirAndFileName.lastIndexOf(File.separator);
         File destDir = new File(outputDirAndFileName.substring(0, lastIndex));
         byte[] buffer = new byte[1024];
         ZipInputStream zis = null;

@@ -1,9 +1,9 @@
 package org.pra.nse.csv.read;
 
 import org.pra.nse.ApCo;
-import org.pra.nse.bean.CmBean;
-import org.pra.nse.util.FileNameUtils;
-import org.pra.nse.util.FileUtils;
+import org.pra.nse.bean.in.CmBean;
+import org.pra.nse.util.PraNameUtils;
+import org.pra.nse.util.NseFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -23,20 +23,20 @@ import java.util.Map;
 @Component
 public class CmCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmCsvReader.class);
-    private final FileUtils fileUtils;
-    private final FileNameUtils fileNameUtils;
+    private final NseFileUtils nseFileUtils;
+    private final PraNameUtils praNameUtils;
 
-    CmCsvReader(FileUtils fileUtils, FileNameUtils fileNameUtils) {
-        this.fileUtils = fileUtils;
-        this.fileNameUtils = fileNameUtils;
+    CmCsvReader(NseFileUtils nseFileUtils, PraNameUtils praNameUtils) {
+        this.nseFileUtils = nseFileUtils;
+        this.praNameUtils = praNameUtils;
     }
 
     public Map<String, CmBean> read(String fromFile) {
-        int firstIndex = fromFile.lastIndexOf(ApCo.CM_DATA_FILE_PREFIX);
-        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+13) + ApCo.PRA_DATA_FILE_EXT;
-        String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.CM_DIR_NAME + File.separator + cmCsvFileName;
-
-        if(fileUtils.isFileExist(toFile)) {
+//        int firstIndex = fromFile.lastIndexOf(ApCo.CM_DATA_FILE_PREFIX);
+//        String cmCsvFileName = fromFile.substring(firstIndex, firstIndex+13) + ApCo.PRA_DATA_FILE_EXT;
+//        String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.CM_DIR_NAME + File.separator + cmCsvFileName;
+        String toFile = PathHelper.fileNameWithFullPath(ApCo.CM_DIR_NAME, ApCo.CM_DATA_FILE_PREFIX, fromFile);
+        if(nseFileUtils.isFileExist(toFile)) {
             LOGGER.info("CM file exists: [{}]", toFile);
         } else {
             LOGGER.error("CM file does not exist: [{}]", toFile);

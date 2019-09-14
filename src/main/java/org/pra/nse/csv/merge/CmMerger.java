@@ -1,11 +1,11 @@
 package org.pra.nse.csv.merge;
 
 import org.pra.nse.ApCo;
-import org.pra.nse.bean.CmBean;
-import org.pra.nse.bean.PraBean;
+import org.pra.nse.bean.in.CmBean;
+import org.pra.nse.bean.out.PraBean;
 import org.pra.nse.csv.read.CmCsvReader;
-import org.pra.nse.util.FileNameUtils;
-import org.pra.nse.util.FileUtils;
+import org.pra.nse.util.PraNameUtils;
+import org.pra.nse.util.NseFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -17,13 +17,13 @@ import java.util.Map;
 public class CmMerger {
     private static final Logger LOGGER = LoggerFactory.getLogger(CmMerger.class);
 
-    private final FileUtils fileUtils;
-    private final FileNameUtils fileNameUtils;
+    private final NseFileUtils nseFileUtils;
+    private final PraNameUtils praNameUtils;
     private final CmCsvReader csvReader;
 
-    public CmMerger(FileUtils fileUtils, FileNameUtils fileNameUtils, CmCsvReader cmCsvReader) {
-        this.fileUtils = fileUtils;
-        this.fileNameUtils = fileNameUtils;
+    public CmMerger(NseFileUtils nseFileUtils, PraNameUtils praNameUtils, CmCsvReader cmCsvReader) {
+        this.nseFileUtils = nseFileUtils;
+        this.praNameUtils = praNameUtils;
         this.csvReader = cmCsvReader;
     }
 
@@ -31,11 +31,11 @@ public class CmMerger {
         LOGGER.info("CM-Merge");
         String fromFile;
         //fromFile = fileUtils.getLatestFileNameForCm(1);
-        fromFile = fileNameUtils.getLatestFileNameFor(ApCo.CM_FILES_PATH, ApCo.CM_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,1);
+        fromFile = praNameUtils.getLatestFileNameFor(ApCo.CM_FILES_PATH, ApCo.CM_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,1);
         Map<String, CmBean> latestBeanMap = csvReader.read(fromFile);
         fromFile = null;
         //fromFile = fileUtils.getLatestFileNameForCm(2);
-        fromFile = fileNameUtils.getLatestFileNameFor(ApCo.CM_FILES_PATH, ApCo.CM_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,2);
+        fromFile = praNameUtils.getLatestFileNameFor(ApCo.CM_FILES_PATH, ApCo.CM_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,2);
         Map<String, CmBean> previousBeanMap = csvReader.read(fromFile);
         praBeans.forEach(praBean -> {
             String symbol = praBean.getSymbol();

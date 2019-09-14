@@ -3,9 +3,9 @@ package org.pra.nse.csv.read;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import org.pra.nse.bean.FoBean;
-import org.pra.nse.util.FileNameUtils;
-import org.pra.nse.util.FileUtils;
+import org.pra.nse.bean.in.FoBean;
+import org.pra.nse.util.PraNameUtils;
+import org.pra.nse.util.NseFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
@@ -16,12 +16,12 @@ import java.util.*;
 
 public class FoCsvReader2 {
     private static final Logger LOGGER = LoggerFactory.getLogger(FoCsvReader2.class);
-    private final FileUtils fileUtils;
-    private final FileNameUtils fileNameUtils;
+    private final NseFileUtils nseFileUtils;
+    private final PraNameUtils praNameUtils;
 
-    FoCsvReader2(FileUtils fileUtils, FileNameUtils fileNameUtils) {
-        this.fileUtils = fileUtils;
-        this.fileNameUtils = fileNameUtils;
+    FoCsvReader2(NseFileUtils nseFileUtils, PraNameUtils praNameUtils) {
+        this.nseFileUtils = nseFileUtils;
+        this.praNameUtils = praNameUtils;
     }
 
     public Map<FoBean, FoBean> read(Map<FoBean, FoBean> foBeanMap, String fileName) throws FileNotFoundException {

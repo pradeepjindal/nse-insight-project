@@ -1,6 +1,8 @@
 package org.pra.nse;
 
 import org.fusesource.jansi.AnsiConsole;
+import org.pra.nse.calc.SwingAroundMeanAndAverage;
+import org.pra.nse.csv.read.EqnCsvReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,12 @@ public class NseApplication {
 	public static void main(String[] args) {
 		AnsiConsole.systemInstall();
 		GreetingInScala greetingInScala = new GreetingInScala();
+
+//		MeanAndAverageSwing meanAndAverageSwing = new MeanAndAverageSwing();
+//		meanAndAverageSwing.compute2();
+
+//		SwingAroundMeanAndAverage swingAroundMeanAndAverage = new SwingAroundMeanAndAverage();
+//		swingAroundMeanAndAverage.compute();
 
 		SpringApplication.run(NseApplication.class, args);
 		LOGGER.info(greetingInScala.greet());

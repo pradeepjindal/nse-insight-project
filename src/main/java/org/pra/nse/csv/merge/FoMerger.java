@@ -1,12 +1,12 @@
 package org.pra.nse.csv.merge;
 
 import org.pra.nse.ApCo;
-import org.pra.nse.bean.FoBean;
-import org.pra.nse.bean.PraBean;
+import org.pra.nse.bean.in.FoBean;
+import org.pra.nse.bean.out.PraBean;
 import org.pra.nse.csv.read.FoCsvReader;
 import org.pra.nse.util.DateUtils;
-import org.pra.nse.util.FileNameUtils;
-import org.pra.nse.util.FileUtils;
+import org.pra.nse.util.PraNameUtils;
+import org.pra.nse.util.NseFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -20,13 +20,13 @@ import java.util.*;
 public class FoMerger {
     private static final Logger LOGGER = LoggerFactory.getLogger(FoMerger.class);
 
-    private final FileUtils fileUtils;
-    private final FileNameUtils fileNameUtils;
+    private final NseFileUtils nseFileUtils;
+    private final PraNameUtils praNameUtils;
     private final FoCsvReader csvReader;
 
-    public FoMerger(FileUtils fileUtils, FileNameUtils fileNameUtils, FoCsvReader csvReader) {
-        this.fileUtils = fileUtils;
-        this.fileNameUtils = fileNameUtils;
+    public FoMerger(NseFileUtils nseFileUtils, PraNameUtils praNameUtils, FoCsvReader csvReader) {
+        this.nseFileUtils = nseFileUtils;
+        this.praNameUtils = praNameUtils;
         this.csvReader = csvReader;
     }
 
@@ -34,10 +34,10 @@ public class FoMerger {
         LOGGER.info("FO-Merge");
         Map<FoBean, FoBean> foBeanMap;
         //String foLatestFileName = fileUtils.getLatestFileNameForFo(1);
-        String foLatestFileName = fileNameUtils.getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,1);
+        String foLatestFileName = praNameUtils.getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,1);
         LOGGER.info("latestFileName FO: " + foLatestFileName);
         //String foPreviousFileName = fileUtils.getLatestFileNameForFo(2);
-        String foPreviousFileName = fileNameUtils.getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,2);
+        String foPreviousFileName = praNameUtils.getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT,2);
         LOGGER.info("previousFileName FO: " + foPreviousFileName);
 
         // FO

@@ -1,9 +1,9 @@
 package org.pra.nse.csv.read;
 
 import org.pra.nse.ApCo;
-import org.pra.nse.bean.MtBean;
-import org.pra.nse.util.FileNameUtils;
-import org.pra.nse.util.FileUtils;
+import org.pra.nse.bean.in.MtBean;
+import org.pra.nse.util.PraNameUtils;
+import org.pra.nse.util.NseFileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,27 +22,28 @@ import java.util.*;
 public class MtCsvReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MtCsvReader.class);
 
-    private final FileUtils fileUtils;
-    private final FileNameUtils fileNameUtils;
+    private final NseFileUtils nseFileUtils;
+    private final PraNameUtils praNameUtils;
 
-    MtCsvReader(FileUtils fileUtils, FileNameUtils fileNameUtils) {
-        this.fileUtils = fileUtils;
-        this.fileNameUtils = fileNameUtils;
+    MtCsvReader(NseFileUtils nseFileUtils, PraNameUtils praNameUtils) {
+        this.nseFileUtils = nseFileUtils;
+        this.praNameUtils = praNameUtils;
     }
 
     public Map<String, MtBean> read(String fromFile) {
         //String fromFile = fileUtils.getLatestFileNameForMat(1);
-        int firstIndex = fromFile.lastIndexOf(ApCo.MT_DATA_FILE_PREFIX);
-        String mtCsvFileName = fromFile.substring(firstIndex, firstIndex+13) + ".csv";
-        String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.MT_DIR_NAME + File.separator + mtCsvFileName;
-        if(fileUtils.isFileExist(toFile)) {
-            LOGGER.info("Mat file created with csv format: Successfully [{}]", toFile);
+//        int firstIndex = fromFile.lastIndexOf(ApCo.MT_DATA_FILE_PREFIX);
+//        String mtCsvFileName = fromFile.substring(firstIndex, firstIndex+13) + ".csv";
+//        String toFile = ApCo.BASE_DATA_DIR + File.separator + ApCo.MT_DIR_NAME + File.separator + mtCsvFileName;
+        String toFile = PathHelper.fileNameWithFullPath(ApCo.MT_DIR_NAME, ApCo.MT_DATA_FILE_PREFIX, fromFile);
+        if(nseFileUtils.isFileExist(toFile)) {
+            LOGGER.info("Mat file exist [{}]", toFile);
         } else {
-            LOGGER.error("Mat file failed to be created in csv format: Failed [{}]", toFile);
+            LOGGER.error("Mat file does not exist [{}]", toFile);
         }
         //
         Map<String, MtBean> beanMap = readCsv(toFile);
-        LOGGER.info("Total Mat Beans in Map: {}", beanMap.size());
+        LOGGER.info("Total MT Beans in Map: {}", beanMap.size());
         return beanMap;
     }
 

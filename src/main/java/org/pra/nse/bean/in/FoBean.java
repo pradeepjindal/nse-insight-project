@@ -1,4 +1,4 @@
-package org.pra.nse.bean;
+package org.pra.nse.bean.in;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
