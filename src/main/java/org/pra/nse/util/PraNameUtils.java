@@ -1,6 +1,7 @@
 package org.pra.nse.util;
 
 import org.pra.nse.ApCo;
+import org.pra.nse.ProCo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -51,9 +52,15 @@ public class PraNameUtils {
     }
 
     public void validate() {
-        String cmDate = getLatestFileNameFor(ApCo.CM_FILES_PATH, ApCo.CM_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1).substring(32);
-        String foDate = getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1).substring(32);
-        String mtDate = getLatestFileNameFor(ApCo.MT_FILES_PATH, ApCo.MT_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1).substring(32);
+        String cmDate = getLatestFileNameFor(ApCo.CM_FILES_PATH, ApCo.CM_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1);
+        cmDate = ProCo.extractDate(cmDate);
+
+        String foDate = getLatestFileNameFor(ApCo.FO_FILES_PATH, ApCo.FO_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1);
+        foDate = ProCo.extractDate(foDate);
+
+        String mtDate = getLatestFileNameFor(ApCo.MT_FILES_PATH, ApCo.MT_DATA_FILE_PREFIX, ApCo.PRA_DATA_FILE_EXT, 1);
+        mtDate = ProCo.extractDate(mtDate);
+
         if(cmDate.equals(foDate) && cmDate.equals(mtDate)) {
             LOGGER.info("All Files are Accounted for: PROCESSING");
         } else {
