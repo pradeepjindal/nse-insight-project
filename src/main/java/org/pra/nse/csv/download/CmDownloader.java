@@ -35,7 +35,7 @@ public class CmDownloader {
         List<String> filesDownloadUrl = nseFileUtils.constructFileDownloadUrlWithYearAndMonth(
                 ApCo.CM_BASE_URL, filesToBeDownloaded);
 
-        filesDownloadUrl.parallelStream().forEach( fileUrl -> {
+        filesDownloadUrl.stream().forEach( fileUrl -> {
             downloadFile.downloadFile(fileUrl, dataDir,
                     () -> (dataDir + File.separator + fileUrl.substring(62, 85)),
                     zipFilePathAndName -> {

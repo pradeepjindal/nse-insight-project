@@ -34,7 +34,7 @@ public class FoDownloader {
         List<String> filesDownloadUrl = nseFileUtils.constructFileDownloadUrlWithYearAndMonth(
                 ApCo.FO_BASE_URL, filesToBeDownloaded);
 
-        filesDownloadUrl.parallelStream().forEach( fileUrl -> {
+        filesDownloadUrl.stream().forEach( fileUrl -> {
             downloadFile.downloadFile(fileUrl, dataDir,
                     () -> (dataDir + File.separator + fileUrl.substring(65, 88)),
                     zipFilePathAndName -> {

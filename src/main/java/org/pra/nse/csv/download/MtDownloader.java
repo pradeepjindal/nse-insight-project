@@ -39,7 +39,7 @@ public class MtDownloader {
         List<String> filesDownloadUrl = nseFileUtils.constructFileDownloadUrl(
                 ApCo.MT_BASE_URL, filesToBeDownloaded);
 
-        filesDownloadUrl.parallelStream().forEach( fileUrl -> {
+        filesDownloadUrl.stream().forEach( fileUrl -> {
             downloadFile.downloadFile(fileUrl, dataDir,
                     () -> (dataDir + File.separator + fileUrl.substring(47,63)),
                     downloadedFilePathAndName -> {
