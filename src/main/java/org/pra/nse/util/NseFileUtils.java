@@ -22,66 +22,6 @@ import java.util.zip.ZipInputStream;
 public class NseFileUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(NseFileUtils.class);
 
-    public String getLatestFileNameForCm(int occurrence) {
-        return getLatestFileNameForCm(LocalDate.now(), occurrence);
-    }
-    private String getLatestFileNameForCm(LocalDate localDate, int occurrence) {
-        LocalDate date = localDate;
-        File file;
-        String filePathWithFileName = null;
-        for(int i=0; i<occurrence; i++) {
-            do {
-                String fileName = "cm" + ApCo.CM_DTF.format(date).toUpperCase() + ApCo.PRA_DATA_FILE_EXT;
-                LOGGER.info("getLatestFileNameForCm | fileName: {}", fileName);
-                filePathWithFileName = ApCo.CM_FILES_PATH + File.separator + fileName;
-                LOGGER.info("getLatestFileNameForCm | filePathWithFileName: {}", filePathWithFileName);
-                file = new File(filePathWithFileName);
-                date = date.minusDays(1);
-            } while(!file.exists());
-        }
-        return filePathWithFileName;
-    }
-
-    public String getLatestFileNameForFo(int occurrence) {
-        return getLatestFileNameForFo(LocalDate.now(), occurrence);
-    }
-    private String getLatestFileNameForFo(LocalDate localDate, int occurrence) {
-        LocalDate date = localDate;
-        File file;
-        String filePathWithFileName = null;
-        for(int i=0; i<occurrence; i++) {
-            do {
-                String fileName = ApCo.FO_NSE_FILE_PREFIX + ApCo.FO_DTF.format(date).toUpperCase() + ApCo.PRA_DATA_FILE_EXT;
-                LOGGER.info("getLatestFileNameForFo | fileName: {}", fileName);
-                filePathWithFileName = ApCo.FO_FILES_PATH + File.separator + fileName;
-                LOGGER.info("getLatestFileNameForFo | filePathWithFileName: {}", filePathWithFileName);
-                file = new File(filePathWithFileName);
-                date = date.minusDays(1);
-            } while(!file.exists());
-        }
-        return filePathWithFileName;
-    }
-
-    public String getLatestFileNameForMat(int occurrence) {
-        return getLatestFileNameForMat(LocalDate.now(), occurrence);
-    }
-    private String getLatestFileNameForMat(LocalDate localDate, int occurrence) {
-        LocalDate date = localDate;
-        File file;
-        String filePathWithFileName = null;
-        for(int i=0; i<occurrence; i++) {
-            do {
-                String fileName = ApCo.MT_NSE_FILE_PREFIX + ApCo.MT_DTF.format(date) + ApCo.MT_FILE_EXT;
-                LOGGER.info("getLatestFileNameForMat | fileName: {}", fileName);
-                filePathWithFileName = ApCo.MT_FILES_PATH + File.separator + fileName;
-                LOGGER.info("getLatestFileNameForMat | filePathWithFileName: {}", filePathWithFileName);
-                file = new File(filePathWithFileName);
-                date = date.minusDays(1);
-            } while(!file.exists());
-        }
-        return filePathWithFileName;
-    }
-
     public void createFolder(String outputPathAndFileName) {
         String dataDir = ApCo.BASE_DATA_DIR + File.separator + ApCo.PRA_DATA_DIR_NAME;
         File folder = new File(dataDir);

@@ -5,10 +5,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class ApCo {
-    public static final LocalDate DOWNLOAD_FROM_DATE = LocalDate.of(2019,9,1);
+    public static final LocalDate DOWNLOAD_FROM_DATE = LocalDate.of(2019,9,10);
 
     public static final String BASE_DATA_DIR = System.getProperty("user.home");
 
+    //https://www.nseindia.com/content/historical/EQUITIES/2019/SEP/cm10SEP2019bhav.csv.zip
     public static final String CM_BASE_URL = "https://www.nseindia.com/content/historical/EQUITIES/2019";
     public static final String FO_BASE_URL = "https://www.nseindia.com/content/historical/DERIVATIVES/2019";
     public static final String MT_BASE_URL = "https://www.nseindia.com/archives/equities/mto";

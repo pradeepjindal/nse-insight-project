@@ -43,7 +43,7 @@ public class MtDownloader {
 
         filesDownloadUrl.stream().forEach( fileUrl -> {
             downloadFile.downloadFile(fileUrl, dataDir,
-                    () -> (dataDir + File.separator + fileUrl.substring(47,63)),
+                    () -> (dataDir + File.separator + fileUrl.substring(ApCo.MT_BASE_URL.length()+1,63)),
                     downloadedFilePathAndName -> {
                         transformToCsvNew(downloadedFilePathAndName);
                     }
@@ -61,7 +61,7 @@ public class MtDownloader {
         File csvOutputFile = new File(toFile);
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
             try (Stream<String> stream = Files.lines(Paths.get(downloadedDirAndFileName))) {
-                stream.filter(line->atomicInteger.incrementAndGet() > 3)
+                stream.filter(line-> atomicInteger.incrementAndGet() > 3)
                         .map(row -> {
                     if(atomicInteger.get() == 4) {
                         return "RecType,SrNo,Symbol,SecurityType,TradedQty,DeliverableQty,DeliveryToTradeRatio";

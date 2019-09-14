@@ -39,7 +39,6 @@ public class FoDownloader {
                     () -> (dataDir + File.separator + fileUrl.substring(65, 88)),
                     zipFilePathAndName -> {
                         try {
-                            //fileUtils.unzip(zipFilePathAndName);
                             nseFileUtils.unzipNew(zipFilePathAndName, ApCo.FO_DATA_FILE_PREFIX);
                         } catch (IOException e) {
                             LOGGER.warn("Error while downloading file: {}", e);

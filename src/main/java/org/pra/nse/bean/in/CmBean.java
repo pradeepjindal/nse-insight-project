@@ -9,13 +9,13 @@ public class CmBean {
     private String series;
     private double open;
     private double high;
-    private double Low;
+    private double low;
     private double close;
     private double last;
     private double prevClose;
     private long totTrdQty;
     private double totTrdVal;
-    private Date Timestamp;
+    private Date timestamp;
     private long totalTrades;
     private String isin;
 
@@ -41,13 +41,13 @@ public class CmBean {
                 ", series='" + series + '\'' +
                 ", open=" + open +
                 ", high=" + high +
-                ", Low=" + Low +
+                ", low=" + low +
                 ", close=" + close +
                 ", last=" + last +
                 ", prevClose=" + prevClose +
                 ", totTrdQty=" + totTrdQty +
                 ", totTrdVal=" + totTrdVal +
-                ", Timestamp=" + Timestamp +
+                ", timestamp=" + timestamp +
                 ", totalTrades=" + totalTrades +
                 ", isin='" + isin + '\'' +
                 '}';
@@ -87,11 +87,11 @@ public class CmBean {
     }
 
     public double getLow() {
-        return Low;
+        return low;
     }
 
     public void setLow(double low) {
-        Low = low;
+        this.low = low;
     }
 
     public double getClose() {
@@ -135,11 +135,11 @@ public class CmBean {
     }
 
     public Date getTimestamp() {
-        return Timestamp;
+        return timestamp;
     }
 
     public void setTimestamp(Date timestamp) {
-        Timestamp = timestamp;
+        this.timestamp = timestamp;
     }
 
     public long getTotalTrades() {

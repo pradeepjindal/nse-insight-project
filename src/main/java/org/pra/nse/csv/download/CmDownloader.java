@@ -40,7 +40,6 @@ public class CmDownloader {
                     () -> (dataDir + File.separator + fileUrl.substring(62, 85)),
                     zipFilePathAndName -> {
                         try {
-                            //fileUtils.unzip(zipFilePathAndName);
                             nseFileUtils.unzipNew(zipFilePathAndName, ApCo.CM_DATA_FILE_PREFIX);
                         } catch (IOException e) {
                             LOGGER.warn("Error while downloading file: {}", e);
