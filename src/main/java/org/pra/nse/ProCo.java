@@ -36,6 +36,7 @@ public class ProCo {
     }
 
     public static String extractDate(String fileName) {
+        System.out.println(fileName);
         return fileName.substring(fileName.lastIndexOf(".")-10, fileName.lastIndexOf("."));
     }
 

@@ -27,9 +27,9 @@ public class PraNameUtils {
         for(int i=0; i<occurrence; i++) {
             do {
                 fileName = filePrefix + ApCo.PRA_DTF.format(date) + fileExt;
-                //LOGGER.info("getLatestFileName | fileName: {}", fileName);
+                LOGGER.info("getLatestFileName | fileName: {}", fileName);
                 filePathWithFileName = fileDir + File.separator + fileName;
-                //LOGGER.info("getLatestFileName | filePathWithFileName: {}", filePathWithFileName);
+                LOGGER.info("getLatestFileName | filePathWithFileName: {}", filePathWithFileName);
                 date = date.minusDays(1);
                 file = new File(filePathWithFileName);
                 if(file.exists()) break;
