@@ -7,6 +7,7 @@ public class ManishBean {
     private String symbol;
     private Date expiryDate;
     private LocalDate expiryLocalDate;
+    private Date tdyDate;
     //
 
     private double tdyClose;
@@ -29,6 +30,14 @@ public class ManishBean {
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public Date getTdyDate() {
+        return tdyDate;
+    }
+
+    public void setTdyDate(Date tdyDate) {
+        this.tdyDate = tdyDate;
     }
 
     public LocalDate getExpiryLocalDate() {

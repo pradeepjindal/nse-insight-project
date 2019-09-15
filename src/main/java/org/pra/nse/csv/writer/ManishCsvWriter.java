@@ -39,7 +39,7 @@ public class ManishCsvWriter {
         try (ICsvBeanWriter beanWriter = new CsvBeanWriter(new FileWriter(outputFilePathAndName), CsvPreference.STANDARD_PREFERENCE)) {
             // the header elements are used to map the bean values to each column (names must match)
             final String[] header = new String[] {
-                    "symbol", "expiryDate"
+                    "symbol", "expiryDate", "tdyDate"
                     , "tdyClose", "tdyTraded"
                     , "tdyDelivery","deliveryToTradeRatio"
                     , "tdyOI"
@@ -59,13 +59,22 @@ public class ManishCsvWriter {
 
     private static CellProcessor[] getProcessors() {
         return new CellProcessor[] {
-                new NotNull(), // symbol
-                new FmtDate(ApCo.PRA_DATA_DATE_FORMAT), // expiryDate
-                new NotNull(), // cmTodayClose
-                new LMinMax(0L, LMinMax.MAX_LONG), // tdyTraded
-                new LMinMax(0L, LMinMax.MAX_LONG), // todayDelivery
-                new NotNull(), // deliveryToTradeRatio
-                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG) // todayOpenInterest
+                // symbol
+                new NotNull(),
+                // expiryDate
+                new FmtDate(ApCo.PRA_DATA_DATE_FORMAT),
+                // Date
+                new FmtDate(ApCo.PRA_DATA_DATE_FORMAT),
+                // cmTodayClose
+                new NotNull(),
+                // tdyTraded
+                new LMinMax(0L, LMinMax.MAX_LONG),
+                // todayDelivery
+                new LMinMax(0L, LMinMax.MAX_LONG),
+                // deliveryToTradeRatio
+                new NotNull(),
+                // todayOpenInterest
+                new LMinMax(LMinMax.MIN_LONG, LMinMax.MAX_LONG)
         };
     }
 
@@ -73,10 +82,10 @@ public class ManishCsvWriter {
         List<ManishBean> manishBeans = new ArrayList<>();
         praBeans.forEach( praBean -> {
             if("FUTSTK".equals(praBean.getInstrument()) && praBean.getExpiryLocalDate().equals(foExpiryDates.first())) {
-                //System.out.println(praBean.getSymbol() + " | " + praBean.getExpiryLocalDate());
                 ManishBean manishBean = new ManishBean();
                     manishBean.setSymbol(praBean.getSymbol());
                     manishBean.setExpiryDate(praBean.getExpiryDate());
+                    manishBean.setTdyDate(praBean.getTdyDate());
                     manishBean.setTdyClose(praBean.getCmTdyClose());
                     manishBean.setTdyTraded(praBean.getCmTdyTraded());
                     manishBean.setTdyDelivery(praBean.getTdyDelivery());
